@@ -3,6 +3,7 @@ const mutations = {
         state.products = data
         state.isProcessing = false
         console.log(state)
+        console.log(data)
     },
     getProductsFail(state, {error}) {
         console.log(error)
