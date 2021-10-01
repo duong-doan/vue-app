@@ -1,0 +1,51 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+html {
+  font-size: 62.5%; //1rem = 10px
+  scroll-behavior: smooth;
+  transform-style: preserve-3d;
+}
+
+ul {
+  list-style: none;
+  padding-left: unset;
+}
+
+a {
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+button {
+  outline: 0;
+  cursor: pointer;
+  &:disabled {
+    pointer-events: none;
+    cursor: auto;
+    opacity: 0.7;
+  }
+}
+
+input {
+  outline: 0;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: $cod-gray;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $color_scroll_thumb;
+  border-radius: 2px;
+}

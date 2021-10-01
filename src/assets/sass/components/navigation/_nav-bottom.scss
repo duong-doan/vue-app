@@ -1,0 +1,35 @@
+.header__nav-bottom {
+  background: $bg__color--primary;
+  border-bottom: 1px solid $border__color--primary;
+  &__wrap {
+    ul {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      position: relative;
+
+      li {
+        margin: 0 2.4rem;
+        padding: 1.6rem 0;
+        cursor: pointer;
+
+        a {
+          font-size: 1.6rem;
+          text-decoration: none;
+          color: $text__color--primary;
+        }
+      }
+
+      .menu-item-man:hover .dropdown-menu-man {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .menu-item-woman:hover .dropdown-menu-woman {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+.product-payment__info {
+  padding: 0 5rem;
+
+  input {
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid $gray-500;
+  }
+
+  input:focus {
+    border: 1px solid $gray-700;
+  }
+
+  .product-payment__content {
+    &__info {
+      h3 {
+        margin: 2rem 0;
+      }
+
+      input[type="text"] {
+        padding: 1rem;
+        font-size: 1.6rem;
+        width: 100%;
+        margin: 1rem 0;
+      }
+
+      &--address {
+        div {
+          display: flex;
+          justify-content: space-between;
+          input {
+            width: 48% !important;
+          }
+        }
+      }
+
+      .wrapped__checkbox {
+        display: flex;
+        align-items: center;
+        input[type="checkbox"] {
+          margin-right: 1rem;
+          width: 18px;
+          height: 18px;
+        }
+
+        span {
+          font-size: 1.6rem;
+        }
+      }
+    }
+  }
+}

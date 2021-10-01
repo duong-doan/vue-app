@@ -1,0 +1,79 @@
+@import "./slider-product-item";
+
+.section__slider-product {
+  height: 750px;
+  margin: 10rem 0;
+
+  &__wrapped {
+    text-align: center;
+    width: 100%;
+
+    h1 {
+      text-align: center;
+      font-size: 5rem;
+      font-weight: 600;
+      text-shadow: 2px 2px 5px $text__color--dark;
+    }
+
+    span {
+      display: block;
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 10rem;
+      color: $text__color--dark;
+    }
+
+    .agile {
+      height: 700px;
+      &__list {
+        .agile__track {
+          .agile__slides {
+            .slide {
+              .slider-product-item {
+                &__wrapped {
+                  img {
+                    width: 70%;
+                    height: 100%;
+                    object-fit: cover;
+                  }
+
+                  .img-scale {
+                    transform: scale(1.5);
+                    padding-bottom: 4rem;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &__actions {
+        display: flex;
+        justify-content: center !important;
+        .agile__nav-button {
+          display: none;
+        }
+
+        .agile__dots {
+          li {
+            margin: 0 0.4rem;
+            button {
+              border-radius: 50% !important;
+              background-color: $text__color--dark;
+              padding: 0.4rem;
+              border: none;
+              outline: none;
+            }
+          }
+
+          .agile__dot--current {
+            button {
+              background-color: $bg__color--primary;
+            }
+          }
+        }
+      }
+    }
+  }
+}

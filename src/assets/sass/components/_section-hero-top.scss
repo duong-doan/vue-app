@@ -1,0 +1,21 @@
+@import "./hero-item";
+
+.section__hero--top {
+  &__wrapped {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 576px;
+  }
+
+  &__center {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 30%;
+    .hero__item {
+      width: 100%;
+      height: 50%;
+    }
+  }
+}

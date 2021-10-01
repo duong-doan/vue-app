@@ -1,0 +1,27 @@
+@import "./product";
+
+.section__product-hot {
+  margin: 10rem 0;
+  &__wrapped {
+    h1 {
+      text-align: center;
+      font-size: 5rem;
+      font-weight: 600;
+      text-shadow: 2px 2px 5px $text__color--dark;
+    }
+
+    .section__product-hot__subscribe {
+      display: block;
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 5rem;
+      color: $text__color--dark;
+    }
+  }
+
+  &__list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}

@@ -1,0 +1,31 @@
+.checkout-info {
+  ul {
+    padding: 0.5rem 2rem;
+    border: 1px solid $gray-500;
+    border-radius: 8px;
+    margin-bottom: 5rem;
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.5rem;
+      padding: 1rem 0;
+
+      p {
+        margin: 0;
+        color: $gray-600;
+      }
+
+      span {
+      }
+    }
+
+    li:nth-child(1) {
+      border-bottom: 1px solid $gray-400;
+    }
+
+    .add-border {
+      border-bottom: 1px solid $gray-400;
+    }
+  }
+}

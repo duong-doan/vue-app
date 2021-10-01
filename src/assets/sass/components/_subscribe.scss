@@ -1,0 +1,71 @@
+.subscribe {
+  margin-top: 10rem;
+  perspective: 1px;
+  perspective-origin: center top;
+  transform-style: preserve-3d;
+  overflow: hidden;
+  position: relative;
+
+  &__wrapped {
+    height: 700px;
+    background-size: cover;
+    background-position: center top;
+    background-attachment: fixed;
+  }
+
+  &__content {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8rem;
+
+    position: absolute;
+    top: 60%;
+
+    p {
+      font-size: 3.5rem;
+      color: $text__color--primary;
+    }
+
+    &__input {
+      display: flex;
+      align-items: center;
+      justify-content: baseline;
+      height: 50px;
+
+      ::placeholder {
+        font-size: 2rem;
+      }
+
+      input {
+        width: 60%;
+        height: 100%;
+        padding: 0.4rem 1rem;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        border-bottom: 1px solid $hover__color--primary;
+        color: $text__color--primary;
+        font-size: 1.4rem;
+      }
+
+      button {
+        width: 40%;
+        height: 100%;
+
+        color: $text__color--primary;
+        background-color: $hover__color--primary;
+        border: none;
+        outline: none;
+        font-size: 1.4rem;
+        font-weight: bold;
+        transition: ease 0.3s;
+
+        &:hover {
+          color: $text__color--darker;
+        }
+      }
+    }
+  }
+}

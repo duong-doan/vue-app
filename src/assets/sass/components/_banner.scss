@@ -1,0 +1,162 @@
+@import "../abstracts/mixins";
+
+.section__banner {
+  .agile {
+    &__list {
+      .agile__track {
+        .agile__slides {
+          .slide {
+            &__first,
+            &__second {
+              position: relative;
+              overflow: hidden;
+              width: 100%;
+
+              img {
+                width: 100%;
+                height: 1000px;
+                object-fit: cover;
+              }
+            }
+
+            .slide__first__content,
+            .slide__second__content {
+              position: absolute;
+              top: 50%;
+              left: 20%;
+
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              width: 30%;
+              color: $text__color--primary;
+              transform: translateY(-50%);
+
+              opacity: 0;
+              visibility: hidden;
+
+              h4,
+              h2,
+              p {
+                text-shadow: 2px 2px 10px $bg__color--primary;
+              }
+
+              h4 {
+                font-size: 2.2rem;
+                font-weight: bold;
+              }
+
+              h2 {
+                font-size: 5.5rem;
+                font-weight: bold;
+                margin-top: 1.6rem;
+              }
+
+              p {
+                text-align: left;
+                font-size: 1.4rem;
+                margin: 2.4rem 0;
+                line-height: 2.4rem;
+              }
+
+              button {
+                padding: 1.2rem 2.4rem;
+                border-radius: 5px;
+                border: 2px solid $text__color--primary;
+                outline: none;
+                background: $bg__color__banner;
+                color: $text__color--primary;
+                transition: ease 0.4s;
+                font-size: 2rem;
+
+                &:hover {
+                  background: $hover__color--primary;
+                }
+              }
+            }
+          }
+
+          .agile__slide--active {
+            &__first,
+            &__second {
+              img {
+                transform: scale(1.2);
+                transition: linear 10s;
+                z-index: 1;
+              }
+            }
+
+            .slide__first__content,
+            .slide__second__content {
+              opacity: 1;
+              visibility: visible;
+              animation: textMove ease 3s;
+              z-index: 2;
+              top: 50%;
+              transform: translateY(-50%);
+            }
+          }
+        }
+      }
+    }
+
+    &__actions {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      button {
+        opacity: 0;
+        visibility: hidden;
+        transition: ease 0.4s;
+        background: transparent;
+        border: 3px solid $text__color--primary;
+        width: 30px !important;
+        height: 30px !important;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1.6rem;
+
+        i {
+          font-size: 2rem;
+          color: $white;
+        }
+      }
+
+      .agile__nav-button--prev {
+        left: 70px !important;
+        transform: translateX(70px);
+      }
+
+      .agile__nav-button--next {
+        right: 70px !important;
+        transform: translateX(-70px);
+      }
+    }
+  }
+
+  &:hover {
+    .agile__nav-button--next,
+    .agile__nav-button--prev {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .agile__nav-button--next {
+      transform: translateX(10px);
+      &:hover {
+        background: $hover__color--primary;
+      }
+    }
+
+    .agile__nav-button--prev {
+      transform: translateX(-10px);
+      &:hover {
+        background: $hover__color--primary;
+      }
+    }
+  }
+}
