@@ -1,8 +1,8 @@
 const mutations = {
     getProductsSuccess(state, data) {
-        console.log(data)
         state.products = data
         state.isProcessing = false
+        console.log(state)
     },
     getProductsFail(state, {error}) {
         console.log(error)
