@@ -1,8 +1,8 @@
 import * as products from '../../api/products'
 
 const actions = {
-    processing({commit}) {
-        commit('processing')
+    progress({commit}) {
+        commit('progress')
     },
     getDataProductsRequest({commit}) {
         products.getProducts().then(data => {
@@ -13,12 +13,19 @@ const actions = {
             }
         })
     },
-    // getDataProductsSuccess({commit}, payload) {
-    //     commit('getProductsSuccess', payload)
-    // },
-    // getDataProductsFail({commit}, payload) {
-    //     commit('GET_PRODUCTS_FAIL', payload)
-    // }
+    getProductDetailRequest({commit}, id) {
+        products.getDetailProduct(id).then(data => {
+            if(data) {
+                commit('getProductDetailSuccess', data)
+            }
+        })
+    },
+    increaseQuantityProduct({commit}) {
+        commit('increaseQuantity')
+    },
+    decreaseQuantityProduct({commit}) {
+        commit('decreaseQuantity')
+    },
 }
 
 export default actions

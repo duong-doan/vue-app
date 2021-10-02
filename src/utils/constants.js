@@ -84,3 +84,14 @@ export const DATA_BLOG = [
   { image: BlogImg2 },
   { image: BlogImg3 },
 ];
+
+export const TITLE_TAB_INFO_USER_PRODUCT_DETAIL = [
+  {
+    id: 1,
+    title: 'DESCRIPTION',
+  },
+  {
+    id: 2,
+    title: 'REVIEWS',
+  },
+]

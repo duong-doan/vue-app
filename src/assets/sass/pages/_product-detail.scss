@@ -10,9 +10,15 @@
   }
 
   &__info {
+    margin: 5rem 0;
+
     &__image {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       img {
-        width: 100%;
+        width: 80%;
+        margin: 3rem;
       }
     }
 
@@ -24,12 +30,17 @@
       }
 
       &--price {
+        .no-discount {
+          text-decoration: none !important;
+        }
+
         span {
           font-size: 2.5rem;
           color: $hover__color--primary;
         }
 
         span:nth-child(1) {
+          font-size: 2rem;
           color: $text__color--dark;
           text-decoration: line-through;
           margin-right: 2rem;
@@ -48,18 +59,38 @@
         align-items: center;
         margin-bottom: 2rem;
         input {
-          width: 40px;
+          width: 50px;
           font-size: 2rem;
-          padding: 1rem 1.5rem;
+          padding: 1rem 0;
+          text-align: center;
         }
         div {
           display: flex;
           flex-direction: column;
           align-items: center;
-          i {
-            font-size: 1.6rem;
-            padding: 0 3rem;
-            cursor: pointer;
+
+          .change-quantity {
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 1rem;
+            padding: 0.5rem 1rem;
+
+            &:hover {
+              i {
+                color: $gray-300;
+              }
+            }
+
+            i {
+              width: 100%;
+              font-size: 1.6rem;
+              cursor: pointer;
+              color: $bg__color--primary;
+              margin: auto;
+              transition: 0.2s all;
+            }
           }
         }
         button {

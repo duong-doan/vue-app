@@ -45,5 +45,7 @@
 </template>
 
 <script>
+// import {TITLE_TAB_INFO_USER_PRODUCT_DETAIL} from '../../../utils/constants'
+
 export default {};
 </script>

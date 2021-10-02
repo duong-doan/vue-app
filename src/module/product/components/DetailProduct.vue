@@ -3,22 +3,33 @@
     <div class="row">
       <div class="col-6">
         <div class="product-detail__info__image">
-          <img src="../../../assets/images/products/product-05.png" alt="" />
+          <img :src="productDetail.image" alt="" />
         </div>
       </div>
       <div class="col-6">
         <div class="product-detail__info__content">
-          <h1>Black Metal Watch</h1>
+          <h1>{{productDetail.name}}</h1>
           <div class="product-detail__info__content--price">
-            <span>$20.00</span>
-            <span>$18.00</span>
+            <span :class="productDetail.price_discount !== 0 ? '' : 'no-discount'">${{productDetail.price}}</span>
+            <span v-if="productDetail.price_discount !== 0">${{productDetail.price_discount}}</span>
           </div>
           <p>This is a simple, virtual product.</p>
           <div class="product-detail__info__content--quantity">
-            <input type="text" value="1" placeholder="abc" readonly />
+            <input type="text" :value="quantity_default" placeholder="abc" readonly />
             <div>
-              <i class="fas fa-sort-up"></i>
-              <i class="fas fa-sort-down"></i>
+              <button 
+                class="change-quantity" 
+                @click="increaseQuantityProduct"
+              >
+                <i class="fas fa-sort-up" ></i>
+              </button>
+              <button 
+                class="change-quantity" 
+                @click="decreaseQuantityProduct"
+                :disabled="quantity_default <= 1 ? true : false"
+              >
+                <i class="fas fa-sort-down" ></i>
+              </button>
             </div>
             <button>ADD TO CART</button>
           </div>
@@ -39,5 +50,14 @@
 </template>
 
 <script>
-export default {};
+import { mapActions, mapGetters } from 'vuex';
+export default {
+  props: ['productDetail'],
+  computed: {
+    ...mapGetters(['quantity_default'])
+  },
+  methods: {
+    ...mapActions(['increaseQuantityProduct', 'decreaseQuantityProduct'])
+  }
+};
 </script>

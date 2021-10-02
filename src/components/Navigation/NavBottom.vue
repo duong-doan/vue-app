@@ -105,16 +105,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-
-export default {
-  created() {
-    this.getDataProductsRequest()
-  },
-  methods: {
-    ...mapActions(['getDataProductsRequest'])
-  }
-};
+export default {};
 </script>
 
 <style></style>

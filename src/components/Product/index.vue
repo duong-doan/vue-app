@@ -1,31 +1,25 @@
 <template>
   <div data-aos="fade-left" data-aos-duration="2000" class="product">
-    <div class="product__wrapped">
-      <div class="product__image">
-        <img :src="product1" alt="" />
-      </div>
-      <div class="product__info">
-        <h6>Classio 4</h6>
-        <div class="product__info--price">
-          <span>$110.00</span>
-          <span>$99.00</span>
+    <router-link :to="`/product/detail/${productId}`">
+      <div class="product__wrapped">
+        <div class="product__image">
+          <img :src="image" alt="" />
         </div>
-        <router-link to="/product/detail/:id">
-          <button>Add to cart</button>
-        </router-link>
+        <div class="product__info">
+          <h6>{{ name }}</h6>
+          <div class="product__info--price">
+            <span :class="priceDiscount === 0 ? 'no-discount' : ''">${{ price }}</span>
+            <span>{{ priceDiscount === 0 ? "" : `$${priceDiscount}` }}</span>
+          </div>
+            <button>Add to cart</button>
+        </div>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
 <script>
-import product1 from "../../assets/images/products/product-05.png";
-
 export default {
-  data() {
-    return {
-      product1,
-    };
-  },
+  props: ['name', 'price', 'priceDiscount', 'image', 'productId'],
 };
 </script>
