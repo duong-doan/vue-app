@@ -15,8 +15,6 @@ import SectionComponents from "./SectionComponents/index.vue";
 import FooterComponent from "./FooterComponent/index.vue";
 
 export default {
-  beforeCreate() {
-  },
   components: {
     HeaderComponent,
     BannerComponent,

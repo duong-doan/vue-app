@@ -131,6 +131,7 @@
     ul {
       display: flex;
       padding: 0;
+      margin-bottom: 0;
       padding-left: 1rem;
       border-bottom: 1px solid $hover__color--primary;
       li {
@@ -140,8 +141,8 @@
         border-bottom: transparent;
 
         &:hover {
-          background-color: $hover__color--primary;
-          color: $text__color--primary;
+          cursor: pointer;
+          color: $hover__color--primary;
         }
       }
 
@@ -149,7 +150,8 @@
         border-right: transparent;
       }
 
-      .active {
+      .active,
+      .active:hover {
         background-color: $hover__color--primary;
         color: $text__color--primary;
       }
@@ -175,33 +177,79 @@
         border-bottom: 1px solid $hover__color--primary;
         padding: 2rem;
 
-        h6 {
-          font-size: 1.8rem;
-          color: $hover__color--primary;
-        }
+        form {
+          .form-group {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            margin: 1.6rem 0;
 
-        p {
-          font-size: 1.6rem;
-          font-weight: 300;
-        }
+            textarea::placeholder {
+              font-size: 1.2rem;
+            }
 
-        input {
-          padding: 1rem;
-          font-size: 1.6rem;
-        }
+            textarea:focus-visible {
+              outline: none;
+            }
 
-        span {
-          font-size: 1.6rem;
-        }
+            textarea {
+              padding: 1rem;
+              font-size: 1.4rem;
+              color: $text__color--dark;
+            }
 
-        button {
-          margin-top: 2rem;
-          padding: 0.5rem 2.5rem;
-          font-size: 1.8rem;
-          background-color: $hover__color--primary;
-          border-radius: 4px;
-          border: none;
-          outline: none;
+            input {
+              padding: 1rem;
+              font-size: 1.4rem;
+              color: $text__color--dark;
+            }
+
+            label {
+              font-size: 1.6rem;
+              font-weight: 300;
+              margin-bottom: 1rem;
+            }
+          }
+
+          .checkbox-save {
+            flex-direction: row;
+            align-items: center;
+            label {
+              font-size: 1.2rem;
+              font-weight: 500;
+              margin: 0 0 0 0.5rem;
+            }
+          }
+
+          h5 {
+            font-size: 1.8rem;
+            color: $hover__color--primary;
+            margin-bottom: 2rem;
+          }
+
+          h6 {
+            font-size: 1.6rem;
+            font-weight: 300;
+          }
+
+          span {
+            font-size: 1.6rem;
+          }
+
+          button {
+            padding: 0.8rem 3rem;
+            font-size: 1.8rem;
+            background-color: $hover__color--primary;
+            border-radius: 4px;
+            border: none;
+            outline: none;
+            transition: 0.2s all;
+            color: $white;
+
+            &:hover {
+              color: $text__color--darker;
+            }
+          }
         }
       }
     }

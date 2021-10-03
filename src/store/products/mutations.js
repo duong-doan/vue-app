@@ -22,6 +22,9 @@ const mutations = {
         }
         state.isProgress = false
     },
+    randomRelatedProduct(state, data) {
+        state.related_product = data
+    },
     increaseQuantity(state) {
         state.quantity_default++
     },
