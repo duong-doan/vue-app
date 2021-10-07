@@ -20,6 +20,6 @@
 
 <script>
 export default {
-  props: ['name', 'price', 'priceDiscount', 'image', 'productId'],
+  props: ['name', 'price', 'priceDiscount', 'image', 'productId', 'idRelated'],
 };
 </script>

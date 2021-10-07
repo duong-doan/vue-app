@@ -4,9 +4,8 @@
             type="checkbox" 
             :id="id"
             :name="name" 
-            :value="isChecked" 
+            :checked="isChecked"
             :placeholder="placeholder" 
-            @change="handleChange"
         >
         <label :for="id">{{label}}</label>
     </div>
@@ -14,18 +13,7 @@
 
 <script>
 export default {
-    props: ['name', 'id', 'onchange', 'type', 'placeholder', 'label'],
-    data() {
-        return {
-            isChecked: false
-        }
-    },
-    methods: {
-        handleChange(e) {
-            console.log(e.target.checked)
-            this.isChecked = !this.isChecked
-        }
-    }
+    props: ['name', 'id', 'onchange', 'type', 'placeholder', 'label', 'isChecked'],
 }
 </script>
 

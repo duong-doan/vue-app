@@ -7,14 +7,11 @@
         </div>
       </div>
       <div class="container">
-        <template v-if="isProgress">
-          <div class="loader">Loading...</div>
-        </template>
-        <template v-else>
-          <DetailProduct :productDetail="product_detail" />
-        </template>
+        <div class="loader" v-if="isProgress">Loading...</div>
+        <DetailProduct v-else :productDetail="product_detail" />
         <CommentProduct />
-        <RelatedProduct />
+        <div class="loader" v-if="isProgress">Loading...</div>
+        <RelatedProduct v-else :relatedProducts="getRelatedProducts" />
       </div>
     </div>
   </div>
@@ -49,10 +46,16 @@ export default {
           text: `${this.product_detail.name}`,
         }
       ]
+    },
+    getRelatedProducts() {
+      return JSON.parse(localStorage.getItem('related_products')) 
+    },
+    productId() {
+      return this.$route.params.id
     }
   },
   methods: {
-    ...mapActions(['progress', 'getProductDetailRequest'])
+    ...mapActions(['progress', 'getProductDetailRequest']),
   },
   created() {
     this.getProductDetailRequest(this.$route.params.id)

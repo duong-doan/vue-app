@@ -32,6 +32,8 @@
       &--price {
         .no-discount {
           text-decoration: none !important;
+          font-size: 2.5rem !important;
+          color: $hover__color--primary !important;
         }
 
         span {

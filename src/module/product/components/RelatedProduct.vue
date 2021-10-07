@@ -3,24 +3,33 @@
     <h1>Related Products</h1>
     <div class="product-detail__related__list">
       <Product 
-        v-for="product in related_product" 
+        v-for="product in relatedProducts" 
         :key="product.id"
         :name="product.name"
         :image="product.image"
         :price="product.price"
-        :priceDiscount="product.priceDiscount" />
+        :priceDiscount="product.priceDiscount"
+        :productId="product.id" />
     </div>
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import Product from "../../../components/Product/index.vue";
+
 export default {
+  props: ['relatedProducts', 'productId'],
   components: {
     Product,
   },
-  computed: {
-    ...mapGetters(['related_product']),
+  watch: {
+    '$route.params.id'(id) {
+      this.getProductDetailRequest(id)
+      this.progress()
+    }
+  },
+  methods: {
+    ...mapActions(['getProductDetailRequest', 'progress']),
   }
 };
 </script>
