@@ -1,5 +1,5 @@
 <template>
-  <div class="input-text">
+  <div :class="`${classname} input-text`">
     <template v-if="labelTop">
       <label>{{ label }}</label>
       <input
@@ -10,7 +10,7 @@
         :value="value"
         :placeholder="placeholder"
         autocomplete="off"
-        :@change="onchange"
+        @change="handleChange"
       />
     </template>
     <template>
@@ -22,7 +22,7 @@
         :value="value"
         :placeholder="placeholder"
         autocomplete="off"
-        :@change="onchange"
+        @change="handleChange"
       />
       <label>{{ label }}</label>
     </template>
@@ -42,7 +42,13 @@ export default {
     "label",
     "labelBottom",
     "labelTop",
+    "classname",
   ],
+  methods: {
+    handleChange(e) {
+      this.onchange(this.id, e);
+    },
+  },
 };
 </script>
 

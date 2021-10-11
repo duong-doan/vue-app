@@ -1,26 +1,31 @@
 <template>
-  <div class="login-box">
-    <h2>Login</h2>
-    <form autocomplete="off">
-      <div class="user-box">
-        <base-input
-          v-for="input in data"
-          :key="input.id"
-          :label="input.name"
-          :type="input.type"
-          :required="input.required"
-          :onchange="handleChangeInput($event, input.id)"
-        />
-      </div>
-      <!-- {{ renderInput() }} -->
-      <a href="#">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        Submit
-      </a>
-    </form>
+  <div class="login-box__wrapper">
+    <div class="login-box">
+      <h2>Login</h2>
+      <form autocomplete="off" @submit="handleSubmit">
+        <div class="user-box">
+          <base-input
+            v-for="input in data"
+            :key="input.id"
+            :id="input.id"
+            :label="input.name"
+            :type="input.type"
+            :required="input.required"
+            :classname="
+              userInfo.username || userInfo.password !== '' ? 'is-edit' : ''
+            "
+            :onchange="handleChangeInput"
+          />
+        </div>
+        <button type="submit">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          Submit
+        </button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -35,7 +40,6 @@ export default {
   data() {
     return {
       data: dataInputLogin,
-      isCharacter: false,
       userInfo: {
         username: "",
         password: "",
@@ -43,45 +47,29 @@ export default {
     };
   },
   methods: {
-    handleChangeInput($event, id) {
-      console.log(id, $event);
-      //   this.userInfo = {
-      //     ...this.userInfo,
-      //     // [id]: e.target.value,
-      //   };
+    handleSubmit(e) {
+      e.preventDefault();
+      console.log(this.userInfo);
     },
-    // renderInput() {
-    //   return dataInputLogin.map(({ type, name, id, required }) => {
-    //     const data = {
-    //       id,
-    //       type,
-    //       name,
-    //       required,
-    //       value: this.userInfo[id] || "",
-    //       onchange: this.handleChangeInput,
-    //     };
-
-    //     return (
-    //       <div class="user-box">
-    //         <BaseInput {...data} />
-    //       </div>
-    //     );
-    //   });
-    // },
+    handleChangeInput(id, e) {
+      this.userInfo = {
+        ...this.userInfo,
+        [id]: e.target.value,
+      };
+    },
   },
 };
 </script>
 
 <style lang="scss">
 @import "../../../assets/sass/abstracts/_variables.scss";
-html {
-  height: 100%;
-}
 
-body {
+.login-box__wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
   background: linear-gradient($hover__color--primary, $hover__color--secondary);
 }
 
@@ -96,83 +84,146 @@ body {
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
-}
 
-.login-box h2 {
-  margin: 0 0 30px;
-  padding: 0;
-  color: $white;
-  text-align: center;
-}
+  h2 {
+    margin: 0 0 30px;
+    padding: 0;
+    color: $white;
+    text-align: center;
+  }
 
-.login-box .user-box .input-text {
-  position: relative;
-}
+  form {
+    .user-box {
+      .input-text {
+        position: relative;
 
-.login-box .user-box .input-text input {
-  width: 100%;
-  padding: 10px 0;
-  font-size: 16px;
-  color: $white;
-  margin-bottom: 30px;
-  border: none;
-  border-bottom: 1px solid $white;
-  outline: none;
-  background: transparent;
-}
-.login-box .user-box .input-text label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 10px 0;
-  font-size: 16px;
-  color: $white;
-  pointer-events: none;
-  transition: 0.5s;
-}
+        input {
+          width: 100%;
+          padding: 10px 0;
+          font-size: 16px;
+          color: $white;
+          margin-bottom: 30px;
+          border: none;
+          border-bottom: 1px solid $white;
+          outline: none;
+          background: transparent;
+        }
 
-.login-box .user-box .input-text input:focus ~ label {
-  top: -20px;
-  left: 0;
-  color: $hover__color--secondary;
-  font-size: 12px;
-}
+        input:focus ~ label {
+          top: -20px;
+          left: 0;
+          color: $hover__color--secondary;
+          font-size: 12px;
+        }
 
-.login-box form a {
-  position: relative;
-  display: inline-block;
-  padding: 10px 20px;
-  color: $hover__color--secondary;
-  font-size: 16px;
-  text-decoration: none;
-  text-transform: uppercase;
-  overflow: hidden;
-  transition: 0.5s;
-  margin-top: 40px;
-  letter-spacing: 4px;
-}
+        label {
+          position: absolute;
+          top: 0;
+          left: 0;
+          padding: 10px 0;
+          font-size: 16px;
+          color: $white;
+          pointer-events: none;
+          transition: 0.5s;
+        }
+      }
 
-.login-box a:hover {
-  background: $hover__color--secondary;
-  color: $text__color--darker;
-  border-radius: 5px;
-  box-shadow: 0 0 5px $hover__color--secondary,
-    0 0 25px $hover__color--secondary, 0 0 50px $hover__color--secondary,
-    0 0 100px $hover__color--secondary;
-}
+      .input-text.is-edit {
+        input ~ label {
+          top: -20px;
+          left: 0;
+          color: $hover__color--secondary;
+          font-size: 12px;
+        }
+      }
+    }
 
-.login-box a span {
-  position: absolute;
-  display: block;
-}
+    button {
+      position: relative;
+      display: inline-block;
+      padding: 10px 20px;
+      color: $hover__color--secondary;
+      font-size: 16px;
+      text-decoration: none;
+      text-transform: uppercase;
+      overflow: hidden;
+      transition: 0.5s;
+      margin-top: 40px;
+      letter-spacing: 4px;
+      border: none;
+      outline: none;
+      border-radius: 4px;
 
-.login-box a span:nth-child(1) {
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, $hover__color--secondary);
-  animation: btn-anim1 1s linear infinite;
+      &:hover {
+        background: $hover__color--secondary;
+        color: $text__color--darker;
+        border-radius: 5px;
+        box-shadow: 0 0 5px $hover__color--secondary,
+          0 0 25px $hover__color--secondary, 0 0 50px $hover__color--secondary,
+          0 0 100px $hover__color--secondary;
+      }
+
+      span {
+        position: absolute;
+        display: block;
+      }
+
+      span:nth-child(1) {
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          $hover__color--secondary
+        );
+        animation: btn-anim1 1s linear infinite;
+      }
+
+      span:nth-child(2) {
+        top: -100%;
+        right: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(
+          180deg,
+          transparent,
+          $hover__color--secondary
+        );
+        animation: btn-anim2 1s linear infinite;
+        animation-delay: 0.25s;
+      }
+
+      span:nth-child(3) {
+        bottom: 0;
+        right: -100%;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(
+          270deg,
+          transparent,
+          $hover__color--secondary
+        );
+        animation: btn-anim3 1s linear infinite;
+        animation-delay: 0.5s;
+      }
+
+      span:nth-child(4) {
+        bottom: -100%;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(
+          360deg,
+          transparent,
+          $hover__color--secondary
+        );
+        animation: btn-anim4 1s linear infinite;
+        animation-delay: 0.75s;
+      }
+    }
+  }
 }
 
 @keyframes btn-anim1 {
@@ -185,16 +236,6 @@ body {
   }
 }
 
-.login-box a span:nth-child(2) {
-  top: -100%;
-  right: 0;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(180deg, transparent, $hover__color--secondary);
-  animation: btn-anim2 1s linear infinite;
-  animation-delay: 0.25s;
-}
-
 @keyframes btn-anim2 {
   0% {
     top: -100%;
@@ -205,16 +246,6 @@ body {
   }
 }
 
-.login-box a span:nth-child(3) {
-  bottom: 0;
-  right: -100%;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(270deg, transparent, $hover__color--secondary);
-  animation: btn-anim3 1s linear infinite;
-  animation-delay: 0.5s;
-}
-
 @keyframes btn-anim3 {
   0% {
     right: -100%;
@@ -223,16 +254,6 @@ body {
   100% {
     right: 100%;
   }
-}
-
-.login-box a span:nth-child(4) {
-  bottom: -100%;
-  left: 0;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(360deg, transparent, $hover__color--secondary);
-  animation: btn-anim4 1s linear infinite;
-  animation-delay: 0.75s;
 }
 
 @keyframes btn-anim4 {
