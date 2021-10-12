@@ -54,7 +54,9 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
   props: ['productDetail'],
   computed: {
-    ...mapGetters(['quantity_default'])
+    ...mapGetters('products', {
+      quantity_default: 'quantity_default'
+    })
   },
   methods: {
     ...mapActions(['increaseQuantityProduct', 'decreaseQuantityProduct'])

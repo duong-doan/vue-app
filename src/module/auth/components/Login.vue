@@ -11,9 +11,10 @@
             :label="input.name"
             :type="input.type"
             :required="input.required"
-            :classname="
-              userInfo.username || userInfo.password !== '' ? 'is-edit' : ''
-            "
+            :classname="{
+              'is-edit': userInfo[input.id] !== '',
+            }"
+            :value="userInfo[input.id]"
             :onchange="handleChangeInput"
           />
         </div>
@@ -56,6 +57,7 @@ export default {
         ...this.userInfo,
         [id]: e.target.value,
       };
+      // console.log(this.userInfo);
     },
   },
 };
@@ -90,6 +92,7 @@ export default {
     padding: 0;
     color: $white;
     text-align: center;
+    font-size: 3rem;
   }
 
   form {
@@ -142,7 +145,7 @@ export default {
       position: relative;
       display: inline-block;
       padding: 10px 20px;
-      color: $hover__color--secondary;
+      color: $hover__color--primary;
       font-size: 16px;
       text-decoration: none;
       text-transform: uppercase;

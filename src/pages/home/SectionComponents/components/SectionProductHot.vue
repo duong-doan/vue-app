@@ -31,14 +31,18 @@ export default {
   created() {
     this.getDataProductsRequest()
   },
+  data() {
+    console.log(this.products)
+    return {}
+  },
   computed: {
-    ...mapGetters(['products']),
+    ...mapGetters('products', ['products']),
     productsRender () {
       return this.products.slice(0, 8)
     }
   },
   methods: {
-    ...mapActions(['getDataProductsRequest']),
+    ...mapActions('products', ['getDataProductsRequest']),
   }
 };
 </script>

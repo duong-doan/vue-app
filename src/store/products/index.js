@@ -4,6 +4,7 @@ import actions from './actions'
 import state from './state'
 
 const storeProducts = {
+    namespaced: true,
     state,
     getters,
     actions,

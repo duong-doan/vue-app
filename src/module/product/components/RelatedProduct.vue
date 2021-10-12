@@ -22,14 +22,16 @@ export default {
   components: {
     Product,
   },
+
   watch: {
     '$route.params.id'(id) {
+      console.log(this);
       this.getProductDetailRequest(id)
       this.progress()
     }
   },
   methods: {
-    ...mapActions(['getProductDetailRequest', 'progress']),
+    ...mapActions('products',['getProductDetailRequest', 'progress']),
   }
 };
 </script>

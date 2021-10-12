@@ -33,7 +33,10 @@ export default {
     Breadscrum
   },
   computed: {
-    ...mapGetters(['product_detail', 'isProgress']),
+    ...mapGetters('products', {
+      product_detail: 'product_detail',
+      isProgress: 'isProgress'
+    }),
     breadcrumb() {
       return [
         {
@@ -55,7 +58,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['progress', 'getProductDetailRequest']),
+    ...mapActions('products',['progress', 'getProductDetailRequest']),
   },
   created() {
     this.getProductDetailRequest(this.$route.params.id)
