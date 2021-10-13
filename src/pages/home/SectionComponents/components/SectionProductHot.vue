@@ -31,10 +31,6 @@ export default {
   created() {
     this.getDataProductsRequest()
   },
-  data() {
-    console.log(this.products)
-    return {}
-  },
   computed: {
     ...mapGetters('products', ['products']),
     productsRender () {

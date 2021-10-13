@@ -25,9 +25,9 @@ export default {
 
   watch: {
     '$route.params.id'(id) {
-      console.log(this);
       this.getProductDetailRequest(id)
       this.progress()
+      window.scrollTo(0,0)
     }
   },
   methods: {

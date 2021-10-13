@@ -22,7 +22,6 @@ const actions = {
         })
     },
     getProductDetailRequest({commit}, id) {
-        console.log('call api', id);
         products.getDetailProduct(id).then(data => {
             if(data) {
                 commit('getProductDetailSuccess', data)

@@ -11,20 +11,22 @@
             :label="input.name"
             :type="input.type"
             :required="input.required"
-            :classname="{
-              'is-edit': userInfo[input.id] !== '',
-            }"
             :value="userInfo[input.id]"
             :onchange="handleChangeInput"
+            :reverseLabel="true"
+            :isEdit="isEditInput"
           />
         </div>
-        <button type="submit">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          Submit
-        </button>
+        <div class="wrapped-btn">
+          <button type="submit">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Submit
+          </button>
+          <router-link to="/user/register">Create a new account</router-link>
+        </div>
       </form>
     </div>
   </div>
@@ -45,6 +47,7 @@ export default {
         username: "",
         password: "",
       },
+      isEditInput: false,
     };
   },
   methods: {
@@ -57,7 +60,9 @@ export default {
         ...this.userInfo,
         [id]: e.target.value,
       };
-      // console.log(this.userInfo);
+      this.userInfo[id] !== ""
+        ? (this.isEditInput = true)
+        : (this.isEditInput = false);
     },
   },
 };
@@ -141,89 +146,99 @@ export default {
       }
     }
 
-    button {
-      position: relative;
-      display: inline-block;
-      padding: 10px 20px;
-      color: $hover__color--primary;
-      font-size: 16px;
-      text-decoration: none;
-      text-transform: uppercase;
-      overflow: hidden;
-      transition: 0.5s;
-      margin-top: 40px;
-      letter-spacing: 4px;
-      border: none;
-      outline: none;
-      border-radius: 4px;
+    .wrapped-btn {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      margin-top: 20px;
+      button {
+        position: relative;
+        display: inline-block;
+        padding: 10px 20px;
+        color: $hover__color--primary;
+        font-size: 16px;
+        text-decoration: none;
+        text-transform: uppercase;
+        overflow: hidden;
+        transition: 0.5s;
+        letter-spacing: 4px;
+        border: none;
+        outline: none;
+        border-radius: 4px;
+        margin-bottom: 20px;
 
-      &:hover {
-        background: $hover__color--secondary;
-        color: $text__color--darker;
-        border-radius: 5px;
-        box-shadow: 0 0 5px $hover__color--secondary,
-          0 0 25px $hover__color--secondary, 0 0 50px $hover__color--secondary,
-          0 0 100px $hover__color--secondary;
+        &:hover {
+          background: $hover__color--secondary;
+          color: $text__color--darker;
+          border-radius: 5px;
+          box-shadow: 0 0 5px $hover__color--secondary,
+            0 0 25px $hover__color--secondary, 0 0 50px $hover__color--secondary,
+            0 0 100px $hover__color--secondary;
+        }
+
+        span {
+          position: absolute;
+          display: block;
+        }
+
+        span:nth-child(1) {
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 4px;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            $hover__color--secondary
+          );
+          animation: btn-anim1 1s linear infinite;
+        }
+
+        span:nth-child(2) {
+          top: -100%;
+          right: 0;
+          width: 4px;
+          height: 100%;
+          background: linear-gradient(
+            180deg,
+            transparent,
+            $hover__color--secondary
+          );
+          animation: btn-anim2 1s linear infinite;
+          animation-delay: 0.25s;
+        }
+
+        span:nth-child(3) {
+          bottom: 0;
+          right: -100%;
+          width: 100%;
+          height: 4px;
+          background: linear-gradient(
+            270deg,
+            transparent,
+            $hover__color--secondary
+          );
+          animation: btn-anim3 1s linear infinite;
+          animation-delay: 0.5s;
+        }
+
+        span:nth-child(4) {
+          bottom: -100%;
+          left: 0;
+          width: 4px;
+          height: 100%;
+          background: linear-gradient(
+            360deg,
+            transparent,
+            $hover__color--secondary
+          );
+          animation: btn-anim4 1s linear infinite;
+          animation-delay: 0.75s;
+        }
       }
 
-      span {
-        position: absolute;
-        display: block;
-      }
-
-      span:nth-child(1) {
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          $hover__color--secondary
-        );
-        animation: btn-anim1 1s linear infinite;
-      }
-
-      span:nth-child(2) {
-        top: -100%;
-        right: 0;
-        width: 4px;
-        height: 100%;
-        background: linear-gradient(
-          180deg,
-          transparent,
-          $hover__color--secondary
-        );
-        animation: btn-anim2 1s linear infinite;
-        animation-delay: 0.25s;
-      }
-
-      span:nth-child(3) {
-        bottom: 0;
-        right: -100%;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(
-          270deg,
-          transparent,
-          $hover__color--secondary
-        );
-        animation: btn-anim3 1s linear infinite;
-        animation-delay: 0.5s;
-      }
-
-      span:nth-child(4) {
-        bottom: -100%;
-        left: 0;
-        width: 4px;
-        height: 100%;
-        background: linear-gradient(
-          360deg,
-          transparent,
-          $hover__color--secondary
-        );
-        animation: btn-anim4 1s linear infinite;
-        animation-delay: 0.75s;
+      a {
+        color: $white;
       }
     }
   }
