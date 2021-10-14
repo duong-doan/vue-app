@@ -52,9 +52,6 @@ export default {
     handleChange(e) {
       this.onchange(this.id, e);
     },
-    // handleBlur() {
-    //   this.onblur(this.id);
-    // },
   },
 };
 </script>

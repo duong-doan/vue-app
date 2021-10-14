@@ -1,7 +1,7 @@
 <template>
   <div class="login-box__wrapper">
     <div class="login-box">
-      <h2>Sign in</h2>
+      <h2>Create account</h2>
       <form autocomplete="off" @submit="handleSubmit">
         <div class="user-box">
           <base-input
@@ -23,9 +23,13 @@
             <span></span>
             <span></span>
             <span></span>
-            SIGN IN
+            SIGN UP
           </button>
-          <router-link to="/user/register">Create a new account</router-link>
+          <div>
+            <router-link to="/user/login">Go to login</router-link>
+            <span style="margin: 0 8px">or</span>
+            <router-link to="/">Go to homepage</router-link>
+          </div>
         </div>
       </form>
     </div>
@@ -34,7 +38,7 @@
 
 <script>
 import BaseInput from "../../../components/BaseInput";
-import { dataInputLogin } from "../constants";
+import { dataInputRegister } from "../constants";
 
 export default {
   components: {
@@ -42,10 +46,11 @@ export default {
   },
   data() {
     return {
-      data: dataInputLogin,
+      data: dataInputRegister,
       userInfo: {
         username: "",
         password: "",
+        confirm_password: "",
       },
       isEditInput: false,
     };
@@ -65,7 +70,11 @@ export default {
   watch: {
     userInfo(value) {
       console.log(value);
-      if (value.username !== "" || value.password !== "") {
+      if (
+        value.username !== "" ||
+        value.password !== "" ||
+        value.confirm_password !== ""
+      ) {
         this.isEditInput = true;
       } else {
         this.isEditInput = false;
