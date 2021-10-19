@@ -3,10 +3,18 @@
     <div class="login-box">
       <h2>Sign in</h2>
       <form autocomplete="off" @submit="handleSubmit">
-        <div class="user-box">
+        <form-group
+          v-for="(input, index) in data"
+          :classname="[
+            'form-group__custom',
+            {
+              'is-edit': isEditInput,
+            },
+          ]"
+          :label="input.name"
+          :key="index"
+        >
           <base-input
-            v-for="input in data"
-            :key="input.id"
             :id="input.id"
             :label="input.name"
             :type="input.type"
@@ -16,7 +24,7 @@
             :reverseLabel="true"
             :isEdit="isEditInput"
           />
-        </div>
+        </form-group>
         <div class="wrapped-btn">
           <button type="submit">
             <span></span>
@@ -34,11 +42,13 @@
 
 <script>
 import BaseInput from "../../../components/BaseInput";
+import FormGroup from "../../../components/FormGroup";
 import { dataInputLogin } from "../constants";
 
 export default {
   components: {
     BaseInput,
+    FormGroup,
   },
   data() {
     return {
@@ -108,42 +118,38 @@ export default {
   }
 
   form {
-    .user-box {
-      .input-text {
-        position: relative;
-
-        input {
-          width: 100%;
-          padding: 10px 0;
-          font-size: 16px;
-          color: $white;
-          margin-bottom: 30px;
-          border: none;
-          border-bottom: 1px solid $white;
-          outline: none;
-          background: transparent;
-        }
-
-        input:focus ~ label {
+    .form-group__custom {
+      position: relative;
+      flex-direction: column-reverse;
+      input {
+        width: 100%;
+        padding: 10px 0;
+        font-size: 16px;
+        color: $white;
+        margin-bottom: 30px;
+        border: none;
+        border-bottom: 1px solid $white;
+        outline: none;
+        background: transparent;
+        &:focus ~ label {
           top: -20px;
           left: 0;
           color: $hover__color--secondary;
           font-size: 12px;
         }
-
-        label {
-          position: absolute;
-          top: 0;
-          left: 0;
-          padding: 10px 0;
-          font-size: 16px;
-          color: $white;
-          pointer-events: none;
-          transition: 0.5s;
-        }
+      }
+      label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 10px 0;
+        font-size: 16px;
+        color: $white;
+        pointer-events: none;
+        transition: 0.5s;
       }
 
-      .input-text.is-edit {
+      &.is-edit {
         input ~ label {
           top: -20px;
           left: 0;
@@ -173,8 +179,11 @@ export default {
         outline: none;
         border-radius: 4px;
         margin-bottom: 20px;
+        background: transparent;
+        border: 1px solid;
 
         &:hover {
+          border: 1px solid white;
           background: $hover__color--secondary;
           color: $text__color--darker;
           border-radius: 5px;
