@@ -33,7 +33,11 @@
             <span></span>
             SIGN IN
           </button>
-          <router-link to="/user/register">Create a new account</router-link>
+          <div>
+            <router-link to="/user/register">Create a new account</router-link>
+            <span>or</span>
+            <router-link to="/">Go to homepage</router-link>
+          </div>
         </div>
       </form>
     </div>
@@ -43,6 +47,8 @@
 <script>
 import BaseInput from "../../../components/BaseInput";
 import FormGroup from "../../../components/FormGroup";
+import Validate from "../../../utils/validate";
+import { VALIDATION_RULES } from "../../../utils/constants";
 import { dataInputLogin } from "../constants";
 
 export default {
@@ -57,13 +63,17 @@ export default {
         username: "",
         password: "",
       },
+      errors: {
+        username: "",
+        password: "",
+      },
       isEditInput: false,
     };
   },
   methods: {
     handleSubmit(e) {
       e.preventDefault();
-      console.log(this.userInfo);
+      console.log(this.checkValidEmail("abc@gmail"));
     },
     handleChangeInput(id, e) {
       this.userInfo = {
@@ -71,10 +81,17 @@ export default {
         [id]: e.target.value,
       };
     },
+    checkValidEmail(email) {
+      const { EMAIL } = VALIDATION_RULES;
+      const validation = {
+        name: "Email",
+        rule: `${EMAIL}`,
+      };
+      return Validate.checkValidate(email, validation);
+    },
   },
   watch: {
     userInfo(value) {
-      console.log(value);
       if (value.username !== "" || value.password !== "") {
         this.isEditInput = true;
       } else {
@@ -108,6 +125,7 @@ export default {
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
+  transition: 0.2s all;
 
   h2 {
     margin: 0 0 30px;
@@ -180,10 +198,8 @@ export default {
         border-radius: 4px;
         margin-bottom: 20px;
         background: transparent;
-        border: 1px solid;
 
         &:hover {
-          border: 1px solid white;
           background: $hover__color--secondary;
           color: $text__color--darker;
           border-radius: 5px;
@@ -250,6 +266,12 @@ export default {
           );
           animation: btn-anim4 1s linear infinite;
           animation-delay: 0.75s;
+        }
+      }
+
+      div {
+        span {
+          margin: 0 8px;
         }
       }
 

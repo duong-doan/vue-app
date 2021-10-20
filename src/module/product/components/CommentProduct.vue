@@ -33,35 +33,32 @@
             @rating-selected="setRating"
           ></star-rating>
 
-          <div class="form-group">
-            <label for="feedback">YOUR REVIEW *</label>
+          <form-group classname="form-group__custom" label="YOUR REVIEW *">
             <textarea
               name="feedback"
               rows="4"
               cols="36"
               placeholder="Feedback..."
             />
-          </div>
+          </form-group>
 
-          <div class="form-group">
+          <form-group classname="form-group__custom" label="NAME *">
             <base-input
               name="name"
               type="text"
               placeholder="Name..."
-              label="NAME *"
               classname="b-input-comment"
             />
-          </div>
+          </form-group>
 
-          <div class="form-group">
+          <form-group label="EMAIL *" classname="form-group__custom">
             <base-input
               name="email"
               type="text"
               placeholder="Email..."
-              label="EMAIL *"
               classname="b-input-comment"
             />
-          </div>
+          </form-group>
 
           <div class="form-group checkbox-save">
             <base-input-checkbox
@@ -82,6 +79,7 @@
 
 <script>
 import { TITLE_TAB_INFO_USER_PRODUCT_DETAIL } from "../../../utils/constants";
+import FormGroup from "../../../components/FormGroup";
 import BaseInput from "../../../components/BaseInput";
 import BaseInputCheckbox from "../../../components/BaseInputCheckbox";
 import StarRating from "vue-star-rating";
@@ -91,6 +89,7 @@ export default {
     StarRating,
     BaseInput,
     BaseInputCheckbox,
+    FormGroup,
   },
   data() {
     return {

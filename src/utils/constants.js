@@ -88,12 +88,22 @@ export const DATA_BLOG = [
 export const TITLE_TAB_INFO_USER_PRODUCT_DETAIL = [
   {
     id: 1,
-    title: 'DESCRIPTION',
-    active: true
+    title: "DESCRIPTION",
+    active: true,
   },
   {
     id: 2,
-    title: 'REVIEWS',
-    active: false
+    title: "REVIEWS",
+    active: false,
   },
-]
+];
+
+export const VALIDATION_RULES = {
+  REQUIRED: "REQUIRED",
+  MIN: "MIN",
+  MAX: "MAX",
+  NAME: "NAME",
+  EMAIL: "EMAIL",
+  PASSWORD: "PASSWORD",
+  CONFIRM: "CONFIRM",
+};
