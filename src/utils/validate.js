@@ -1,26 +1,28 @@
 import { VALIDATION_RULES } from "./constants";
-const { EMAIL, PASSWORD, MIN, MAX, REQUIRED, CONFIRM } = VALIDATION_RULES;
+const { 
+  EMAIL,
+  // PASSWORD,
+  MIN, MAX, REQUIRED,
+  CONFIRM 
+} = VALIDATION_RULES;
 
 const isObject = (value) => {
   return typeof value === "object" && value !== null;
 };
 
 const Validate = {
-  checkValidate(value, validation, options = {}) {
+  checkValidate(value, validation) {
     const rules = validation.rule.split("|");
     let error = "";
-    const { isObjectDataFormat } = options;
     const returnData = ({ rule, errorMes }) => {
-      if (isObjectDataFormat) {
-        return {
-          valid: !errorMes,
-          rule,
-          errorMes,
-        };
-      }
+      return {
+        valid: !errorMes,
+        rule,
+        errorMes,
+      };
     };
 
-    for (let i = 0; i < rules.length; i++) {
+    for (let i = 0; i < rules.length; i++ ) {
       const splitRule = rules[i].split(":");
       const rule = {
         name: splitRule[0],
@@ -67,12 +69,12 @@ const Validate = {
       }
 
       // password
-      if (rule.name === PASSWORD) {
-        error = this.password(value);
-        if (error) {
-          return returnData({ rule: rule.name, errorMes: error });
-        }
-      }
+      // if (rule.name === PASSWORD) {
+      //   error = this.password(value);
+      //   if (error) {
+      //     return returnData({ rule: rule.name, errorMes: error });
+      //   }
+      // }
 
       // confirm
       if (rule.name === CONFIRM) {
@@ -113,7 +115,7 @@ const Validate = {
     return "";
   },
   password(value) {
-    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/;
     if (regex.test(value)) {
       return "";
     }

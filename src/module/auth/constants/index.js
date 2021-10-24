@@ -1,7 +1,7 @@
 export const dataInputLogin = [
   {
-    id: "username",
-    name: "Username",
+    id: "email",
+    name: "Email",
     type: "text",
     required: true,
   },

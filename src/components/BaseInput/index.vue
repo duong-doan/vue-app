@@ -1,7 +1,6 @@
 <template>
   <input
     :id="id"
-    :required="required"
     :type="type ? type : 'text'"
     :name="name"
     :value="value"

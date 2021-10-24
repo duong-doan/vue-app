@@ -13,6 +13,7 @@
           ]"
           :label="input.name"
           :key="index"
+          :errorText="errors[input.id]"
         >
           <base-input
             :id="input.id"
@@ -60,11 +61,11 @@ export default {
     return {
       data: dataInputLogin,
       userInfo: {
-        username: "",
+        email: "",
         password: "",
       },
       errors: {
-        username: "",
+        email: "",
         password: "",
       },
       isEditInput: false,
@@ -73,22 +74,55 @@ export default {
   methods: {
     handleSubmit(e) {
       e.preventDefault();
-      console.log(this.checkValidEmail("abc@gmail"));
+      if(this.validField()) {
+        console.log("valid")
+      }
+      console.log("submit", this.errors)
+
     },
     handleChangeInput(id, e) {
       this.userInfo = {
         ...this.userInfo,
         [id]: e.target.value,
       };
+      const errorList = {...this.errors, [id]: ""}
+      if(this.errors[id]) {
+        this.errors = {
+          ...errorList
+        }
+      }
+      console.log("change", this.errors)
     },
-    checkValidEmail(email) {
-      const { EMAIL } = VALIDATION_RULES;
+    checkValidEmail(value) {
+      const { EMAIL, REQUIRED, MIN } = VALIDATION_RULES;
       const validation = {
         name: "Email",
-        rule: `${EMAIL}`,
+        rule: `${EMAIL}|${MIN}`,
+        message: {
+          [REQUIRED]: "Email is required",
+          [MIN]: ""
+        }
       };
-      return Validate.checkValidate(email, validation);
+      return Validate.checkValidate(value, validation);
     },
+    checkValidPassword(value) {
+      const { PASSWORD, REQUIRED, MIN, MAX } = VALIDATION_RULES;
+      const validation = {
+        name: "Password",
+        rule: `${PASSWORD}|${REQUIRED}|${MIN}:8|${MAX}:30`,
+      };
+      return Validate.checkValidate(value, validation);
+    },
+    validField() {
+      let errorList = {}
+      const { email, password} = this.errors
+      errorList.email = this.checkValidEmail(email).errorMes
+      errorList.password = this.checkValidPassword(password).errorMes
+      this.errors = {
+        ...errorList
+      }
+      return !Object.keys(errorList).some(key => errorList[key])
+    }
   },
   watch: {
     userInfo(value) {

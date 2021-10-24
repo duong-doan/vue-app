@@ -1,7 +1,7 @@
 <template>
   <div :class="['form-group', classname]">
     <template v-if="errorText">
-      <span class="form-group__error">{{ errorText }}abc</span>
+      <span class="form-group__error">{{ errorText }}</span>
     </template>
     <slot></slot>
     <label class="form-group__label">
