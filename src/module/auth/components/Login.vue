@@ -76,57 +76,61 @@ export default {
       e.preventDefault();
       if(this.validField()) {
         console.log("valid")
+        this.$router.push("/")
       }
-      console.log("submit", this.errors)
-
     },
     handleChangeInput(id, e) {
       this.userInfo = {
         ...this.userInfo,
         [id]: e.target.value,
       };
-      const errorList = {...this.errors, [id]: ""}
       if(this.errors[id]) {
+        const errorList = {...this.errors, [id]: ""}
         this.errors = {
-          ...errorList
+          ...this.errors,
+          ...errorList,
         }
       }
-      console.log("change", this.errors)
     },
     checkValidEmail(value) {
-      const { EMAIL, REQUIRED, MIN } = VALIDATION_RULES;
+      const { EMAIL, REQUIRED } = VALIDATION_RULES;
       const validation = {
         name: "Email",
-        rule: `${EMAIL}|${MIN}`,
-        message: {
-          [REQUIRED]: "Email is required",
-          [MIN]: ""
+        rule: `${REQUIRED}|${EMAIL}`,
+        messages: {
+          [REQUIRED]: "",
         }
       };
       return Validate.checkValidate(value, validation);
     },
     checkValidPassword(value) {
-      const { PASSWORD, REQUIRED, MIN, MAX } = VALIDATION_RULES;
+      const { REQUIRED, MIN, MAX } = VALIDATION_RULES;
       const validation = {
         name: "Password",
-        rule: `${PASSWORD}|${REQUIRED}|${MIN}:8|${MAX}:30`,
+        rule: `${REQUIRED}|${MIN}:8|${MAX}:30`,
+        messages: {
+          [REQUIRED]: "",
+          [MIN]: "",
+          [MAX]: ""
+        }
       };
       return Validate.checkValidate(value, validation);
     },
     validField() {
       let errorList = {}
-      const { email, password} = this.errors
-      errorList.email = this.checkValidEmail(email).errorMes
-      errorList.password = this.checkValidPassword(password).errorMes
+      const { email, password } = this.userInfo
+      errorList.email = this.checkValidEmail(email)?.errorMes
+      errorList.password = this.checkValidPassword(password)?.errorMes
       this.errors = {
         ...errorList
       }
+      console.log(errorList)
       return !Object.keys(errorList).some(key => errorList[key])
     }
   },
   watch: {
     userInfo(value) {
-      if (value.username !== "" || value.password !== "") {
+      if (value.email !== "" || value.password !== "") {
         this.isEditInput = true;
       } else {
         this.isEditInput = false;

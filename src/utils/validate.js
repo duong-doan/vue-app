@@ -1,7 +1,7 @@
 import { VALIDATION_RULES } from "./constants";
 const { 
   EMAIL,
-  // PASSWORD,
+  PASSWORD,
   MIN, MAX, REQUIRED,
   CONFIRM 
 } = VALIDATION_RULES;
@@ -69,16 +69,16 @@ const Validate = {
       }
 
       // password
-      // if (rule.name === PASSWORD) {
-      //   error = this.password(value);
-      //   if (error) {
-      //     return returnData({ rule: rule.name, errorMes: error });
-      //   }
-      // }
+      if (rule.name === PASSWORD) {
+        error = this.password(value);
+        if (error) {
+          return returnData({ rule: rule.name, errorMes: error });
+        }
+      }
 
       // confirm
       if (rule.name === CONFIRM) {
-        const { value: compareValue } = rule;
+        const {value: compareValue} = rule
         error = this.confirm(value, compareValue);
         if (error) {
           return returnData({ rule: rule.name, errorMes: error });
@@ -86,9 +86,9 @@ const Validate = {
       }
     }
   },
-  required({ messages, name = "field" }, value) {
+  required({ messages, name }, value) {
     const isEmptyObject = isObject(value) && !Object.keys(value).length;
-    if (isEmptyObject) {
+    if (isEmptyObject || !value) {
       if (messages && messages[REQUIRED]) {
         return messages[REQUIRED];
       }
@@ -96,7 +96,7 @@ const Validate = {
     }
     return "";
   },
-  min({ messages, name = "field" }, value, min, max) {
+  min({ messages, name }, value, min, max) {
     if (value.length < min) {
       if (messages && messages[MIN]) {
         return messages[MIN];
@@ -105,7 +105,7 @@ const Validate = {
     }
     return "";
   },
-  max({ messages, name = "field" }, value, min, max) {
+  max({ messages, name }, value, min, max) {
     if (value.length > min) {
       if (messages && messages[MAX]) {
         return messages[MAX];
@@ -115,7 +115,7 @@ const Validate = {
     return "";
   },
   password(value) {
-    const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/;
+    const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,20}$/;
     if (regex.test(value)) {
       return "";
     }
@@ -132,6 +132,7 @@ const Validate = {
     if (value !== compareValue) {
       return "Confirm password not the same password";
     }
+    return ""
   },
 };
 
