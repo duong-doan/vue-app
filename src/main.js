@@ -7,9 +7,11 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import router from "./router";
 import VueAgile from "vue-agile";
 import store from "./store/index";
+import Toasted from 'vue-toasted';
 
 Vue.config.productionTip = false;
 Vue.use(VueAgile);
+Vue.use(Toasted)
 AOS.init();
 
 new Vue({

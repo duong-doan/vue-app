@@ -49,6 +49,7 @@
 import BaseInput from "../../../components/BaseInput";
 import FormGroup from "../../../components/FormGroup";
 import Validate from "../../../utils/validate";
+import {toastMessage} from "../../../utils/notification"
 import { VALIDATION_RULES } from "../../../utils/constants";
 import { dataInputLogin } from "../constants";
 
@@ -77,6 +78,10 @@ export default {
       if(this.validField()) {
         console.log("valid")
         this.$router.push("/")
+      } else {
+        toastMessage("Opp..!", {
+          type: 'error'
+        })
       }
     },
     handleChangeInput(id, e) {
