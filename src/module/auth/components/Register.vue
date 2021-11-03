@@ -51,6 +51,8 @@ import FormGroup from "../../../components/FormGroup";
 import { VALIDATION_RULES } from '../../../utils/constants' 
 import Validate from '../../../utils/validate'
 import { dataInputRegister } from "../constants";
+import LocalStorage from '../../../utils/localStorage'
+import { toastMessage } from '../../../utils/notification';
 
 export default {
   components: {
@@ -61,12 +63,12 @@ export default {
     return {
       data: dataInputRegister,
       userInfo: {
-        username: "",
+        email: "",
         password: "",
         confirm_password: "",
       },
       errors: {
-        username: "",
+        email: "",
         password: "",
         confirm_password: "",
       },
@@ -77,8 +79,24 @@ export default {
     handleSubmit(e) {
       e.preventDefault();
       if(this.validField()) {
-        console.log("valid")
-        this.$router.push("/user/login")
+        const { getLocalStorage, setLocalStorage } = LocalStorage()
+        
+        let usersLocalStg = getLocalStorage("users")
+        if(!usersLocalStg) usersLocalStg = []
+
+        const userItem = {
+          email: this.userInfo.email,
+          password: this.userInfo.password
+        }
+
+        usersLocalStg.push(userItem)
+        setLocalStorage("users", usersLocalStg)
+
+        const handleClickToast = () => {
+          this.$router.push("/user/login")
+        }
+
+        toastMessage("success", {}, handleClickToast)
       }
     },
     handleChangeInput(id, e) {
@@ -96,8 +114,8 @@ export default {
     },
     validField() {
       const errorList = {}
-      const {username, password, confirm_password} = this.userInfo
-      errorList.username = this.checkValidUsername(username)?.errorMes
+      const {email, password, confirm_password} = this.userInfo
+      errorList.email = this.checkValidEmail(email)?.errorMes
       errorList.password = this.checkValidPassword(password)?.errorMes
       errorList.confirm_password = this.checkValidConfirmPassword(confirm_password)?.errorMes
       this.errors = {
@@ -105,11 +123,11 @@ export default {
       }
       return !Object.keys(errorList).some(key => errorList[key])
     },
-    checkValidUsername(value) {
-      const { REQUIRED } = VALIDATION_RULES 
+    checkValidEmail(value) {
+      const { REQUIRED, EMAIL } = VALIDATION_RULES 
       const validation = {
-        name: "Username",
-        rule: `${REQUIRED}`,
+        name: "Email",
+        rule: `${REQUIRED}|${EMAIL}`,
         messages: {
           [REQUIRED]: ""
         }
@@ -145,7 +163,7 @@ export default {
   watch: {
     userInfo(value) {
       if (
-        value.username !== "" ||
+        value.email !== "" ||
         value.password !== "" ||
         value.confirm_password !== ""
       ) {
@@ -154,6 +172,6 @@ export default {
         this.isEditInput = false;
       }
     },
-  },
+  }
 };
 </script>

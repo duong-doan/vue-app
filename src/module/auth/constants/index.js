@@ -15,8 +15,8 @@ export const dataInputLogin = [
 
 export const dataInputRegister = [
   {
-    id: "username",
-    name: "Username",
+    id: "email",
+    name: "Email",
     type: "text",
     required: true,
   },
