@@ -1,4 +1,4 @@
-const LocalStorage = () => {
+const useLocalStorage = () => {
     const getLocalStorage = (name) => {
         return JSON.parse(localStorage.getItem(name))
     }
@@ -13,4 +13,4 @@ const LocalStorage = () => {
     }
 }
 
-export default LocalStorage
+export default useLocalStorage

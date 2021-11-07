@@ -52,6 +52,7 @@ import Validate from "../../../utils/validate";
 // import {toastMessage} from "../../../utils/notification"
 import { VALIDATION_RULES } from "../../../utils/constants";
 import { dataInputLogin } from "../constants";
+import { mapActions } from 'vuex';
 
 export default {
   components: {
@@ -73,11 +74,12 @@ export default {
     };
   },
   methods: {
+    ...mapActions('auth', ['getUserRequest']),
     handleSubmit(e) {
       e.preventDefault();
       if(this.validField()) {
-        console.log("valid")
-        this.$router.push("/")
+        this.getUserRequest()
+        // this.$router.push("/")
       }
     },
     handleChangeInput(id, e) {
@@ -135,7 +137,7 @@ export default {
       } else {
         this.isEditInput = false;
       }
-    },
+    }
   },
 };
 </script>
@@ -223,7 +225,7 @@ export default {
       button {
         position: relative;
         display: inline-block;
-        padding: 10px 20px;
+        padding: 10px 40px;
         color: $hover__color--primary;
         font-size: 16px;
         text-decoration: none;

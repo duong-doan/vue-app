@@ -32,7 +32,7 @@
             <span></span>
             <span></span>
             <span></span>
-            SIGN UP
+            <div v-if="isProgressState" class="loader-small"></div> SIGN UP
           </button>
           <div>
             <router-link to="/user/login">Go to login</router-link>
@@ -51,8 +51,8 @@ import FormGroup from "../../../components/FormGroup";
 import { VALIDATION_RULES } from '../../../utils/constants' 
 import Validate from '../../../utils/validate'
 import { dataInputRegister } from "../constants";
-import LocalStorage from '../../../utils/localStorage'
 import { toastMessage } from '../../../utils/notification';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -75,28 +75,24 @@ export default {
       isEditInput: false,
     };
   },
+  computed: {
+    ...mapGetters('auth', ['isProgress', 'errorsRegister']),
+    isProgressState() {
+      return this.isProgress
+    },
+    errorsRegister() {
+      return this.errorsRegister
+    }
+  },
   methods: {
+    ...mapActions('auth', ['addNewUserRequest', 'progress']),
     handleSubmit(e) {
       e.preventDefault();
       if(this.validField()) {
-        const { getLocalStorage, setLocalStorage } = LocalStorage()
+        this.progress()
+        const {email, password} = this.userInfo
+        this.addNewUserRequest({email, password})
         
-        let usersLocalStg = getLocalStorage("users")
-        if(!usersLocalStg) usersLocalStg = []
-
-        const userItem = {
-          email: this.userInfo.email,
-          password: this.userInfo.password
-        }
-
-        usersLocalStg.push(userItem)
-        setLocalStorage("users", usersLocalStg)
-
-        const handleClickToast = () => {
-          this.$router.push("/user/login")
-        }
-
-        toastMessage("success", {}, handleClickToast)
       }
     },
     handleChangeInput(id, e) {
@@ -172,6 +168,24 @@ export default {
         this.isEditInput = false;
       }
     },
-  }
+    isProgressState (value) {
+      const handleClickToast = () => {
+        this.$router.push("/user/login")
+      }
+      if(!value) {
+        toastMessage(this.errorsRegister?.register, {}, handleClickToast)
+      }
+    }
+  },
 };
 </script>
+
+<style lang="scss" scoped>
+  .loader-small {
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 10px;
+  }
+</style>

@@ -10,8 +10,7 @@
         <div class="loader" v-if="isProgress">Loading...</div>
         <DetailProduct v-else :productDetail="product_detail" />
         <CommentProduct />
-        <div class="loader" v-if="isProgress">Loading...</div>
-        <RelatedProduct v-else :relatedProducts="getRelatedProducts" />
+        <RelatedProduct :relatedProducts="getRelatedProducts" />
       </div>
     </div>
   </div>
@@ -23,6 +22,7 @@ import CommentProduct from "../components/CommentProduct.vue";
 import RelatedProduct from "../components/RelatedProduct.vue";
 import Breadscrum from '../../../components/Breadscrum'
 import { mapActions, mapGetters } from 'vuex';
+import useLocalStorage from '../../../utils/useLocalStorage'
 
 export default {
   props: [],
@@ -51,18 +51,25 @@ export default {
       ]
     },
     getRelatedProducts() {
-      return JSON.parse(localStorage.getItem('related_products')) 
+      const { getLocalStorage } = useLocalStorage()
+      return getLocalStorage("related_products")
     },
     productId() {
       return this.$route.params.id
     }
   },
   methods: {
-    ...mapActions('products',['progress', 'getProductDetailRequest']),
+    ...mapActions('products', ['progress', 'getProductDetailRequest']),
   },
   created() {
-    this.getProductDetailRequest(this.$route.params.id)
     this.progress()
+    this.getProductDetailRequest(this.productId)
+  },
+  watch: {
+    productId (id) {
+      this.progress()
+      this.getProductDetailRequest(id)
+    } 
   }
 };
 </script>

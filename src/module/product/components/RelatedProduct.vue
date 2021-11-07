@@ -13,8 +13,8 @@
     </div>
   </div>
 </template>
+
 <script>
-import { mapActions } from 'vuex';
 import Product from "../../../components/Product/index.vue";
 
 export default {
@@ -22,16 +22,5 @@ export default {
   components: {
     Product,
   },
-
-  watch: {
-    '$route.params.id'(id) {
-      this.getProductDetailRequest(id)
-      this.progress()
-      window.scrollTo(0,0)
-    }
-  },
-  methods: {
-    ...mapActions('products',['getProductDetailRequest', 'progress']),
-  }
 };
 </script>
