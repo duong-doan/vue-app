@@ -80,19 +80,18 @@ export default {
     isProgressState() {
       return this.isProgress
     },
-    errorsRegister() {
+    getErrorsRegister() {
       return this.errorsRegister
     }
   },
   methods: {
     ...mapActions('auth', ['addNewUserRequest', 'progress']),
-    handleSubmit(e) {
+    async handleSubmit(e) {
       e.preventDefault();
       if(this.validField()) {
         this.progress()
         const {email, password} = this.userInfo
-        this.addNewUserRequest({email, password})
-        
+        await this.addNewUserRequest({email, password})
       }
     },
     handleChangeInput(id, e) {
@@ -173,7 +172,9 @@ export default {
         this.$router.push("/user/login")
       }
       if(!value) {
-        toastMessage(this.errorsRegister?.register, {}, handleClickToast)
+        toastMessage(this.errorsRegister?.register, {}, () => {})
+      } else {
+        toastMessage("Create new account success !!", handleClickToast)
       }
     }
   },

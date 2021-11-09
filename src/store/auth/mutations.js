@@ -6,8 +6,10 @@ const mutations = {
         state.isProgress = false
     },
     addNewUserFail(state, error) {
+        console.log("error", error)
         state.isProgress = true
         state.errors.register = error
+        console.log(state)
     }
 }
 

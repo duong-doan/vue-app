@@ -1,8 +1,8 @@
 import * as authApi from '../../api/auth'
 import {map} from 'lodash'
-// import {ERRORS_REGISTER} from '../../utils/constants'
+import {ERRORS_REGISTER} from '../../utils/constants'
 
-// const {EMAIL_EXISTS} = ERRORS_REGISTER
+const {EMAIL_EXISTS} = ERRORS_REGISTER
 
 const actions = {
     progress({commit}) {
@@ -10,22 +10,29 @@ const actions = {
     },
     async addNewUserRequest({commit}, {email, password}) {
         const dataUsers = await authApi.getUserFromDB()
-        console.log("before compare")
+        let isSame = false;
         if(dataUsers) {
-            console.log('compare')
             map(dataUsers, (user) => {
-                if(user.email === email) return
-            })
-        }
-        console.log("after compare success")
-        await authApi.addNewUserToDB({email, password})
-            .then(res => {
-                if (res.data) {
-                    commit('addNewUserSuccess')
+                if(user.email === email) {
+                    isSame = true
                 } else {
-                    commit('addNewUserFail', "")
+                    isSame = false
                 }
             })
+        }
+        if(!isSame) {
+            await authApi.addNewUserToDB({email, password})
+                .then(res => {
+                    if (res.data) {
+                        commit('addNewUserSuccess')
+                    } else {
+                        commit('addNewUserFail', "")
+                    }
+                })
+        } else {
+            commit('addNewUserFail', EMAIL_EXISTS)
+            commit('addNewUserSuccess')
+        }
 
     },
     getUserRequest() {
