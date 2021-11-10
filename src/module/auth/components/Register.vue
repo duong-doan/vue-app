@@ -76,12 +76,15 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('auth', ['isProgress', 'errorsRegister']),
+    ...mapGetters('auth', ['isProgress', 'errorsRegister', "isRegisterSuccess"]),
     isProgressState() {
       return this.isProgress
     },
     getErrorsRegister() {
       return this.errorsRegister
+    },
+    isRegisterSuccessState() {
+      return this.isRegisterSuccess
     }
   },
   methods: {
@@ -92,6 +95,14 @@ export default {
         this.progress()
         const {email, password} = this.userInfo
         await this.addNewUserRequest({email, password})
+        const handleClickToast = () => {
+          this.$router.push("/user/login")
+        }
+        if(this.isRegisterSuccessState) {
+          await toastMessage("Create new account success !!", {}, handleClickToast)
+        } else {
+          await toastMessage(this.errorsRegister?.register, {}, () => {})
+        }
       }
     },
     handleChangeInput(id, e) {
@@ -165,16 +176,6 @@ export default {
         this.isEditInput = true;
       } else {
         this.isEditInput = false;
-      }
-    },
-    isProgressState (value) {
-      const handleClickToast = () => {
-        this.$router.push("/user/login")
-      }
-      if(!value) {
-        toastMessage(this.errorsRegister?.register, {}, () => {})
-      } else {
-        toastMessage("Create new account success !!", handleClickToast)
       }
     }
   },

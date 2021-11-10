@@ -1,16 +1,17 @@
 const mutations = {
-    progress(state) {
-        state.isProgress = true
-    },
-    addNewUserSuccess(state) {
-        state.isProgress = false
-    },
-    addNewUserFail(state, error) {
-        console.log("error", error)
-        state.isProgress = true
-        state.errors.register = error
-        console.log(state)
-    }
-}
+  progress(state) {
+    state.isProgress = true;
+  },
+  addNewUserSuccess(state) {
+    state.isProgress = false;
+    state.isRegisterSuccess = true;
+    state.errors = {};
+  },
+  addNewUserFail(state, error) {
+    state.isProgress = false;
+    state.isRegisterSuccess = false;
+    state.errors.register = error;
+  },
+};
 
-export default mutations
+export default mutations;
