@@ -2,7 +2,8 @@ const state = {
   isProgress: false,
   isAuthenticated: false,
   isRegisterSuccess: false,
-  errors: {},
+  errorsAuth: {},
+  userLogin: {},
 };
 
 export default state;

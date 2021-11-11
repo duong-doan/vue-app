@@ -76,12 +76,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('auth', ['isProgress', 'errorsRegister', "isRegisterSuccess"]),
+    ...mapGetters('auth', ['isProgress', 'errorsAuth', "isRegisterSuccess"]),
     isProgressState() {
       return this.isProgress
     },
     getErrorsRegister() {
-      return this.errorsRegister
+      return this.errorsAuth
     },
     isRegisterSuccessState() {
       return this.isRegisterSuccess
@@ -95,13 +95,20 @@ export default {
         this.progress()
         const {email, password} = this.userInfo
         await this.addNewUserRequest({email, password})
-        const handleClickToast = () => {
+        const handleClickToastSuccess = () => {
           this.$router.push("/user/login")
         }
+        const handleClickToastFail = () => {
+          this.userInfo = {
+            email: "",
+            password: "",
+            confirm_password: "",
+          }
+        }
         if(this.isRegisterSuccessState) {
-          await toastMessage("Create new account success !!", {}, handleClickToast)
+          await toastMessage("Create new account success !!", {}, handleClickToastSuccess)
         } else {
-          await toastMessage(this.errorsRegister?.register, {}, () => {})
+          await toastMessage(this.getErrorsRegister?.register, {duration: 10000}, "Enter again!", handleClickToastFail)
         }
       }
     },

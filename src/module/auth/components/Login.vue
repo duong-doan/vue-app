@@ -32,6 +32,7 @@
             <span></span>
             <span></span>
             <span></span>
+            <div v-if="isProgressState" class="loader-small"></div>
             SIGN IN
           </button>
           <div>
@@ -49,10 +50,10 @@
 import BaseInput from "../../../components/BaseInput";
 import FormGroup from "../../../components/FormGroup";
 import Validate from "../../../utils/validate";
-// import {toastMessage} from "../../../utils/notification"
+import {toastMessage} from "../../../utils/notification"
 import { VALIDATION_RULES } from "../../../utils/constants";
 import { dataInputLogin } from "../constants";
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -73,13 +74,44 @@ export default {
       isEditInput: false,
     };
   },
+  computed: {
+    ...mapGetters('auth', ['isAuthenticated', 'errorsAuth', 'userLogin', 'isProgress']),
+    isAuthenticatedState() {
+      return this.isAuthenticated
+    },
+    isProgressState() {
+      return this.isProgress
+    },
+    getErrorsState() {
+      return this.errorsAuth
+    },
+    getUserLoginState() {
+      return this.userLogin
+    }
+  },
   methods: {
-    ...mapActions('auth', ['getUserRequest']),
-    handleSubmit(e) {
+    ...mapActions('auth', ['getUserRequest', 'loginUserRequest', 'progress']),
+    async handleSubmit(e) {
       e.preventDefault();
+      this.progress()
       if(this.validField()) {
-        this.getUserRequest()
-        // this.$router.push("/")
+        const {email, password} = this.userInfo
+        await this.loginUserRequest({email, password})
+        const handleClickToastSuccess = () => {
+          this.$router.push('/')
+        }
+        const handleClickToastFail = () => {
+          this.userInfo = {
+            email: "",
+            password: "",
+          }
+        }
+        if(this.isAuthenticatedState) {
+          await toastMessage(`Welcome ${this.userLogin.name}`, {}, "Go to homepage", handleClickToastSuccess)
+        } else {
+          console.log(this.getErrorsState)
+          await toastMessage(this.getErrorsState?.login, {}, "Enter again", handleClickToastFail)
+        }
       }
     },
     handleChangeInput(id, e) {
@@ -144,6 +176,8 @@ export default {
 
 <style lang="scss">
 @import "../../../assets/sass/abstracts/_variables.scss";
+
+
 
 .login-box__wrapper {
   position: relative;
@@ -239,13 +273,18 @@ export default {
         margin-bottom: 20px;
         background: transparent;
 
+        .loader-small {
+          margin: 0;
+          width: 20px;
+          height: 20px;
+          position: absolute;
+          left: 10px;
+        }
+
         &:hover {
-          background: $hover__color--secondary;
-          color: $text__color--darker;
+          color: $white;
+          transform: scale(1.05);
           border-radius: 5px;
-          box-shadow: 0 0 5px $hover__color--secondary,
-            0 0 25px $hover__color--secondary, 0 0 50px $hover__color--secondary,
-            0 0 100px $hover__color--secondary;
         }
 
         span {

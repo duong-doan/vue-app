@@ -5,12 +5,21 @@ const mutations = {
   addNewUserSuccess(state) {
     state.isProgress = false;
     state.isRegisterSuccess = true;
-    state.errors = {};
   },
   addNewUserFail(state, error) {
     state.isProgress = false;
     state.isRegisterSuccess = false;
-    state.errors.register = error;
+    state.errorsAuth.register = error;
+  },
+  loginUserSuccess(state, user) {
+    state.isProgress = false;
+    state.isAuthenticated = true;
+    state.userLogin = user;
+  },
+  loginUserFail(state, error) {
+    state.isProgress = false;
+    state.isAuthenticated = false;
+    state.errorsAuth.login = error;
   },
 };
 

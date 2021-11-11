@@ -108,6 +108,7 @@ export const VALIDATION_RULES = {
   CONFIRM: "CONFIRM",
 };
 
-export const ERRORS_REGISTER = {
-  EMAIL_EXISTS: "Email is exists"
-}
+export const ERRORS = {
+  EMAIL_EXISTS: "Email is exists",
+  ACCOUNT_ERROR: "Email or password not correct",
+};
