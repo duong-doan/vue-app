@@ -95,6 +95,7 @@
             }
           }
         }
+
         button {
           padding: 1rem 2rem;
           font-size: 1.8rem;
@@ -103,6 +104,11 @@
           border-radius: 4px;
           background-color: $hover__color--primary;
           color: $text__color--primary;
+          transition: 0.2s all;
+
+          &:hover {
+            color: $text__color--darker;
+          }
         }
       }
 

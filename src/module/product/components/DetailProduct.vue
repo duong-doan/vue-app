@@ -38,7 +38,7 @@
                 <i class="fas fa-sort-down"></i>
               </button>
             </div>
-            <button>ADD TO CART</button>
+            <button @click="handleClickAdd">ADD TO CART</button>
           </div>
           <ul>
             <li>
@@ -58,6 +58,9 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { toastMessage } from '../../../utils/notification';
+import { CONFIG_TOAST } from '../../../utils/constants'
+
 export default {
   props: ["productDetail"],
   computed: {
@@ -68,6 +71,18 @@ export default {
       "increaseQuantityProduct",
       "decreaseQuantityProduct",
     ]),
+    handleClickAdd() {
+      // toast props: type, message, options, customMsg, handleClickToast
+      toastMessage(
+        "success",
+        "Add to cart success!!",
+        {
+          ...CONFIG_TOAST,
+          duration: 2000,
+          position: "top-center",
+        }
+      )
+    }
   },
 };
 </script>

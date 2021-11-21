@@ -112,3 +112,11 @@ export const ERRORS = {
   EMAIL_EXISTS: "Email is exists",
   ACCOUNT_ERROR: "Email or password not correct",
 };
+
+export const CONFIG_TOAST = {
+  position: "top-right",
+  iconPack: "fontawesome",
+  closeOnSwipe: true,
+  singleton: false,
+  fitToScreen: false,
+};

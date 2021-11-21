@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="header__nav-middle__cart">
-          <div v-if="isAuthenticated" class="header__nav-middle__cart__content">
+          <div v-if="getUserLogin.isAuthenticated" class="header__nav-middle__cart__content">
             <div class="header__nav-middle__cart__wrap">
               <div class="header__nav-middle__cart__body">
                 1
@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import logo from "../../assets/images/logo--m.png";
+import useLocalStorage from '../../utils/useLocalStorage'
 
 export default {
   data() {
@@ -43,7 +43,15 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("auth", ["isAuthenticated"]),
+    getUserLogin() {
+      const { getLocalStorage } = useLocalStorage()
+      const user = getLocalStorage("user")
+      const isAuthenticated = getLocalStorage("isAuthenticated")
+      return {
+        user,
+        isAuthenticated
+      }
+    }
   },
 };
 </script>

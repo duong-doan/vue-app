@@ -50,6 +50,7 @@ import BaseInput from "../../../components/BaseInput";
 import FormGroup from "../../../components/FormGroup";
 import { VALIDATION_RULES } from '../../../utils/constants' 
 import Validate from '../../../utils/validate'
+import { CONFIG_TOAST } from '../../../utils/constants'
 import { dataInputRegister } from "../constants";
 import { toastMessage } from '../../../utils/notification';
 import { mapActions, mapGetters } from 'vuex';
@@ -105,10 +106,27 @@ export default {
             confirm_password: "",
           }
         }
+        
+        // toast props: type, message, options, customMsg, handleClickToast
         if(this.isRegisterSuccessState) {
-          await toastMessage("Create new account success !!", {}, handleClickToastSuccess)
+          await toastMessage(
+            "success",
+            "Create new account success!!",
+            {...CONFIG_TOAST},
+            "Go to login",
+            handleClickToastSuccess
+          )
         } else {
-          await toastMessage(this.getErrorsRegister?.register, {duration: 10000}, "Enter again!", handleClickToastFail)
+          await toastMessage(
+            "error",
+            this.getErrorsRegister?.register,
+            {
+              ...CONFIG_TOAST,
+              duration: 10000
+            },
+            "Enter again!",
+            handleClickToastFail
+          )
         }
       }
     },
@@ -186,6 +204,9 @@ export default {
       }
     }
   },
+  destroyed() {
+    this.$toasted.clear()
+  }
 };
 </script>
 

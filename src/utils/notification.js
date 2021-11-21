@@ -1,16 +1,42 @@
 import Vue from "vue";
 
-export const toastMessage = (message, options, customMsg, handleClickToast) => {
-  Vue.toasted.show(message, {
-    ...options,
-    position: "top-right",
-    duration: 5000,
-    iconPack: "fontawesome",
-    closeOnSwipe: true,
-    singleton: false,
+export const toastMessage = (
+  type,
+  message,
+  options,
+  customMsg,
+  handleClickToast
+) => {
+  const defaultOptions = {
     action: {
       text: customMsg,
       onClick: handleClickToast,
     },
-  });
+  };
+
+  switch (type) {
+    case "success": {
+      Vue.toasted.success(message, {
+        ...options,
+        ...defaultOptions,
+      });
+      break;
+    }
+
+    case "error": {
+      Vue.toasted.error(message, {
+        ...options,
+        ...defaultOptions,
+      });
+      break;
+    }
+
+    case "info": {
+      Vue.toasted.info(message, {
+        ...options,
+        ...defaultOptions,
+      });
+      break;
+    }
+  }
 };

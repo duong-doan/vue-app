@@ -50,8 +50,9 @@
 import BaseInput from "../../../components/BaseInput";
 import FormGroup from "../../../components/FormGroup";
 import Validate from "../../../utils/validate";
-import {toastMessage} from "../../../utils/notification"
+import { toastMessage } from "../../../utils/notification"
 import { VALIDATION_RULES } from "../../../utils/constants";
+import { CONFIG_TOAST } from '../../../utils/constants'
 import { dataInputLogin } from "../constants";
 import { mapActions, mapGetters } from 'vuex';
 
@@ -106,11 +107,24 @@ export default {
             password: "",
           }
         }
+
+        // toast props: type, message, options, customMsg, handleClickToast
         if(this.isAuthenticatedState) {
-          await toastMessage(`Welcome ${this.userLogin.name}`, {}, "Go to homepage", handleClickToastSuccess)
+          await toastMessage(
+            "success",
+            `Welcome ${this.userLogin.name}`,
+            {...CONFIG_TOAST, duration: 5000},
+            "Go to homepage",
+            handleClickToastSuccess
+          )
         } else {
-          console.log(this.getErrorsState)
-          await toastMessage(this.getErrorsState?.login, {}, "Enter again", handleClickToastFail)
+          await toastMessage(
+            "error",
+            this.getErrorsState?.login,
+            {...CONFIG_TOAST, duration: 2000},
+            "Enter again",
+            handleClickToastFail
+          )
         }
       }
     },
@@ -171,6 +185,9 @@ export default {
       }
     }
   },
+  destroyed() {
+    this.$toasted.clear()
+  }
 };
 </script>
 
