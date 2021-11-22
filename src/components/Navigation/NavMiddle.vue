@@ -53,5 +53,10 @@ export default {
       }
     }
   },
+  watch: {
+    getUserLogin(value) {
+      console.log("middle", value.isAuthenticated)
+    }
+  }
 };
 </script>

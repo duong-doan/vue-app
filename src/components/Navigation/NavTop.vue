@@ -41,20 +41,20 @@
             <div class="user__info">
               <img :src="getUserLogin.user.avatar" style="width: 20px; height: 20px" alt="avatar">
               <span>{{ getUserLogin.user.name }}/ </span>
-              <a href="#" @click="handleClickLogout">Logout</a>
+              <a v-b-modal.modal href="#" @click="handleClickLogout">Logout</a>
             </div>
-            <b-modal></b-modal>
           </div>
         </div>
       </div>
     </div>
-    <modal />
+    <modal text="Do you want logout?" :onSubmit="handleSubmit" :onClose="handleClose" />
   </div>
 </template>
 
 <script>
 import useLocalStorage from '../../utils/useLocalStorage'
 import Modal from '../../components/Modal'
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: "NavTop",
@@ -62,6 +62,7 @@ export default {
     Modal
   },
   computed: {
+    ...mapGetters('auth', ['userLogin']),
     getUserLogin() {
       const { getLocalStorage } = useLocalStorage()
       const user = getLocalStorage("user")
@@ -70,16 +71,38 @@ export default {
         user,
         isAuthenticated
       }
+    },
+    makeGetUser() {
+      return this.userLogin
     }
   },
   methods: {
+    ...mapActions('auth', ['setIsAuthenticated']),
     handleClickLogout() {
+      this.$bvModal.show('modal')
+      document.body.classList.add("disabled-scroll")
+    },
+    handleSubmit() {
+      const { removeLocalStorage, setLocalStorage } = useLocalStorage()
+      removeLocalStorage('user')
+      setLocalStorage('isAuthenticated', false)
+      this.setIsAuthenticated(true)
+      this.$bvModal.hide('modal')
+      window.location.reload()
+    },
+    handleClose() {
+      this.$bvModal.hide('modal')
+      document.body.classList.remove("disabled-scroll")
     }
   }
 };
 </script>
 
 <style lang="scss">
+  .disabled-scroll {
+    height: 100%;
+    overflow: hidden;
+  }
   .user__info {
     display: flex;
     align-items: center;
@@ -91,10 +114,11 @@ export default {
     }
     span {
       color: white;
+      font-size: 1.5rem;
     }
     a {
       text-decoration: none;
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       color: #b7a188;
       transition: all 0.2s;
 

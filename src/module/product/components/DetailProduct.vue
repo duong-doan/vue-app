@@ -22,7 +22,7 @@
           <div class="product-detail__info__content--quantity">
             <input
               type="text"
-              :value="quantity_default"
+              :value="quantity"
               placeholder="abc"
               readonly
             />
@@ -33,7 +33,7 @@
               <button
                 class="change-quantity"
                 @click="decreaseQuantityProduct"
-                :disabled="quantity_default <= 1 ? true : false"
+                :disabled="quantity <= 1 ? true : false"
               >
                 <i class="fas fa-sort-down"></i>
               </button>
@@ -60,29 +60,69 @@
 import { mapActions, mapGetters } from "vuex";
 import { toastMessage } from '../../../utils/notification';
 import { CONFIG_TOAST } from '../../../utils/constants'
+import useLocalStorage from '../../../utils/useLocalStorage'
 
 export default {
-  props: ["productDetail"],
+  props: ['productDetail'],
   computed: {
-    ...mapGetters("products", ["quantity_default"]),
+    ...mapGetters('products', ['quantity_default']),
+    ...mapGetters('auth', ['cart']),
+    getCart() {
+      return this.cart
+    },
+    quantity() {
+      return this.quantity_default
+    },
+    getIsAuthenticated() {
+      const { getLocalStorage } = useLocalStorage()
+      const isAuthenticated = getLocalStorage("isAuthenticated")
+      return isAuthenticated
+    }
   },
   methods: {
-    ...mapActions("products", [
-      "increaseQuantityProduct",
-      "decreaseQuantityProduct",
+    ...mapActions('products', [
+      'increaseQuantityProduct',
+      'decreaseQuantityProduct',
     ]),
     handleClickAdd() {
       // toast props: type, message, options, customMsg, handleClickToast
-      toastMessage(
-        "success",
-        "Add to cart success!!",
-        {
-          ...CONFIG_TOAST,
-          duration: 2000,
-          position: "top-center",
+      if (this.getIsAuthenticated) {
+        const data = {
+          ...this.productDetail,
+          quantity: this.quantity
         }
-      )
+        this.getCart.push(data)
+        console.log(this.getCart)
+        toastMessage(
+          "success",
+          "Add to cart success!!",
+          {
+            ...CONFIG_TOAST,
+            duration: 2000,
+            position: "top-center",
+          }
+        )
+      } else {
+        const handleClickToast = () => {
+          this.$router.push('/user/login')
+        }
+        toastMessage(
+          "error",
+          "Please login first !!",
+          {
+            ...CONFIG_TOAST,
+            duration: 10000,
+            position: "top-right",
+            keepOnHover: true
+          },
+          "Go to login",
+          handleClickToast
+        )
+      }
     }
   },
+  destroyed() {
+    this.$toasted.clear()
+  }
 };
 </script>

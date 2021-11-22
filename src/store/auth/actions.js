@@ -9,6 +9,9 @@ const actions = {
   progress({ commit }) {
     commit("progress");
   },
+  setIsAuthenticated({ commit }, value) {
+    commit("setIsAuthenticated", value);
+  },
   async addNewUserRequest({ commit }, { email, password }) {
     const dataUsers = await authApi.getUserFromDB();
     const isSame = checkEmailExists(dataUsers, email);
@@ -33,9 +36,8 @@ const actions = {
         ...findUser,
         password: "********",
       };
-      const a = true;
       setLocalStorage("user", customUserLocalStr);
-      setLocalStorage("isAuthenticated", a);
+      setLocalStorage("isAuthenticated", true);
     } else {
       commit("loginUserFail", ACCOUNT_ERROR);
       setLocalStorage("isAuthenticated", false);

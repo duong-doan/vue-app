@@ -4,6 +4,7 @@ const state = {
   isRegisterSuccess: false,
   errorsAuth: {},
   userLogin: {},
+  cart: [],
 };
 
 export default state;

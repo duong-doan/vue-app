@@ -1,16 +1,21 @@
 const useLocalStorage = () => {
-    const getLocalStorage = (name) => {
-        return JSON.parse(localStorage.getItem(name))
-    }
+  const getLocalStorage = (name) => {
+    return JSON.parse(localStorage.getItem(name));
+  };
 
-    const setLocalStorage = (name, item) => {
-        return localStorage.setItem(name, JSON.stringify(item))
-    }
+  const setLocalStorage = (name, item) => {
+    return localStorage.setItem(name, JSON.stringify(item));
+  };
 
-    return {
-        getLocalStorage,
-        setLocalStorage
-    }
-}
+  const removeLocalStorage = (name) => {
+    return localStorage.removeItem(name);
+  };
 
-export default useLocalStorage
+  return {
+    getLocalStorage,
+    setLocalStorage,
+    removeLocalStorage,
+  };
+};
+
+export default useLocalStorage;
