@@ -9,6 +9,7 @@ import router from "./router";
 import VueAgile from "vue-agile";
 import store from "./store/index";
 import Toasted from "vue-toasted";
+import { TabsPlugin } from "bootstrap-vue";
 
 Vue.use(BootstrapVue);
 AOS.init({
@@ -16,6 +17,7 @@ AOS.init({
 });
 Vue.use(VueAgile);
 Vue.use(Toasted);
+Vue.use(TabsPlugin);
 Vue.config.productionTip = false;
 
 new Vue({

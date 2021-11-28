@@ -1,9 +1,9 @@
 <template>
   <div class="product-detail">
     <div class="product-detail__wrapped">
-      <div class="product-detail__breadcrum">
+      <div class="product-detail__breadcrumb">
         <div class="container">
-          <Breadscrum :breadcrumb="breadcrumb" />
+          <breadcrumb :breadcrumb="breadcrumb" />
         </div>
       </div>
       <div class="container">
@@ -20,7 +20,7 @@
 import DetailProduct from "../components/DetailProduct.vue";
 import CommentProduct from "../components/CommentProduct.vue";
 import RelatedProduct from "../components/RelatedProduct.vue";
-import Breadscrum from '../../../components/Breadscrum'
+import Breadcrumb from '../../../components/Breadscrum'
 import { mapActions, mapGetters } from 'vuex';
 import useLocalStorage from '../../../utils/useLocalStorage'
 
@@ -30,7 +30,7 @@ export default {
     DetailProduct,
     CommentProduct,
     RelatedProduct,
-    Breadscrum
+    Breadcrumb
   },
   computed: {
     ...mapGetters('products', {

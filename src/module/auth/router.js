@@ -1,5 +1,6 @@
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
+import Information from "./components/Information.vue";
 
 const routes = [
   {
@@ -13,6 +14,12 @@ const routes = [
     name: "Register",
     exact: true,
     component: Register,
+  },
+  {
+    path: "/user/:id/information",
+    name: "Information",
+    exact: true,
+    component: Information,
   },
 ];
 

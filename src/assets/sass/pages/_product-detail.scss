@@ -1,12 +1,12 @@
 .product-detail {
   &__wrapped {
   }
-  &__breadcrum {
+  &__breadcrumb {
     height: 100px;
     font-size: 2rem;
     display: flex;
     align-items: center;
-    background-color: $bg__color__breadcrum;
+    background-color: $bg__color__breadcrumb;
   }
 
   &__info {

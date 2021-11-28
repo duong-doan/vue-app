@@ -1,5 +1,5 @@
 <template>
-    <ul>
+    <ul :class="['breadcrumb', classname]">
         <template v-for="(bread, index) in breadcrumb" >
             <li v-if="index !== breadcrumb.length - 1" :key="bread.id">
                 <div>
@@ -16,13 +16,14 @@
 
 <script>
 export default {
-    props: ['breadcrumb']
-    // example: breadcrumb = [
-    //              {
-    //                  text: 'home',
-    //                  to: '/:endpoint'
-    //              }
-    //         ]
+    props: ['breadcrumb', 'classname']
+    // example: 
+    // breadcrumb = [
+    //   {
+    //      text: 'home',
+    //      to: '/:endpoint'
+    //    }
+    // ]
 }
 </script>
 

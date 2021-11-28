@@ -40,7 +40,9 @@
           <div v-else class="nav-top__right__user">
             <div class="user__info">
               <img :src="getUserLogin.user.avatar" style="width: 20px; height: 20px" alt="avatar">
-              <span>{{ getUserLogin.user.name }}/ </span>
+              <span>
+                <router-link :to="`user/${userId}/information`">{{ getUserLogin.user.name }}</router-link>/
+              </span>
               <a v-b-modal.modal href="#" @click="handleClickLogout">Logout</a>
             </div>
           </div>
@@ -56,6 +58,9 @@ import useLocalStorage from '../../utils/useLocalStorage'
 import Modal from '../../components/Modal'
 import { mapActions, mapGetters } from 'vuex';
 
+const { getLocalStorage } = useLocalStorage()
+const user = getLocalStorage("user")
+
 export default {
   name: "NavTop",
   components: {
@@ -64,8 +69,6 @@ export default {
   computed: {
     ...mapGetters('auth', ['userLogin']),
     getUserLogin() {
-      const { getLocalStorage } = useLocalStorage()
-      const user = getLocalStorage("user")
       const isAuthenticated = getLocalStorage("isAuthenticated")
       return {
         user,
@@ -74,6 +77,9 @@ export default {
     },
     makeGetUser() {
       return this.userLogin
+    },
+    userId() {
+      return user.id
     }
   },
   methods: {

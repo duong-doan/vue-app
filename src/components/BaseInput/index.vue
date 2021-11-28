@@ -6,13 +6,14 @@
     :value="value"
     :placeholder="placeholder"
     autocomplete="off"
+    :disabled="disabled"
     @change="handleChange"
   />
 </template>
 
 <script>
 export default {
-  props: ["id", "required", "name", "value", "onchange", "type", "placeholder"],
+  props: ["id", "required", "name", "value", "onchange", "type", "placeholder", "disabled"],
   methods: {
     handleChange(e) {
       this.onchange(this.id, e);
