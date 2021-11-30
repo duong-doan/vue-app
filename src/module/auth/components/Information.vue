@@ -22,20 +22,38 @@
                     </div>
                     <div class="profile__body">
                       <div class="row">
-                        <div class="profile__body__content col-lg-9 col-sm-12">
+                        <div class="profile__body__content col-lg-8 col-sm-12">
                           <form>
                             <form-group label="Username" class="profile__input">
-                              <span v-if="!isEdit" class="profile__input--change" @click="handleClickChange">change</span>
-                              <button v-if="isEdit" @click="handleSubmitChange">ok</button>
-                              <base-input v-if="isEdit" />
-                              <span v-else>{{ user.name }}</span>
+                              <template v-if="isEdit">
+                                <form id="form-change-name">
+                                  <button @click="handleSubmitChange">ok</button>
+                                  <base-input
+                                    id="name"
+                                    name="name"
+                                    :value="valueInput.name"
+                                    :onChange="handleChange"
+                                    :onBlur="handleBlur"
+                                    :onKeydown="handleKeydown"
+                                  />
+                                </form>
+                              </template>
+                              <template v-else>
+                                <span class="profile__input--change" @click="handleClickChange">change</span>
+                                <span>{{ user.name }}</span>
+                              </template>
                             </form-group>
                             <form-group label="Email" class="profile__input">
                               <span>{{ user.email }}</span>
                             </form-group>
                             <form-group label="Phone number" class="profile__input">
                               <base-input 
+                                id="phone"
                                 name="phone"
+                                :value="valueInput.name"
+                                :onChange="handleChange"
+                                :onBlur="handleBlur"
+                                :onKeydown="handleKeydown"
                               />
                             </form-group>
                             <form-group label="Birth day" class="profile__input">
@@ -47,10 +65,14 @@
                             <button>SAVE</button>
                           </form>
                         </div>
-                        <div class="profile__body__image col col-lg-3 col-sm-12">
+                        <div class="profile__body__image col col-lg-4 col-sm-12">
                           <form action="">
                             <img id="img_url" :src="`${user.avatar}`" alt="image">
-                            <input id="input_file" type="file" @change="handleChooseFileImage(this)">
+                            <div>
+                              <input id="input_file" type="file" hidden @change="handleChooseFileImage">
+                              <label for="input_file">Choose File</label>
+                              <span class="title-upload">No file chosen</span>
+                            </div>
                           </form>
                         </div>
                       </div>
@@ -61,9 +83,6 @@
               <b-tab title="Orders">
                 <b-card-text>Tab contents 2</b-card-text>
               </b-tab>
-              <!-- <b-tab title="Tab 3">
-                <b-card-text>Tab contents 3</b-card-text>
-              </b-tab> -->
             </b-tabs>
           </b-card>
         </div>
@@ -91,7 +110,11 @@ export default {
     data() {
       return {
         user: {},
-        isEdit: false
+        isEdit: false,
+        valueInput: {
+          name: "",
+          phone: ""
+        }
       }
     },
     computed: {
@@ -113,13 +136,29 @@ export default {
       handleChooseFileImage() {
         const imgEl = document.querySelector("#img_url")
         const inputEl = document.querySelector("#input_file")
+        const titleEl = document.querySelector(".title-upload")
         imgEl.src = URL.createObjectURL(inputEl.files[0])
+        titleEl.textContent = inputEl.files[0].name
       },
       handleClickChange() {
         this.isEdit = true
       },
       handleSubmitChange() {
         this.isEdit = false
+      },
+      handleBlur() {
+        this.isEdit = false
+      },
+      handleChange(id, e) {
+        this.valueInput = {
+          ...this.valueInput,
+          [id]: e.target.value
+        }
+      },
+      handleKeydown(e) {
+        if(e.key === "Escape") {
+          this.isEdit = false
+        }
       }
     },
     created() {
@@ -155,6 +194,14 @@ export default {
       padding-top: 20px;
       &__content {
         form {
+          button {
+            padding: 10px 20px;
+          }
+
+          #form-change-name {
+            display: flex;
+            flex-direction: row-reverse;
+          }
           .profile__input {
             display: flex;
             align-items: baseline;
@@ -212,9 +259,25 @@ export default {
             border: 1px solid $gray-400;
           }
 
-          input {
-            width: 70%;
+          div {
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+
+            label {
+              border: 1px solid;
+              padding: 5px 10px;
+              margin-right: 4px;
+              border-radius: 3px;
+              background: $pink;
+              color: $white;
+
+              &:hover {
+                cursor: pointer;
+              }
+            }
           }
+
         }
       }
     }

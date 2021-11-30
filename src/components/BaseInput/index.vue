@@ -8,16 +8,24 @@
     autocomplete="off"
     :disabled="disabled"
     @change="handleChange"
+    @blur="handleBlur"
+    @keydown="handleKeydown"
   />
 </template>
 
 <script>
 export default {
-  props: ["id", "required", "name", "value", "onchange", "type", "placeholder", "disabled"],
+  props: ["id", "required", "name", "value", "onChange", "onBlur", "onKeydown", "type", "placeholder", "disabled"],
   methods: {
     handleChange(e) {
-      this.onchange(this.id, e);
+      this.onChange(this.id, e);
     },
+    handleBlur(e) {
+      this.onBlur(e)
+    },
+    handleKeydown(e) {
+      this.onKeydown(e)
+    }
   },
 };
 </script>

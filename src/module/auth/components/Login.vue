@@ -17,7 +17,6 @@
         >
           <base-input
             :id="input.id"
-            :label="input.name"
             :type="input.type"
             :required="input.required"
             :value="userInfo[input.id]"

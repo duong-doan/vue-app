@@ -20,7 +20,7 @@
         </div>
 
         <div class="header__nav-top__right">
-          <ul v-if="!getUserLogin.isAuthenticated">
+          <ul v-if="!getIsAuthenticated">
             <li>
               <a href="#">
                 <i class="fab fa-facebook-f"></i>
@@ -39,11 +39,21 @@
           </ul>
           <div v-else class="nav-top__right__user">
             <div class="user__info">
-              <img :src="getUserLogin.user.avatar" style="width: 20px; height: 20px" alt="avatar">
-              <span>
-                <router-link :to="`user/${userId}/information`">{{ getUserLogin.user.name }}</router-link>/
-              </span>
-              <a v-b-modal.modal href="#" @click="handleClickLogout">Logout</a>
+              <img :src="getUserLogin.avatar" style="width: 20px; height: 20px" alt="avatar">
+              <div class="dropdown__info__wrapped">
+                <h3>{{ getUserLogin.name }}</h3>
+                <div class="dropdown__info">
+                  <ul>
+                    <li>
+                      <router-link class="link-router" :to="`user/${userId}/information`">My information</router-link>
+                    </li>
+                    <li>
+                      <a v-b-modal.modal href="#" @click="handleClickLogout">Logout</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
             </div>
           </div>
         </div>
@@ -59,27 +69,31 @@ import Modal from '../../components/Modal'
 import { mapActions, mapGetters } from 'vuex';
 
 const { getLocalStorage } = useLocalStorage()
-const user = getLocalStorage("user")
 
 export default {
   name: "NavTop",
   components: {
     Modal
   },
+  data() {
+    return {
+      user: {}
+    }
+  },
   computed: {
     ...mapGetters('auth', ['userLogin']),
-    getUserLogin() {
+    getIsAuthenticated() {
       const isAuthenticated = getLocalStorage("isAuthenticated")
-      return {
-        user,
-        isAuthenticated
-      }
+      return isAuthenticated
+    },
+    getUserLogin() {
+      return this.user
     },
     makeGetUser() {
       return this.userLogin
     },
     userId() {
-      return user.id
+      return this.user.id
     }
   },
   methods: {
@@ -100,37 +114,65 @@ export default {
       this.$bvModal.hide('modal')
       document.body.classList.remove("disabled-scroll")
     }
+  },
+  created() {
+    this.user = getLocalStorage("user")
   }
 };
 </script>
 
 <style lang="scss">
+@import "../../assets/sass/abstracts/_variables.scss";
   .disabled-scroll {
     height: 100%;
     overflow: hidden;
   }
+
   .user__info {
     display: flex;
     align-items: center;
-    img {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      margin-right: 10px;
-    }
-    span {
-      color: white;
-      font-size: 1.5rem;
-    }
-    a {
-      text-decoration: none;
-      font-size: 1.4rem;
-      color: #b7a188;
-      transition: all 0.2s;
 
+    h3 {
+      color: $white;
+      font-size: 1.4rem;
+    }
+    .dropdown__info__wrapped {
+      position: relative;
       &:hover {
-        color: #c89979;
+        .dropdown__info {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+      .dropdown__info {
+        position: absolute;
+        bottom: -70px;
+        right: 0;
+        z-index: 11;
+        visibility: hidden;
+        transition: all 0.2s;
+        opacity: 0;
+        background: white;
+        ul {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 10px 20px;
+          margin: 0;
+          width: 200px;
+          li {
+            margin-bottom: 5px;
+            a {
+              transition: all 0.2s;
+              color: black;
+              &:hover {
+                color: $hover__color--primary;
+              }
+            }
+          }
+        }
       }
     }
   }
+
 </style>
