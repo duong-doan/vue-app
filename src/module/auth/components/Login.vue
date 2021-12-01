@@ -20,9 +20,11 @@
             :type="input.type"
             :required="input.required"
             :value="userInfo[input.id]"
-            :onchange="handleChangeInput"
+            :onChange="handleChangeInput"
             :reverseLabel="true"
             :isEdit="isEditInput"
+            :onBlur="handleBlur"
+            :onKeydown="handleKeydown"
           />
         </form-group>
         <div class="wrapped-btn">
@@ -173,11 +175,14 @@ export default {
         ...errorList
       }
       return !Object.keys(errorList).some(key => errorList[key])
-    }
+    },
+    handleBlur() {},
+    handleKeydown() {}
   },
   watch: {
     userInfo(value) {
-      if (value.email !== "" || value.password !== "") {
+      console.log(value)
+      if (value.email || value.password) {
         this.isEditInput = true;
       } else {
         this.isEditInput = false;

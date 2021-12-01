@@ -21,9 +21,11 @@
             :type="input.type"
             :required="input.required"
             :value="userInfo[input.id]"
-            :onchange="handleChangeInput"
+            :onChange="handleChangeInput"
             :reverseLabel="true"
             :isEdit="isEditInput"
+            :onBlur="handleBlur"
+            :onKeydown="handleKeydown"
           />
         </form-group>
         <div class="wrapped-btn">
@@ -189,7 +191,9 @@ export default {
         }
       }
       return Validate.checkValidate(value, validation)
-    }
+    },
+    handleBlur() {},
+    handleKeydown() {},
   },
   watch: {
     userInfo(value) {

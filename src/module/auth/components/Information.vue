@@ -23,7 +23,7 @@
                     <div class="profile__body">
                       <div class="row">
                         <div class="profile__body__content col-lg-8 col-sm-12">
-                          <form>
+                          <form @submit="handleSubmit">
                             <form-group label="Username" class="profile__input">
                               <template v-if="isEdit">
                                 <form id="form-change-name">
@@ -40,7 +40,7 @@
                               </template>
                               <template v-else>
                                 <span class="profile__input--change" @click="handleClickChange">change</span>
-                                <span>{{ user.name }}</span>
+                                <span>{{ valueInput.name ? valueInput.name : user.name }}</span>
                               </template>
                             </form-group>
                             <form-group label="Email" class="profile__input">
@@ -50,7 +50,7 @@
                               <base-input 
                                 id="phone"
                                 name="phone"
-                                :value="valueInput.name"
+                                :value="valueInput.phone"
                                 :onChange="handleChange"
                                 :onBlur="handleBlur"
                                 :onKeydown="handleKeydown"
@@ -62,7 +62,7 @@
                                 name="phone"
                               />
                             </form-group>
-                            <button>SAVE</button>
+                            <button type="submit">SAVE</button>
                           </form>
                         </div>
                         <div class="profile__body__image col col-lg-4 col-sm-12">
@@ -97,6 +97,7 @@ import useLocalStorage from "../../../utils/useLocalStorage"
 import FormGroup from "../../../components/FormGroup"
 import BaseInput from "../../../components/BaseInput"
 import { BTabs } from 'bootstrap-vue'
+import { mapActions } from 'vuex'
 
 const { getLocalStorage } = useLocalStorage()
 
@@ -111,6 +112,7 @@ export default {
       return {
         user: {},
         isEdit: false,
+        imgUrl: "",
         valueInput: {
           name: "",
           phone: ""
@@ -133,11 +135,13 @@ export default {
       }
     },
     methods: {
+      ...mapActions('auth', ['updateUserRequest']),
       handleChooseFileImage() {
         const imgEl = document.querySelector("#img_url")
         const inputEl = document.querySelector("#input_file")
         const titleEl = document.querySelector(".title-upload")
         imgEl.src = URL.createObjectURL(inputEl.files[0])
+        this.imgUrl = URL.createObjectURL(inputEl.files[0])
         titleEl.textContent = inputEl.files[0].name
       },
       handleClickChange() {
@@ -145,6 +149,13 @@ export default {
       },
       handleSubmitChange() {
         this.isEdit = false
+        const {name} = this.valueInput
+        if(name) {
+          this.valueInput = {
+            ...this.valueInput,
+            name
+          }
+        }
       },
       handleBlur() {
         this.isEdit = false
@@ -159,6 +170,17 @@ export default {
         if(e.key === "Escape") {
           this.isEdit = false
         }
+      },
+      async handleSubmit(e) {
+        e.preventDefault();
+        const { name, phone } = this.valueInput
+        const customData = {
+          ...this.user,
+          avatar: this.imgUrl,
+          name,
+          phone
+        }
+        await this.updateUserRequest(customData)
       }
     },
     created() {

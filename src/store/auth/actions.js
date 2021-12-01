@@ -5,6 +5,7 @@ import useLocalStorage from "../../utils/useLocalStorage";
 
 const { EMAIL_EXISTS, ACCOUNT_ERROR } = ERRORS;
 
+const { setLocalStorage } = useLocalStorage();
 const actions = {
   progress({ commit }) {
     commit("progress");
@@ -26,7 +27,6 @@ const actions = {
     }
   },
   async loginUserRequest({ commit }, { email, password }) {
-    const { setLocalStorage } = useLocalStorage();
     const dataUsers = await authApi.getUserFromDB();
     const { isSame, findUser } = checkLoginUser(dataUsers, email, password);
 
@@ -41,6 +41,16 @@ const actions = {
     } else {
       commit("loginUserFail", ACCOUNT_ERROR);
       setLocalStorage("isAuthenticated", false);
+    }
+  },
+  async updateUserRequest({ commit }, data) {
+    const { id } = data;
+    const res = await authApi.updateUserRequestDB(id, data);
+    if (res) {
+      setLocalStorage("user", res);
+      commit("updateUserRequestSuccess");
+    } else {
+      commit("updateUserRequestFailed");
     }
   },
 };
