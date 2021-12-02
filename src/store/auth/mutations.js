@@ -24,8 +24,15 @@ const mutations = {
   setIsAuthenticated(state, value) {
     state.isAuthenticated = value;
   },
-  updateUserRequestSuccess() {},
-  updateUserRequestFailed() {},
+  updateUserRequest(state) {
+    state.isProgressUpdate = true;
+  },
+  updateUserRequestSuccess(state) {
+    state.isProgressUpdate = false;
+  },
+  updateUserRequestFailed(state) {
+    state.isProgressUpdate = false;
+  },
 };
 
 export default mutations;

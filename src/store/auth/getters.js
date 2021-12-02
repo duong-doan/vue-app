@@ -11,6 +11,7 @@ const getters = {
     return user;
   },
   cart: (state) => state.cart,
+  isProgressUpdate: (state) => state.isProgressUpdate,
 };
 
 export default getters;

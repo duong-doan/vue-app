@@ -39,9 +39,11 @@
           </ul>
           <div v-else class="nav-top__right__user">
             <div class="user__info">
-              <img :src="getUserLogin.avatar" style="width: 20px; height: 20px" alt="avatar">
+              <div class="user__info__img">
+                <img :src="getUserLogin.avatar" alt="avatar">
+              </div>
+              <h3>{{ getUserLogin.name }}</h3>
               <div class="dropdown__info__wrapped">
-                <h3>{{ getUserLogin.name }}</h3>
                 <div class="dropdown__info">
                   <ul>
                     <li>
@@ -131,43 +133,57 @@ export default {
   .user__info {
     display: flex;
     align-items: center;
+    position: relative;
+    padding: 5px 0;
+
+    &:hover {
+      .dropdown__info__wrapped {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+
+    &__img {
+      border: 1px solid white;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 5px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
 
     h3 {
       color: $white;
       font-size: 1.4rem;
+      margin: 0;
     }
     .dropdown__info__wrapped {
-      position: relative;
-      &:hover {
-        .dropdown__info {
-          visibility: visible;
-          opacity: 1;
-        }
-      }
-      .dropdown__info {
-        position: absolute;
-        bottom: -70px;
-        right: 0;
-        z-index: 11;
-        visibility: hidden;
-        transition: all 0.2s;
-        opacity: 0;
-        background: white;
-        ul {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          padding: 10px 20px;
-          margin: 0;
-          width: 200px;
-          li {
-            margin-bottom: 5px;
-            a {
-              transition: all 0.2s;
-              color: black;
-              &:hover {
-                color: $hover__color--primary;
-              }
+      position: absolute;
+      top: 35px;
+      right: 0;
+      z-index: 11;
+      visibility: hidden;
+      transition: all 0.2s;
+      opacity: 0;
+      background: white;
+      ul {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 20px;
+        margin: 0;
+        width: 200px;
+        li {
+          margin-bottom: 5px;
+          a {
+            transition: all 0.2s;
+            color: black;
+            &:hover {
+              color: $hover__color--primary;
             }
           }
         }

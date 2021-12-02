@@ -34,7 +34,6 @@ const actions = {
       commit("loginUserSuccess", findUser);
       const customUserLocalStr = {
         ...findUser,
-        password: "********",
       };
       setLocalStorage("user", customUserLocalStr);
       setLocalStorage("isAuthenticated", true);
@@ -44,11 +43,13 @@ const actions = {
     }
   },
   async updateUserRequest({ commit }, data) {
+    commit("updateUserRequest");
     const { id } = data;
     const res = await authApi.updateUserRequestDB(id, data);
     if (res) {
       setLocalStorage("user", res);
       commit("updateUserRequestSuccess");
+      return;
     } else {
       commit("updateUserRequestFailed");
     }

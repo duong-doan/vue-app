@@ -50,7 +50,7 @@
                               <base-input 
                                 id="phone"
                                 name="phone"
-                                :value="valueInput.phone"
+                                :value="valueInput.phone ? valueInput.phone : user.phone"
                                 :onChange="handleChange"
                                 :onBlur="handleBlur"
                                 :onKeydown="handleKeydown"
@@ -58,18 +58,26 @@
                             </form-group>
                             <form-group label="Birth day" class="profile__input">
                               <base-input 
+                                id="date"
                                 type="date"
-                                name="phone"
+                                name="date"
+                                :value="user.birthDay"
+                                :onChange="handleChange"
+                                :onBlur="handleBlur"
+                                onKeydown=""
                               />
                             </form-group>
-                            <button type="submit">SAVE</button>
+                            <button :class="['btn-submit', {'btn-submit__loading': isProgressUpdate}]" type="submit">
+                              SAVE
+                              <div v-if="isProgressUpdate" class="loader-small"></div>
+                              </button>
                           </form>
                         </div>
                         <div class="profile__body__image col col-lg-4 col-sm-12">
                           <form action="">
                             <img id="img_url" :src="`${user.avatar}`" alt="image">
                             <div>
-                              <input id="input_file" type="file" hidden @change="handleChooseFileImage">
+                              <input ref="input" id="input_file" type="file" hidden @change="handleChooseFileImage">
                               <label for="input_file">Choose File</label>
                               <span class="title-upload">No file chosen</span>
                             </div>
@@ -97,7 +105,9 @@ import useLocalStorage from "../../../utils/useLocalStorage"
 import FormGroup from "../../../components/FormGroup"
 import BaseInput from "../../../components/BaseInput"
 import { BTabs } from 'bootstrap-vue'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import { toastMessage } from '../../../utils/notification'
+import { CONFIG_TOAST } from '../../../utils/constants'
 
 const { getLocalStorage } = useLocalStorage()
 
@@ -115,11 +125,12 @@ export default {
         imgUrl: "",
         valueInput: {
           name: "",
-          phone: ""
-        }
+          phone: "",
+        },
       }
     },
     computed: {
+      ...mapGetters('auth', ['isProgressUpdate']),
       breadcrumb() {
         return [
           {
@@ -140,9 +151,28 @@ export default {
         const imgEl = document.querySelector("#img_url")
         const inputEl = document.querySelector("#input_file")
         const titleEl = document.querySelector(".title-upload")
-        imgEl.src = URL.createObjectURL(inputEl.files[0])
-        this.imgUrl = URL.createObjectURL(inputEl.files[0])
-        titleEl.textContent = inputEl.files[0].name
+        // const file = inputEl.files[0]
+        const fileType = inputEl.files[0].type
+        const validateType = ["image/jpg", "image/jpeg", "image/png", "image/JPG", "image/JPEG", "image/PNG"]
+        if(validateType.includes(fileType)) {
+          // const fileReader = new FileReader()
+          // fileReader.onload = () => {
+          //   const fileURL = fileReader.result
+          //   titleEl.textContent = inputEl.files[0].name
+          //   imgEl.src = fileURL
+          //   this.imgUrl = fileURL
+          // }
+          // fileReader.readAsDataURL(file)
+          titleEl.textContent = inputEl.files[0].name
+          titleEl.style = "color: black;"
+          imgEl.src = URL.createObjectURL(inputEl.files[0])
+          this.imgUrl = URL.createObjectURL(inputEl.files[0])
+        } else {
+          titleEl.textContent = "This file is error"
+          titleEl.style = "color: red;"
+          imgEl.src = ""
+          this.imgUrl = ""
+        }
       },
       handleClickChange() {
         this.isEdit = true
@@ -174,13 +204,16 @@ export default {
       async handleSubmit(e) {
         e.preventDefault();
         const { name, phone } = this.valueInput
+        const inputDateValue = document.querySelector("#date").value
         const customData = {
           ...this.user,
-          avatar: this.imgUrl,
-          name,
-          phone
+          avatar: this.imgUrl ? this.imgUrl : this.user.avatar,
+          name: name ? name : this.user.name,
+          phone: phone ? phone : this.user.phone,
+          birthDay: inputDateValue
         }
         await this.updateUserRequest(customData)
+        await toastMessage("success", "You have update complete", {...CONFIG_TOAST, duration: 2000, position: "top-right"})
       }
     },
     created() {
@@ -217,7 +250,32 @@ export default {
       &__content {
         form {
           button {
-            padding: 10px 20px;
+            position: relative;
+            padding: 10px 30px;
+            background: $hover__color--primary;
+            color: $white;
+            border: none;
+            border-radius: 3px;
+            transition: 0.2s all;
+            font-size: 1.4rem;
+
+            .loader-small {
+              position: absolute;
+              left: 10px;
+              top: 26%;
+              transform: translateY(-50%);
+              margin: 0;
+              width: 20px;
+              height: 20px;
+            }
+
+            &:hover {
+              background: rgb(204, 183, 156);
+            }
+          }
+
+          .btn-submit__loading {
+            padding: 10px 30px 10px 50px;
           }
 
           #form-change-name {
@@ -291,11 +349,13 @@ export default {
               padding: 5px 10px;
               margin-right: 4px;
               border-radius: 3px;
-              background: $pink;
+              background: $hover__color--primary;
               color: $white;
+              transition: 0.2s all;
 
               &:hover {
                 cursor: pointer;
+                background: rgb(204, 183, 156);
               }
             }
           }
