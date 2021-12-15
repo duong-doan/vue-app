@@ -33,6 +33,10 @@ const mutations = {
   updateUserRequestFailed(state) {
     state.isProgressUpdate = false;
   },
+  addCartUserSuccess(state, data) {
+    console.log("mutation", data)
+    state.cart = data
+  }
 };
 
 export default mutations;

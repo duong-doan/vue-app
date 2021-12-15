@@ -27,7 +27,7 @@
                             <form-group label="Username" class="profile__input">
                               <template v-if="isEdit">
                                 <form id="form-change-name">
-                                  <button @click="handleSubmitChange">ok</button>
+                                  <button class="btn-submit btn-submit__change-name" @click="handleSubmitChange">ok</button>
                                   <base-input
                                     id="name"
                                     name="name"
@@ -67,19 +67,25 @@
                                 onKeydown=""
                               />
                             </form-group>
-                            <button :class="['btn-submit', {'btn-submit__loading': isProgressUpdate}]" type="submit">
+                            <button 
+                              :class="['btn-submit btn-submit__form', {
+                                'btn-submit__loading': isProgressUpdate,
+                                'btn-submit__active': activeBtn
+                                }]" 
+                              type="submit"
+                            > 
                               SAVE
                               <div v-if="isProgressUpdate" class="loader-small"></div>
-                              </button>
+                            </button>
                           </form>
                         </div>
                         <div class="profile__body__image col col-lg-4 col-sm-12">
                           <form action="">
-                            <img id="img_url" :src="`${user.avatar}`" alt="image">
+                            <img ref="img" :src="`${user.avatar}`" alt="image">
                             <div>
-                              <input ref="input" id="input_file" type="file" hidden @change="handleChooseFileImage">
+                              <input id="input_file" ref="input" type="file" hidden @change="handleChooseFileImage">
                               <label for="input_file">Choose File</label>
-                              <span class="title-upload">No file chosen</span>
+                              <span ref="span" >No file chosen</span>
                             </div>
                           </form>
                         </div>
@@ -112,114 +118,131 @@ import { CONFIG_TOAST } from '../../../utils/constants'
 const { getLocalStorage } = useLocalStorage()
 
 export default {
-    components: {
-      Breadcrumb,
-      FormGroup,
-      BaseInput,
-      BTabs,
-    },
-    data() {
-      return {
-        user: {},
-        isEdit: false,
-        imgUrl: "",
-        valueInput: {
-          name: "",
-          phone: "",
+  components: {
+    Breadcrumb,
+    FormGroup,
+    BaseInput,
+    BTabs,
+  },
+  data() {
+    return {
+      user: {},
+      isEdit: false,
+      imgUrl: "",
+      valueInput: {
+        name: "",
+        phone: "",
+        date: ""
+      },
+      activeBtn: false
+    }
+  },
+  computed: {
+    ...mapGetters('auth', ['isProgressUpdate']),
+    breadcrumb() {
+      return [
+        {
+          id: 1,
+          text: "Home",
+          to: "/"
         },
+        {
+          id: 2,
+          text: `${this.user.name}`,
+        }
+      ]
+    }
+  },
+  methods: {
+    ...mapActions('auth', ['updateUserRequest']),
+    handleChooseFileImage() {
+      // const file = inputEl.files[0]
+      const fileType = this.$refs.input.files[0].type
+      const validateType = ["image/jpg", "image/jpeg", "image/png", "image/JPG", "image/JPEG", "image/PNG"]
+      if(validateType.includes(fileType)) {
+        // const fileReader = new FileReader()
+        // fileReader.onload = () => {
+        //   const fileURL = fileReader.result
+        //   titleEl.textContent = inputEl.files[0].name
+        //   imgEl.src = fileURL
+        //   this.imgUrl = fileURL
+        // }
+        // fileReader.readAsDataURL(file)
+        this.$refs.span.textContent = this.$refs.input.files[0].name
+        this.$refs.span.style = "color: black;"
+        this.$refs.img.src = URL.createObjectURL(this.$refs.input.files[0])
+        this.imgUrl = URL.createObjectURL(this.$refs.input.files[0])
+        console.log()
+      } else {
+        this.$refs.span.textContent = "This file is error"
+        this.$refs.span.style = "color: red;"
+        this.$refs.img.src = ""
+        this.imgUrl = ""
       }
     },
-    computed: {
-      ...mapGetters('auth', ['isProgressUpdate']),
-      breadcrumb() {
-        return [
-          {
-            id: 1,
-            text: "Home",
-            to: "/"
-          },
-          {
-            id: 2,
-            text: `${this.user.name}`,
-          }
-        ]
-      }
+    handleClickChange() {
+      this.isEdit = true
     },
-    methods: {
-      ...mapActions('auth', ['updateUserRequest']),
-      handleChooseFileImage() {
-        const imgEl = document.querySelector("#img_url")
-        const inputEl = document.querySelector("#input_file")
-        const titleEl = document.querySelector(".title-upload")
-        // const file = inputEl.files[0]
-        const fileType = inputEl.files[0].type
-        const validateType = ["image/jpg", "image/jpeg", "image/png", "image/JPG", "image/JPEG", "image/PNG"]
-        if(validateType.includes(fileType)) {
-          // const fileReader = new FileReader()
-          // fileReader.onload = () => {
-          //   const fileURL = fileReader.result
-          //   titleEl.textContent = inputEl.files[0].name
-          //   imgEl.src = fileURL
-          //   this.imgUrl = fileURL
-          // }
-          // fileReader.readAsDataURL(file)
-          titleEl.textContent = inputEl.files[0].name
-          titleEl.style = "color: black;"
-          imgEl.src = URL.createObjectURL(inputEl.files[0])
-          this.imgUrl = URL.createObjectURL(inputEl.files[0])
-        } else {
-          titleEl.textContent = "This file is error"
-          titleEl.style = "color: red;"
-          imgEl.src = ""
-          this.imgUrl = ""
-        }
-      },
-      handleClickChange() {
-        this.isEdit = true
-      },
-      handleSubmitChange() {
-        this.isEdit = false
-        const {name} = this.valueInput
-        if(name) {
-          this.valueInput = {
-            ...this.valueInput,
-            name
-          }
-        }
-      },
-      handleBlur() {
-        this.isEdit = false
-      },
-      handleChange(id, e) {
+    handleSubmitChange() {
+      this.isEdit = false
+      const {name} = this.valueInput
+      if(name) {
         this.valueInput = {
           ...this.valueInput,
-          [id]: e.target.value
+          name
         }
-      },
-      handleKeydown(e) {
-        if(e.key === "Escape") {
-          this.isEdit = false
-        }
-      },
-      async handleSubmit(e) {
-        e.preventDefault();
-        const { name, phone } = this.valueInput
-        const inputDateValue = document.querySelector("#date").value
-        const customData = {
-          ...this.user,
-          avatar: this.imgUrl ? this.imgUrl : this.user.avatar,
-          name: name ? name : this.user.name,
-          phone: phone ? phone : this.user.phone,
-          birthDay: inputDateValue
-        }
-        await this.updateUserRequest(customData)
-        await toastMessage("success", "You have update complete", {...CONFIG_TOAST, duration: 2000, position: "top-right"})
       }
     },
-    created() {
-      const userLocal = getLocalStorage("user")
-      this.user = userLocal
+    handleBlur() {
+      this.isEdit = false
+      // const {name, phone, date} = this.valueInput
+      // if(name || phone || date) {
+      //   this.activeBtn = true
+      // } else {
+      //   this.activeBtn = false
+      // }
+    },
+    handleChange(id, e) {
+      this.valueInput = {
+        ...this.valueInput,
+        [id]: e.target.value
+      }
+    },
+    handleKeydown(e) {
+      if(e.key === "Escape") {
+        this.isEdit = false
+      }
+    },
+    async handleSubmit(e) {
+      e.preventDefault();
+      const { name, phone, date } = this.valueInput
+      const customData = {
+        ...this.user,
+        avatar: this.imgUrl ? this.imgUrl : this.user.avatar,
+        name: name ? name : this.user.name,
+        phone: phone ? phone : this.user.phone,
+        birthDay: date
+      }
+      await this.updateUserRequest(customData)
+      await toastMessage("success", "You have update complete", {...CONFIG_TOAST, duration: 2000, position: "top-right"})
     }
+  },
+  created() {
+    const userLocal = getLocalStorage("user")
+    this.user = userLocal
+  },
+  watch: {
+    valueInput(value) {
+      const keys = Object.keys(value)
+      const isEmpty = keys.includes(item => {
+        if(value[item]) {
+          console.log(value[item])
+          return false
+        } 
+      })
+      if(!isEmpty) this.activeBtn = true
+    }
+  }
 }
 </script>
 
@@ -249,7 +272,7 @@ export default {
       padding-top: 20px;
       &__content {
         form {
-          button {
+          .btn-submit {
             position: relative;
             padding: 10px 30px;
             background: $hover__color--primary;
@@ -258,6 +281,11 @@ export default {
             border-radius: 3px;
             transition: 0.2s all;
             font-size: 1.4rem;
+          }
+
+          .btn-submit__form{
+            opacity: 0;
+            visibility: hidden;
 
             .loader-small {
               position: absolute;
@@ -276,6 +304,11 @@ export default {
 
           .btn-submit__loading {
             padding: 10px 30px 10px 50px;
+          }
+
+          .btn-submit__active {
+            opacity: 1;
+            visibility: visible;
           }
 
           #form-change-name {

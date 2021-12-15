@@ -181,7 +181,6 @@ export default {
   },
   watch: {
     userInfo(value) {
-      console.log(value)
       if (value.email || value.password) {
         this.isEditInput = true;
       } else {

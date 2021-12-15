@@ -5,6 +5,7 @@ export const addNewUserToDB = async ({ email, password }) => {
     const res = await axios.post("/auth", {
       email,
       password,
+      cart: []
     });
     return res;
   } catch (e) {

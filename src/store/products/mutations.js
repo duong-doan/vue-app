@@ -11,6 +11,7 @@ const mutations = {
     },
     getProductDetailSuccess(state, data) {
         const productDetail = {
+            id: data.id,
             name: data.name,
             image: data.image,
             price: data.price,

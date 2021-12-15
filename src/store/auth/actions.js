@@ -54,6 +54,10 @@ const actions = {
       commit("updateUserRequestFailed");
     }
   },
+  addCartUserRequest({commit}, data) {
+    console.log("actions", data)
+    commit("addCartUserSuccess", data)
+  }
 };
 
 export default actions;

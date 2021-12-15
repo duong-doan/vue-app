@@ -11,7 +11,7 @@
             <span :class="priceDiscount === 0 ? 'no-discount' : ''">${{ price }}</span>
             <span>{{ priceDiscount === 0 ? "" : `$${priceDiscount}` }}</span>
           </div>
-            <button>Add to cart</button>
+            <button>VIEW DETAIL</button>
         </div>
       </div>
     </router-link>

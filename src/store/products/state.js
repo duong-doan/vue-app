@@ -1,6 +1,7 @@
 const state = () => ({
     products: [],
     product_detail: {
+        id: '',
         name: '',
         image: '',
         price: 0,
