@@ -106,14 +106,23 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+import { BTabs } from 'bootstrap-vue'
+// Components
 import Breadcrumb from "../../../components/Breadscrum"
-import useLocalStorage from "../../../utils/useLocalStorage"
 import FormGroup from "../../../components/FormGroup"
 import BaseInput from "../../../components/BaseInput"
-import { BTabs } from 'bootstrap-vue'
-import { mapActions, mapGetters } from 'vuex'
+// Utils
+import useLocalStorage from "../../../utils/useLocalStorage"
 import { toastMessage } from '../../../utils/notification'
-import { CONFIG_TOAST } from '../../../utils/constants'
+import { CONFIG_TOAST, MODULES, ROUTES, STATUS_TOAST, POSITION_TOAST, EN_LANG } from '../../../utils/constants'
+// Store
+import { AUTH_STATE, UPDATE_USER_REQUEST } from '../store/constants'
+
+const { AUTH } = MODULES
+const { IS_PROGRESS_UPDATE } = AUTH_STATE
+const { SUCCESS } = STATUS_TOAST
+const { TOP_RIGHT } = POSITION_TOAST
 
 const { getLocalStorage } = useLocalStorage()
 
@@ -138,13 +147,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('auth', ['isProgressUpdate']),
+    ...mapGetters(AUTH, [IS_PROGRESS_UPDATE]),
     breadcrumb() {
       return [
         {
           id: 1,
           text: "Home",
-          to: "/"
+          to: ROUTES.HOME
         },
         {
           id: 2,
@@ -154,7 +163,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('auth', ['updateUserRequest']),
+    ...mapActions(AUTH, [UPDATE_USER_REQUEST]),
     handleChooseFileImage() {
       // const file = inputEl.files[0]
       const fileType = this.$refs.input.files[0].type
@@ -224,7 +233,7 @@ export default {
         birthDay: date
       }
       await this.updateUserRequest(customData)
-      await toastMessage("success", "You have update complete", {...CONFIG_TOAST, duration: 2000, position: "top-right"})
+      await toastMessage(SUCCESS, EN_LANG.auth.update_success, {...CONFIG_TOAST, duration: 2000, position: TOP_RIGHT})
     }
   },
   created() {

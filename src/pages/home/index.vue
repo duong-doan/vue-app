@@ -4,6 +4,7 @@
     <BannerComponent />
     <SectionComponents />
     <FooterComponent />
+    <!-- <router-view /> -->
   </div>
 </template>
 

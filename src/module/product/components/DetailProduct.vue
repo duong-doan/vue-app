@@ -19,7 +19,6 @@
               <input
                 type="text"
                 :value="quantity"
-                placeholder="abc"
                 readonly
               />
               <div>
@@ -60,15 +59,35 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { toastMessage } from '../../../utils/notification';
-import { CONFIG_TOAST } from '../../../utils/constants'
-import useLocalStorage from '../../../utils/useLocalStorage'
+// Utils
+import { toastMessage } from "../../../utils/notification";
+import {
+  CONFIG_TOAST,
+  USER_LOCAL_STR,
+  MODULES,
+  POSITION_TOAST,
+  STATUS_TOAST,
+  EN_LANG,
+  ROUTES,
+  MESSAGE_TOAST
+} from "../../../utils/constants"
+import useLocalStorage from "../../../utils/useLocalStorage"
+// Store
+import { AUTH_STATE } from "../../auth/store/constants"
+import { INCREASE_QUANTITY_PRODUCT, DECREASE_QUANTITY_PRODUCT, ADD_CART_USER_REQUEST } from "../../product/store/constants"
+
+const { AUTH, PRODUCT } = MODULES
+const { CART, USER_LOGIN, IS_AUTHENTICATED } = AUTH_STATE
+const { TOP_CENTER, TOP_RIGHT } = POSITION_TOAST
+const { INFORMATION, SUCCESS, ERROR } = STATUS_TOAST
+
+const { getLocalStorage } = useLocalStorage()
 
 export default {
   props: ['productDetail'],
   computed: {
-    ...mapGetters('products', ['quantity_default']),
-    ...mapGetters('auth', ['cart']),
+    ...mapGetters(PRODUCT, ['quantity_default']),
+    ...mapGetters(AUTH, [CART, USER_LOGIN]),
     getCart() {
       return this.cart
     },
@@ -76,57 +95,55 @@ export default {
       return this.quantity_default
     },
     getIsAuthenticated() {
-      const { getLocalStorage } = useLocalStorage()
-      const isAuthenticated = getLocalStorage("isAuthenticated")
+      const isAuthenticated = getLocalStorage(IS_AUTHENTICATED)
       return isAuthenticated
+    },
+    getUserLogin() {
+      const userLocal = getLocalStorage(USER_LOCAL_STR)
+      return userLocal
     }
   },
   methods: {
-    ...mapActions('products', [
-      'increaseQuantityProduct',
-      'decreaseQuantityProduct',
-    ]),
-    ...mapActions('auth', [
-      'addCartUserRequest'
-    ]),
+    ...mapActions(PRODUCT, [INCREASE_QUANTITY_PRODUCT, DECREASE_QUANTITY_PRODUCT]),
+    ...mapActions(AUTH, [ADD_CART_USER_REQUEST]),
     handleSubmit(e) {
       // toast props: type, message, options, customMsg, handleClickToast
       e.preventDefault();
       if (this.getIsAuthenticated) {
-        console.log(this.quantity)
+        const options = {
+            ...CONFIG_TOAST,
+            duration: 2000,
+            position: TOP_CENTER,
+        }
         const data = {
           ...this.productDetail,
           quantity: this.quantity
         }
         const isSameProduct = this.getCart.some(item => item.id === this.productDetail.id)
+        // compare if is same product
         if(!isSameProduct) {
           this.getCart.push(data)
+          toastMessage(SUCCESS, EN_LANG.product.add_cart_success, { ...options })
+        } else {
+          toastMessage(INFORMATION, EN_LANG.product.product_is_exist, { ...options })
         }
+        // add cart to server 
         const cartUserItem = this.getCart
         this.addCartUserRequest(cartUserItem)
-        toastMessage(
-          "success",
-          "Add to cart success!!",
-          {
-            ...CONFIG_TOAST,
-            duration: 2000,
-            position: "top-center",
-          }
-        )
       } else {
         const handleClickToast = () => {
-          this.$router.push('/user/login')
+          this.$router.push(ROUTES.LOGIN)
         }
         toastMessage(
-          "error",
-          "Please login first !!",
+          ERROR,
+          EN_LANG.auth.login_first,
           {
             ...CONFIG_TOAST,
             duration: 10000,
-            position: "top-right",
+            position: TOP_RIGHT,
             keepOnHover: true
           },
-          "Go to login",
+          MESSAGE_TOAST.go_to_login,
           handleClickToast
         )
       }

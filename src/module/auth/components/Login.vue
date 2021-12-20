@@ -54,7 +54,7 @@ import Validate from "../../../utils/validate";
 import { toastMessage } from "../../../utils/notification"
 import { VALIDATION_RULES } from "../../../utils/constants";
 import { CONFIG_TOAST } from '../../../utils/constants'
-import { dataInputLogin } from "../constants";
+import { dataInputLogin } from "../store/constants";
 import { mapActions, mapGetters } from 'vuex';
 
 export default {

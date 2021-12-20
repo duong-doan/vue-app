@@ -53,7 +53,7 @@ import FormGroup from "../../../components/FormGroup";
 import { VALIDATION_RULES } from '../../../utils/constants' 
 import Validate from '../../../utils/validate'
 import { CONFIG_TOAST } from '../../../utils/constants'
-import { dataInputRegister } from "../constants";
+import { dataInputRegister } from "../store/constants";
 import { toastMessage } from '../../../utils/notification';
 import { mapActions, mapGetters } from 'vuex';
 

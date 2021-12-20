@@ -120,3 +120,44 @@ export const CONFIG_TOAST = {
   singleton: false,
   fitToScreen: false,
 };
+
+export const USER_LOCAL_STR = "user"
+
+export const MODULES = {
+  AUTH: "auth",
+  PRODUCT: "products"
+}
+
+export const POSITION_TOAST = {
+  TOP_RIGHT: "top-right",
+  TOP_LEFT: "top-left",
+  TOP_CENTER: "top-center",
+}
+
+export const STATUS_TOAST = {
+  SUCCESS: "success",
+  ERROR: "error",
+  INFORMATION : "info"
+}
+
+export const MESSAGE_TOAST = {
+  go_to_login: "Go to login"
+}
+
+export const EN_LANG = {
+  product: {
+    add_cart_success: "Add to cart success!!",
+    product_is_exist: "The product is already in the cart now!!",
+    
+  },
+  auth: {
+    login_first: "Please login first !!",
+    update_success: "You have update complete"
+  }
+}
+
+export const ROUTES = {
+  HOME: "/",
+  LOGIN: "/user/login",
+  REGISTER: "/user/register",
+}
