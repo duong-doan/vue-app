@@ -74,10 +74,9 @@ import {
 import useLocalStorage from "../../../utils/useLocalStorage"
 // Store
 import { AUTH_STATE } from "../../auth/store/constants"
-import { INCREASE_QUANTITY_PRODUCT, DECREASE_QUANTITY_PRODUCT, ADD_CART_USER_REQUEST } from "../../product/store/constants"
 
 const { AUTH, PRODUCT } = MODULES
-const { CART, USER_LOGIN, IS_AUTHENTICATED } = AUTH_STATE
+const {  IS_AUTHENTICATED } = AUTH_STATE
 const { TOP_CENTER, TOP_RIGHT } = POSITION_TOAST
 const { INFORMATION, SUCCESS, ERROR } = STATUS_TOAST
 
@@ -87,7 +86,7 @@ export default {
   props: ['productDetail'],
   computed: {
     ...mapGetters(PRODUCT, ['quantity_default']),
-    ...mapGetters(AUTH, [CART, USER_LOGIN]),
+    ...mapGetters(AUTH, ['cart', 'user']),
     getCart() {
       return this.cart
     },
@@ -104,8 +103,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions(PRODUCT, [INCREASE_QUANTITY_PRODUCT, DECREASE_QUANTITY_PRODUCT]),
-    ...mapActions(AUTH, [ADD_CART_USER_REQUEST]),
+    ...mapActions(PRODUCT, ['increaseQuantityProduct', 'decreaseQuantityProduct']),
+    ...mapActions(AUTH, ['addCartUserRequest']),
     handleSubmit(e) {
       // toast props: type, message, options, customMsg, handleClickToast
       e.preventDefault();
@@ -119,6 +118,7 @@ export default {
           ...this.productDetail,
           quantity: this.quantity
         }
+        console.log(this.getCart)
         const isSameProduct = this.getCart.some(item => item.id === this.productDetail.id)
         // compare if is same product
         if(!isSameProduct) {

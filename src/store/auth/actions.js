@@ -5,7 +5,7 @@ import useLocalStorage from "../../utils/useLocalStorage";
 
 const { EMAIL_EXISTS, ACCOUNT_ERROR } = ERRORS;
 
-const { setLocalStorage } = useLocalStorage();
+const { setLocalStorage, getLocalStorage } = useLocalStorage();
 const actions = {
   progress({ commit }) {
     commit("progress");
@@ -54,9 +54,14 @@ const actions = {
       commit("updateUserRequestFailed");
     }
   },
-  addCartUserRequest({commit}, data) {
-    console.log("actions", data)
-    commit("addCartUserSuccess", data)
+  async addCartUserRequest({commit}, data) {
+    const user = getLocalStorage("user")
+    const dataRequest = {
+      ...user,
+      cart: data
+    }
+    const res = await authApi.updateCartUserRequest(user.id, dataRequest)
+    commit("addCartUserSuccess", res.cart)
   }
 };
 

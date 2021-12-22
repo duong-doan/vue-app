@@ -34,7 +34,7 @@ export const updateUserRequestDB = async (id, data) => {
 export const updateCartUserRequest = async (id, data) => {
   try {
     const res = await axios.put(`/auth/${id}`, data)
-    console.log(res)
+    return res.data
   } catch (e) {
     throw new Error(e)
   }
