@@ -13,7 +13,7 @@ export const addNewUserToDB = async ({ email, password }) => {
   }
 };
 
-export const getUserFromDB = async () => {
+export const getUsersFromDB = async () => {
   try {
     const res = await axios.get("/auth");
     return res.data;
@@ -21,6 +21,15 @@ export const getUserFromDB = async () => {
     throw new Error(e);
   }
 };
+
+export const getUserLoginFromDB = async (id) => {
+  try {
+    const res = await axios.get(`/auth/${id}`)
+    return res.data
+  } catch (e) {
+    throw new Error(e)
+  }
+}
 
 export const updateUserRequestDB = async (id, data) => {
   try {

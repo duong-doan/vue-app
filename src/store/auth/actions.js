@@ -14,7 +14,7 @@ const actions = {
     commit("setIsAuthenticated", value);
   },
   async addNewUserRequest({ commit }, { email, password }) {
-    const dataUsers = await authApi.getUserFromDB();
+    const dataUsers = await authApi.getUsersFromDB();
     const isSame = checkEmailExists(dataUsers, email);
     if (!isSame) {
       await authApi.addNewUserToDB({ email, password }).then((res) => {
@@ -27,15 +27,12 @@ const actions = {
     }
   },
   async loginUserRequest({ commit }, { email, password }) {
-    const dataUsers = await authApi.getUserFromDB();
+    const dataUsers = await authApi.getUsersFromDB();
     const { isSame, findUser } = checkLoginUser(dataUsers, email, password);
 
     if (isSame) {
       commit("loginUserSuccess", findUser);
-      const customUserLocalStr = {
-        ...findUser,
-      };
-      setLocalStorage("user", customUserLocalStr);
+      setLocalStorage("user", findUser);
       setLocalStorage("isAuthenticated", true);
     } else {
       commit("loginUserFail", ACCOUNT_ERROR);
@@ -55,14 +52,19 @@ const actions = {
     }
   },
   async addCartUserRequest({commit}, data) {
-    const user = getLocalStorage("user")
+    const user = await getLocalStorage("user")
     const dataRequest = {
       ...user,
       cart: data
     }
     const res = await authApi.updateCartUserRequest(user.id, dataRequest)
-    commit("addCartUserSuccess", res.cart)
-  }
+    if(res) {
+      delete res["0"]
+      commit("addCartUserSuccess", res)
+      console.log(res)
+      setLocalStorage("user", res)
+    }
+  },
 };
 
 export default actions;

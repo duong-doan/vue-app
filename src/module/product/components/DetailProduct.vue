@@ -83,13 +83,15 @@ const { INFORMATION, SUCCESS, ERROR } = STATUS_TOAST
 const { getLocalStorage } = useLocalStorage()
 
 export default {
+  data () {
+    return {
+      cartDefault: []
+    }
+  },
   props: ['productDetail'],
   computed: {
     ...mapGetters(PRODUCT, ['quantity_default']),
     ...mapGetters(AUTH, ['cart', 'user']),
-    getCart() {
-      return this.cart
-    },
     quantity() {
       return this.quantity_default
     },
@@ -118,17 +120,17 @@ export default {
           ...this.productDetail,
           quantity: this.quantity
         }
-        console.log(this.getCart)
-        const isSameProduct = this.getCart.some(item => item.id === this.productDetail.id)
+        const isSameProduct = this.cartDefault.some(item => item.id === this.productDetail.id)
         // compare if is same product
         if(!isSameProduct) {
-          this.getCart.push(data)
+          this.cartDefault.push(data)
           toastMessage(SUCCESS, EN_LANG.product.add_cart_success, { ...options })
         } else {
           toastMessage(INFORMATION, EN_LANG.product.product_is_exist, { ...options })
         }
+        console.log("after submit", this.cartDefault)
         // add cart to server 
-        const cartUserItem = this.getCart
+        const cartUserItem = this.cartDefault
         this.addCartUserRequest(cartUserItem)
       } else {
         const handleClickToast = () => {
@@ -148,6 +150,10 @@ export default {
         )
       }
     }
+  },
+  created() {
+    this.cartDefault = this.getUserLogin.cart
+    console.log("before", this.cartDefault)
   },
   destroyed() {
     this.$toasted.clear()

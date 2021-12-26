@@ -34,8 +34,8 @@ const mutations = {
     state.isProgressUpdate = false;
   },
   addCartUserSuccess(state, data) {
-    console.log("mutation", data)
-    state.cart = data
+    const { cart } = data
+    state.cart = cart
   }
 };
 
