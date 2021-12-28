@@ -20,7 +20,7 @@
                 {{getUserLogin.cart.length}}
                 <div class="dropdown-cart__wrapped">
                   <div class="dropdown-cart__content">
-                    <ul>
+                    <ul v-if="getUserLogin.cart.length">
                       <li class="dropdown-cart__item" v-for="product in getUserLogin.cart" :key="product.id">
                         <div class="dropdown-cart__item__img">
                           <img :src="product.image" alt="">
@@ -36,6 +36,9 @@
                         <span class="dropdown-cart__item__quantity">{{product.quantity}}</span> -->
                       </li>
                     </ul>
+                    <div class="dropdown-cart__content__empty" v-else>
+                      <img src="../../assets/images/empty.jpg" alt="">
+                    </div>
                   </div>
                 </div>
               </div>
@@ -66,14 +69,17 @@ export default {
     getUserLogin() {
       const { getLocalStorage } = useLocalStorage()
       const user = getLocalStorage("user")
-      const {cart} = user
+      let cart = []
       const isAuthenticated = getLocalStorage("isAuthenticated")
+      if(isAuthenticated) {
+        cart = user.cart
+      }
       return {
         user,
         isAuthenticated,
         cart
       }
     }
-  },
+  }
 };
 </script>
