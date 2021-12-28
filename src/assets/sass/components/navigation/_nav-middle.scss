@@ -110,4 +110,92 @@
       z-index: 1;
     }
   }
+
+  &__cart__body {
+    position: relative;
+    &:hover {
+      cursor: pointer;
+      .dropdown-cart__wrapped {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+    .dropdown-cart__wrapped {
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: absolute;
+      top: 30px;
+      right: -30px;
+      background: $white;
+      width: 300px;
+      height: 250px;
+      border-radius: 3px;
+      box-shadow: 0 0 15px rgba($color: #000000, $alpha: 0.9);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s;
+      .dropdown-cart__content {
+        color: $text__color--darker;
+        ul {
+          padding-left: 0;
+          padding: 10px;
+          margin: 0;
+          .dropdown-cart__item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid $gray-500;
+            &:hover {
+              p {
+                color: $hover__color--primary;
+              }
+            }
+            &__img {
+              img {
+                width: 60px;
+                height: 60px;
+              }
+            }
+
+            &__info {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+
+              p {
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                transition: all 0.2s;
+              }
+
+              div {
+                span {
+                  color: $hover__color--primary;
+                }
+                span:nth-child(1) {
+                  text-decoration: line-through;
+                  color: $text__color--dark;
+                  margin-right: 10px;
+                }
+              }
+            }
+
+            i {
+              color: inherit;
+            }
+
+            &__quantity {
+              font-size: 1.4rem;
+              color: $text__color--darker;
+            }
+          }
+        }
+      }
+    }
+  }
 }

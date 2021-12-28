@@ -61,7 +61,6 @@ const actions = {
     if(res) {
       delete res["0"]
       commit("addCartUserSuccess", res)
-      console.log(res)
       setLocalStorage("user", res)
     }
   },

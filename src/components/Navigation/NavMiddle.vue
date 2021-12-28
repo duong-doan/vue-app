@@ -17,7 +17,27 @@
           <div v-if="getUserLogin.isAuthenticated" class="header__nav-middle__cart__content">
             <div class="header__nav-middle__cart__wrap">
               <div class="header__nav-middle__cart__body">
-                1
+                {{getUserLogin.cart.length}}
+                <div class="dropdown-cart__wrapped">
+                  <div class="dropdown-cart__content">
+                    <ul>
+                      <li class="dropdown-cart__item" v-for="product in getUserLogin.cart" :key="product.id">
+                        <div class="dropdown-cart__item__img">
+                          <img :src="product.image" alt="">
+                        </div>
+                        <div class="dropdown-cart__item__info">
+                          <p>{{product.name}}</p>
+                          <div>
+                            <span>{{product.price}}$</span>
+                            <span>{{product.price_discount}}$</span>
+                          </div>
+                        </div>
+                        <!-- <i class="fas fa-times"></i>
+                        <span class="dropdown-cart__item__quantity">{{product.quantity}}</span> -->
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
               <div class="header__nav-middle__cart__top"></div>
             </div>
@@ -46,17 +66,14 @@ export default {
     getUserLogin() {
       const { getLocalStorage } = useLocalStorage()
       const user = getLocalStorage("user")
+      const {cart} = user
       const isAuthenticated = getLocalStorage("isAuthenticated")
       return {
         user,
-        isAuthenticated
+        isAuthenticated,
+        cart
       }
     }
   },
-  watch: {
-    getUserLogin(value) {
-      console.log("middle", value.isAuthenticated)
-    }
-  }
 };
 </script>
