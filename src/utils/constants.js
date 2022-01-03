@@ -160,4 +160,5 @@ export const ROUTES = {
   HOME: "/",
   LOGIN: "/user/login",
   REGISTER: "/user/register",
+  CART: "/cart"
 }

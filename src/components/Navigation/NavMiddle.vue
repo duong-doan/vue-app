@@ -1,11 +1,11 @@
 <template>
-  <div class="header__nav-middle">
+  <div v-if="!hidden" class="header__nav-middle">
     <div class="container">
       <div class="header__nav-middle__wrapped">
         <div class="header__nav-middle__logo">
-          <a href="#">
+          <router-link to="/">
             <img :src="logo" alt="" />
-          </a>
+          </router-link>
         </div>
         <div class="header__nav-middle__search">
           <input type="text" placeholder="tim kiem..." />
@@ -16,7 +16,7 @@
         <div class="header__nav-middle__cart">
           <div v-if="getUserLogin.isAuthenticated" class="header__nav-middle__cart__content">
             <div class="header__nav-middle__cart__wrap">
-              <div class="header__nav-middle__cart__body">
+              <div class="header__nav-middle__cart__body" @click="handleClickCart">
                 {{getUserLogin.cart.length}}
                 <div class="dropdown-cart__wrapped">
                   <div class="dropdown-cart__content">
@@ -57,9 +57,11 @@
 
 <script>
 import logo from "../../assets/images/logo--m.png";
+import { ROUTES } from '../../utils/constants';
 import useLocalStorage from '../../utils/useLocalStorage'
 
 export default {
+  props: ["hidden"],
   data() {
     return {
       logo,
@@ -79,6 +81,11 @@ export default {
         isAuthenticated,
         cart
       }
+    }
+  },
+  methods: {
+    handleClickCart() {
+      this.$router.push(ROUTES.CART)
     }
   }
 };

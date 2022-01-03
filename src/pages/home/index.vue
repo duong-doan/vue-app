@@ -4,12 +4,10 @@
     <BannerComponent />
     <SectionComponents />
     <FooterComponent />
-    <!-- <router-view /> -->
   </div>
 </template>
 
 <script>
-
 import HeaderComponent from "./HeaderComponent/index.vue";
 import BannerComponent from "./BannerComponent/index.vue";
 import SectionComponents from "./SectionComponents/index.vue";
@@ -21,6 +19,6 @@ export default {
     BannerComponent,
     SectionComponents,
     FooterComponent,
-  }
+  },
 };
 </script>

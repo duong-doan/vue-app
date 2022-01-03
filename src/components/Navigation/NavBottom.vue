@@ -1,5 +1,5 @@
 <template>
-  <div class="header__nav-bottom">
+  <div v-if="!hidden" class="header__nav-bottom">
     <div class="container">
       <div class="header__nav-bottom__wrap">
         <ul>
@@ -105,7 +105,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["hidden"]
+};
 </script>
 
 <style></style>
