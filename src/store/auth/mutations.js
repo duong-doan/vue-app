@@ -12,6 +12,7 @@ const mutations = {
     state.errorsAuth.register = error;
   },
   loginUserSuccess(state, user) {
+    state.cart = user.cart;
     state.isProgress = false;
     state.isAuthenticated = true;
     state.userLogin = user;
@@ -34,9 +35,9 @@ const mutations = {
     state.isProgressUpdate = false;
   },
   addCartUserSuccess(state, data) {
-    const { cart } = data
-    state.cart = cart
-  }
+    const { cart } = data;
+    state.cart = cart;
+  },
 };
 
 export default mutations;

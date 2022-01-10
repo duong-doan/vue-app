@@ -1,14 +1,6 @@
 <template>
-  <div class="">
-    <b-table
-      ref="tableRef"
-      hover
-      selectable
-      :items="items"
-      :fields="fields"
-      @row-selected="onRowSelected"
-      @row-clicked="handleSelectedRow"
-    >
+  <div class="b-table">
+    <b-table ref="tableRef" :items="customItems" :fields="fields">
       <template #head(id)>
         <input
           ref="inputTotal"
@@ -25,7 +17,15 @@
           class="input-item"
           :checked="data.item.isActive"
           @change="handleChangeCheckboxCell(data)"
+          style="cursor: pointer"
         />
+      </template>
+
+      <template #cell(product)="data">
+        <div class="b-table__cell--product">
+          <img :src="data.item.image" alt="" />
+          <h5>{{ data.item.name }}</h5>
+        </div>
       </template>
     </b-table>
   </div>
@@ -33,52 +33,15 @@
 
 <script>
 export default {
-  data() {
-    return {
-      fields: [
-        {
-          key: "id",
-          label: "",
-        },
-        "product",
-        "discount",
-        "quantity",
-        "price",
-        "delete",
-      ],
-      items: [
-        {
-          id: 1,
-          isActive: false,
-          product: "Dickerson",
-          last_name: "Macdonald",
-          discount: 12,
-          quantity: 1,
-          price: 10,
-          delete: false,
-        },
-        {
-          id: 2,
-          isActive: false,
-          product: "Larsen",
-          last_name: "Shaw",
-          discount: 12,
-          quantity: 1,
-          price: 10,
-          delete: false,
-        },
-        {
-          id: 3,
-          isActive: false,
-          product: "Geneva",
-          last_name: "Wilson",
-          discount: 12,
-          quantity: 1,
-          price: 10,
-          delete: false,
-        },
-      ],
-    };
+  props: ["fields", "items"],
+  computed: {
+    customItems() {
+      const newitems = this.items.map((x) => ({
+        ...x,
+        isActive: false,
+      }));
+      return newitems;
+    },
   },
   methods: {
     onRowSelected(items) {
@@ -88,33 +51,62 @@ export default {
     handleChangeCheckboxHead(e) {
       if (!e.target.checked) {
         this.$refs.tableRef.clearSelected();
-        this.items.forEach((cell) => {
+        this.customItems.forEach((cell) => {
           cell.isActive = false;
         });
         return;
       }
       this.$refs.tableRef.selectAllRows();
-      this.items.forEach((cell) => {
+      this.customItems.forEach((cell) => {
         cell.isActive = true;
       });
     },
     handleChangeCheckboxCell(data) {
-      console.log(data.item.id);
+      console.log("data", data);
       this.items.forEach((cell) => {
-        console.log(cell.id);
         if (data.item.id === cell.id) {
           cell.isActive === !cell.isActive;
         }
       });
-      console.log(this.items);
     },
-    handleSelectedRow(item) {
-      this.items.forEach((cell) => {
-        if (cell.id === item.id) {
-          cell.isActive = !cell.isActive;
-        }
-      });
+    showProduct(data) {
+      console.log(data);
+      return `<img src="${data.item.image}" />`;
     },
   },
 };
 </script>
+
+<style lang="scss">
+.b-table {
+  &__cell--product {
+    display: flex;
+    align-items: center;
+    img {
+      width: 30px;
+      height: 30px;
+    }
+    h5 {
+      font-size: 10px;
+    }
+  }
+
+  thead {
+    tr {
+      th {
+        vertical-align: middle;
+        text-align: center;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      td {
+        vertical-align: middle;
+        text-align: center;
+      }
+    }
+  }
+}
+</style>
