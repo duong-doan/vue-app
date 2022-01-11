@@ -14,30 +14,35 @@
           </div>
         </div>
         <div class="header__nav-middle__cart">
-          <div v-if="getUserLogin.isAuthenticated" class="header__nav-middle__cart__content">
+          <div v-if="isAuthenticated" class="header__nav-middle__cart__content">
             <div class="header__nav-middle__cart__wrap">
-              <div class="header__nav-middle__cart__body" @click="handleClickCart">
-                {{getUserLogin.cart.length}}
+              <div
+                class="header__nav-middle__cart__body"
+                @click="handleClickCart"
+              >
+                {{ getCartStore.length }}
                 <div class="dropdown-cart__wrapped">
                   <div class="dropdown-cart__content">
-                    <ul v-if="getUserLogin.cart.length">
-                      <li class="dropdown-cart__item" v-for="product in getUserLogin.cart" :key="product.id">
+                    <ul v-if="getCartStore.length">
+                      <li
+                        class="dropdown-cart__item"
+                        v-for="product in getCartStore"
+                        :key="product.id"
+                      >
                         <div class="dropdown-cart__item__img">
-                          <img :src="product.image" alt="">
+                          <img :src="product.image" alt="" />
                         </div>
                         <div class="dropdown-cart__item__info">
-                          <p>{{product.name}}</p>
+                          <p>{{ product.name }}</p>
                           <div>
-                            <span>{{product.price}}$</span>
-                            <span>{{product.price_discount}}$</span>
+                            <span>{{ product.price }}$</span>
+                            <span>{{ product.price_discount }}$</span>
                           </div>
                         </div>
-                        <!-- <i class="fas fa-times"></i>
-                        <span class="dropdown-cart__item__quantity">{{product.quantity}}</span> -->
                       </li>
                     </ul>
                     <div class="dropdown-cart__content__empty" v-else>
-                      <img src="../../assets/images/empty.jpg" alt="">
+                      <img src="../../assets/images/empty.jpg" alt="" />
                     </div>
                   </div>
                 </div>
@@ -56,9 +61,12 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 import logo from "../../assets/images/logo--m.png";
-import { ROUTES } from '../../utils/constants';
-import useLocalStorage from '../../utils/useLocalStorage'
+import { ROUTES } from "../../utils/constants";
+import useLocalStorage from "../../utils/useLocalStorage";
+
+const { getLocalStorage } = useLocalStorage();
 
 export default {
   props: ["hidden"],
@@ -68,25 +76,25 @@ export default {
     };
   },
   computed: {
+    ...mapGetters("auth", ["cart"]),
     getUserLogin() {
-      const { getLocalStorage } = useLocalStorage()
-      const user = getLocalStorage("user")
-      let cart = []
-      const isAuthenticated = getLocalStorage("isAuthenticated")
-      if(isAuthenticated) {
-        cart = user.cart
-      }
-      return {
-        user,
-        isAuthenticated,
-        cart
-      }
-    }
+      return getLocalStorage("user");
+    },
+    isAuthenticated() {
+      return getLocalStorage("isAuthenticated");
+    },
+    getCartStore() {
+      return this.cart;
+    },
   },
   methods: {
+    ...mapActions("auth", ["setCart"]),
     handleClickCart() {
-      this.$router.push(ROUTES.CART)
-    }
-  }
+      this.$router.push(ROUTES.CART);
+    },
+  },
+  created() {
+    this.setCart(getLocalStorage("user").cart);
+  },
 };
 </script>

@@ -8,7 +8,18 @@
     <div class="container">
       <div class="cart-page__wrapped">
         <div class="cart-page__list">
-          <Table :items="cart_default" :fields="fields" />
+          <Table
+            :items="getCartStore"
+            :fields="fields"
+            :onDelete="handleDeleteRow"
+          />
+          <DialogModal
+            id="delete-product"
+            :isShow="isShow"
+            :text="customTextDialog"
+            :onSubmit="handleSubmitDialogModal"
+            :onClose="handleCloseDialogModal"
+          />
         </div>
       </div>
     </div>
@@ -16,7 +27,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+import DialogModal from "../../components/Modal";
 import useLocalStorage from "../../utils/useLocalStorage";
 import NavTop from "../../components/Navigation/NavTop.vue";
 import NavMiddle from "../../components/Navigation/NavMiddle.vue";
@@ -27,6 +39,7 @@ export default {
     NavTop,
     NavMiddle,
     Table,
+    DialogModal,
   },
   data() {
     return {
@@ -38,6 +51,11 @@ export default {
         {
           key: "product",
           label: "Product",
+          formatter: (value, key, item) => {
+            return item.name;
+          },
+          sortable: true,
+          sortByFormatted: true,
         },
         {
           key: "price",
@@ -50,18 +68,41 @@ export default {
         {
           key: "price_discount",
           label: "Discount price",
+          sortable: true,
         },
         "delete",
       ],
-      cart_default: [],
+      customTextDialog: "",
+      isShow: false,
+      idDelete: "",
     };
   },
   computed: {
     ...mapGetters("auth", ["cart"]),
+    getCartStore() {
+      return this.cart;
+    },
+  },
+  methods: {
+    ...mapActions("auth", ["setCart"]),
+    handleDeleteRow(id) {
+      this.isShow = true;
+      this.idDelete = id;
+      const text = this.getCartStore.find((x) => x.id === id).name;
+      this.customTextDialog = `Do you want delete ${text}?`;
+    },
+    handleSubmitDialogModal() {
+      this.isShow = false;
+      const newCart = this.getCartStore.filter((x) => x.id !== this.idDelete);
+      this.setCart(newCart);
+    },
+    handleCloseDialogModal() {
+      this.isShow = false;
+    },
   },
   created() {
     const { getLocalStorage } = useLocalStorage();
-    this.cart_default = getLocalStorage("user").cart;
+    this.setCart(getLocalStorage("user").cart);
   },
 };
 </script>

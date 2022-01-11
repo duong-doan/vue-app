@@ -51,18 +51,27 @@ const actions = {
       commit("updateUserRequestFailed");
     }
   },
-  async addCartUserRequest({commit}, data) {
-    const user = await getLocalStorage("user")
+  async addCartUserRequest({ commit }, data) {
+    const user = await getLocalStorage("user");
     const dataRequest = {
       ...user,
-      cart: data
+      cart: data,
+    };
+    const res = await authApi.updateCartUserRequest(user.id, dataRequest);
+    if (res) {
+      delete res["0"];
+      commit("addCartUserSuccess", res);
+      setLocalStorage("user", res);
     }
-    const res = await authApi.updateCartUserRequest(user.id, dataRequest)
-    if(res) {
-      delete res["0"]
-      commit("addCartUserSuccess", res)
-      setLocalStorage("user", res)
-    }
+  },
+  setCart({ commit }, data) {
+    commit("setCart", data);
+    const userLocal = getLocalStorage("user");
+    const newData = {
+      ...userLocal,
+      cart: data,
+    };
+    setLocalStorage("user", newData);
   },
 };
 

@@ -10,19 +10,20 @@
         <div class="product-detail__info__content">
           <h1>{{ productDetail.name }}</h1>
           <div class="product-detail__info__content--price">
-            <span :class="productDetail.price_discount !== 0 ? '' : 'no-discount'">${{ productDetail.price }}</span>
-            <span v-if="productDetail.price_discount !== 0">${{ productDetail.price_discount }}</span>
+            <span
+              :class="productDetail.price_discount !== 0 ? '' : 'no-discount'"
+              >${{ productDetail.price }}</span
+            >
+            <span v-if="productDetail.price_discount !== 0"
+              >${{ productDetail.price_discount }}</span
+            >
           </div>
           <p>This is a simple, virtual product.</p>
           <div class="product-detail__info__content--quantity">
             <form @submit="handleSubmit">
-              <input
-                type="text"
-                :value="quantity"
-                readonly
-              />
+              <input type="text" :value="quantity" readonly />
               <div>
-                <button 
+                <button
                   type="button"
                   class="change-quantity"
                   @click="increaseQuantityProduct"
@@ -69,73 +70,81 @@ import {
   STATUS_TOAST,
   EN_LANG,
   ROUTES,
-  MESSAGE_TOAST
-} from "../../../utils/constants"
-import useLocalStorage from "../../../utils/useLocalStorage"
+  MESSAGE_TOAST,
+} from "../../../utils/constants";
+import useLocalStorage from "../../../utils/useLocalStorage";
 // Store
-import { AUTH_STATE } from "../../auth/store/constants"
+import { AUTH_STATE } from "../../auth/store/constants";
 
-const { AUTH, PRODUCT } = MODULES
-const {  IS_AUTHENTICATED } = AUTH_STATE
-const { TOP_CENTER, TOP_RIGHT } = POSITION_TOAST
-const { INFORMATION, SUCCESS, ERROR } = STATUS_TOAST
+const { AUTH, PRODUCT } = MODULES;
+const { IS_AUTHENTICATED } = AUTH_STATE;
+const { TOP_CENTER, TOP_RIGHT } = POSITION_TOAST;
+const { INFORMATION, SUCCESS, ERROR } = STATUS_TOAST;
 
-const { getLocalStorage } = useLocalStorage()
+const { getLocalStorage } = useLocalStorage();
 
 export default {
-  data () {
+  data() {
     return {
-      cartDefault: []
-    }
+      cartDefault: [],
+    };
   },
-  props: ['productDetail'],
+  props: ["productDetail"],
   computed: {
-    ...mapGetters(PRODUCT, ['quantity_default']),
-    ...mapGetters(AUTH, ['cart', 'user']),
+    ...mapGetters(PRODUCT, ["quantity_default"]),
+    ...mapGetters(AUTH, ["cart", "user"]),
     quantity() {
-      return this.quantity_default
+      return this.quantity_default;
     },
     getIsAuthenticated() {
-      const isAuthenticated = getLocalStorage(IS_AUTHENTICATED)
-      return isAuthenticated
+      const isAuthenticated = getLocalStorage(IS_AUTHENTICATED);
+      return isAuthenticated;
     },
     getUserLogin() {
-      const userLocal = getLocalStorage(USER_LOCAL_STR)
-      return userLocal
-    }
+      const userLocal = getLocalStorage(USER_LOCAL_STR);
+      return userLocal;
+    },
   },
   methods: {
-    ...mapActions(PRODUCT, ['increaseQuantityProduct', 'decreaseQuantityProduct']),
-    ...mapActions(AUTH, ['addCartUserRequest']),
+    ...mapActions(PRODUCT, [
+      "increaseQuantityProduct",
+      "decreaseQuantityProduct",
+    ]),
+    ...mapActions(AUTH, ["addCartUserRequest"]),
     handleSubmit(e) {
       // toast props: type, message, options, customMsg, handleClickToast
       e.preventDefault();
       if (this.getIsAuthenticated) {
         const options = {
-            ...CONFIG_TOAST,
-            duration: 2000,
-            position: TOP_CENTER,
-        }
+          ...CONFIG_TOAST,
+          duration: 2000,
+          position: TOP_CENTER,
+        };
         const data = {
           ...this.productDetail,
-          quantity: this.quantity
-        }
-        const isSameProduct = this.cartDefault.some(item => item.id === this.productDetail.id)
+          quantity: this.quantity,
+        };
+        const isSameProduct = this.cartDefault.some(
+          (item) => item.id === this.productDetail.id
+        );
         // compare if is same product
-        if(!isSameProduct) {
-          this.cartDefault.push(data)
-          toastMessage(SUCCESS, EN_LANG.product.add_cart_success, { ...options })
+        if (!isSameProduct) {
+          this.cartDefault.push(data);
+          toastMessage(SUCCESS, EN_LANG.product.add_cart_success, {
+            ...options,
+          });
         } else {
-          toastMessage(INFORMATION, EN_LANG.product.product_is_exist, { ...options })
+          toastMessage(INFORMATION, EN_LANG.product.product_is_exist, {
+            ...options,
+          });
         }
-        console.log("after submit", this.cartDefault)
-        // add cart to server 
-        const cartUserItem = this.cartDefault
-        this.addCartUserRequest(cartUserItem)
+        // add cart to server
+        const cartUserItem = this.cartDefault;
+        this.addCartUserRequest(cartUserItem);
       } else {
         const handleClickToast = () => {
-          this.$router.push(ROUTES.LOGIN)
-        }
+          this.$router.push(ROUTES.LOGIN);
+        };
         toastMessage(
           ERROR,
           EN_LANG.auth.login_first,
@@ -143,20 +152,19 @@ export default {
             ...CONFIG_TOAST,
             duration: 10000,
             position: TOP_RIGHT,
-            keepOnHover: true
+            keepOnHover: true,
           },
           MESSAGE_TOAST.go_to_login,
           handleClickToast
-        )
+        );
       }
-    }
+    },
   },
   created() {
-    this.cartDefault = this.getUserLogin.cart
-    console.log("before", this.cartDefault)
+    this.cartDefault = this.getUserLogin.cart;
   },
   destroyed() {
-    this.$toasted.clear()
-  }
+    this.$toasted.clear();
+  },
 };
 </script>
