@@ -6,6 +6,7 @@ const getters = {
   userLogin: (state) => state.userLogin,
   cart: (state) => state.cart,
   isProgressUpdate: (state) => state.isProgressUpdate,
+  processing: (state) => state.processing,
 };
 
 export default getters;

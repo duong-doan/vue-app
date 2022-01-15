@@ -20,10 +20,10 @@
                 class="header__nav-middle__cart__body"
                 @click="handleClickCart"
               >
-                {{ getCartStore.length }}
+                {{ cartLength }}
                 <div class="dropdown-cart__wrapped">
                   <div class="dropdown-cart__content">
-                    <ul v-if="getCartStore.length">
+                    <ul v-if="cartLength !== 0">
                       <li
                         class="dropdown-cart__item"
                         v-for="product in getCartStore"
@@ -41,7 +41,7 @@
                         </div>
                       </li>
                     </ul>
-                    <div class="dropdown-cart__content__empty" v-else>
+                    <div v-else class="dropdown-cart__content__empty">
                       <img src="../../assets/images/empty.jpg" alt="" />
                     </div>
                   </div>
@@ -86,6 +86,10 @@ export default {
     getCartStore() {
       return this.cart;
     },
+    cartLength() {
+      if (!this.getCartStore) return;
+      return this.getCartStore.length;
+    },
   },
   methods: {
     ...mapActions("auth", ["setCart"]),
@@ -94,7 +98,7 @@ export default {
     },
   },
   created() {
-    this.setCart(getLocalStorage("user").cart);
+    this.setCart(getLocalStorage("user").cart || []);
   },
 };
 </script>

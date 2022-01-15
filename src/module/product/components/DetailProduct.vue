@@ -123,6 +123,7 @@ export default {
         const data = {
           ...this.productDetail,
           quantity: this.quantity,
+          isActive: false,
         };
         const isSameProduct = this.cartDefault.some(
           (item) => item.id === this.productDetail.id
@@ -140,6 +141,7 @@ export default {
         }
         // add cart to server
         const cartUserItem = this.cartDefault;
+        console.log("cartUserItem", cartUserItem);
         this.addCartUserRequest(cartUserItem);
       } else {
         const handleClickToast = () => {

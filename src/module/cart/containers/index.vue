@@ -18,6 +18,9 @@
             :currentPage="currentPage"
             :onChangePage="handlePageChange"
             :totalPrice="this.totalPrice"
+            :onSelectedRow="handleSelectedRow"
+            :onSelectedRowHead="handleSelectedRowHead"
+            :processing="this.processing"
           />
           <DialogModal
             id="delete-product"
@@ -39,6 +42,8 @@ import DialogModal from "../../../components/Modal";
 import NavTop from "../../../components/Navigation/NavTop.vue";
 import NavMiddle from "../../../components/Navigation/NavMiddle.vue";
 import Table from "../../../components/Table";
+
+const { getLocalStorage } = useLocalStorage();
 
 export default {
   components: {
@@ -86,20 +91,23 @@ export default {
       idDelete: "",
       perPage: 4,
       currentPage: 1,
+      selectedRowProduct: [],
     };
   },
   computed: {
-    ...mapGetters("auth", ["cart"]),
+    ...mapGetters("auth", ["cart", "processing"]),
     getCartStore() {
       return this.cart;
     },
     totalPrice() {
-      const result = this.getCartStore.reduce((acc, cur) => {
-        const price =
-          cur.price_discount === 0
-            ? cur.price * cur.quantity
-            : cur.price_discount * cur.quantity;
-        return acc + price;
+      const result = this.selectedRowProduct.reduce((acc, cur) => {
+        if (cur.isActive) {
+          const price =
+            cur.price_discount === 0
+              ? cur.price * cur.quantity
+              : cur.price_discount * cur.quantity;
+          return acc + price;
+        }
       }, 0);
       return result;
     },
@@ -109,8 +117,8 @@ export default {
     handleDeleteRow(id) {
       this.isShow = true;
       this.idDelete = id;
-      const text = this.getCartStore.find((x) => x.id === id).name;
-      this.customTextDialog = `Do you want delete ${text}?`;
+      const nameProduct = this.getCartStore.find((x) => x.id === id).name;
+      this.customTextDialog = `Do you want delete ${nameProduct}?`;
     },
     handleSubmitDialogModal() {
       this.isShow = false;
@@ -139,10 +147,27 @@ export default {
     handlePageChange(pageNumber) {
       this.currentPage = pageNumber;
     },
+    handleSelectedRow(data) {
+      const filterData = data.filter((product) => product.isActive);
+      this.selectedRowProduct = filterData;
+      this.setCart(data);
+    },
+    handleSelectedRowHead(data) {
+      console.log(data);
+      this.selectedRowProduct = data;
+    },
   },
   created() {
-    const { getLocalStorage } = useLocalStorage();
-    this.setCart(getLocalStorage("user").cart);
+    const refreshCart = getLocalStorage("user").cart.map((product) => {
+      product.isActive = false;
+      return product;
+    });
+    this.setCart(refreshCart);
+  },
+  watch: {
+    totalPrice(value) {
+      console.log(value);
+    },
   },
 };
 </script>

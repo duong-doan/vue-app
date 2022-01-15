@@ -65,15 +65,19 @@ const actions = {
     }
   },
   setCart({ commit }, data) {
-    commit("setCart", data);
     const userLocal = getLocalStorage("user");
     const newData = {
       ...userLocal,
       cart: data,
     };
+    // const res = await authApi.updateCartUserRequest(newData.id, newData);
+    // if (res) {
     setLocalStorage("user", newData);
+    commit("setCart", data);
+    // }
   },
-  setQuantity({ commit }, data) {
+  async setQuantity({ commit }, data) {
+    commit("processingRequest");
     const { type, id, currentQuantity } = data;
     const cartUserLocalStr = getLocalStorage("user").cart;
     cartUserLocalStr.forEach((item) => {
@@ -92,12 +96,17 @@ const actions = {
           break;
       }
     });
+    console.log("after", cartUserLocalStr);
     const newData = {
       ...getLocalStorage("user"),
       cart: cartUserLocalStr,
     };
-    setLocalStorage("user", newData);
-    commit("setQuantity", cartUserLocalStr);
+    const res = await authApi.updateCartUserRequest(newData.id, newData);
+    if (res) {
+      setLocalStorage("user", newData);
+      commit("setQuantity", cartUserLocalStr);
+      commit("processingSuccess");
+    }
   },
 };
 

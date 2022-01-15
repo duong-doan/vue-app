@@ -3,7 +3,7 @@
     <div class="b-table">
       <b-table
         ref="tableRef"
-        :items="customItems"
+        :items="items"
         :fields="fields"
         :per-page="perPage"
         :current-page="currentPage"
@@ -50,7 +50,7 @@
         <template #cell(quantity)="data">
           <div class="b-table__cell--quantity">
             <button
-              :disabled="data.item.quantity === 1"
+              :disabled="data.item.quantity === 1 || processing"
               class="decrease"
               @click="handleDecrease(data.item.id, data.item.quantity)"
             >
@@ -58,6 +58,7 @@
             </button>
             <span>{{ data.item.quantity }}</span>
             <button
+              :disabled="processing"
               class="increase"
               @click="handleIncrease(data.item.id, data.item.quantity)"
             >
@@ -88,7 +89,7 @@
     </div>
     <div class="custom-b-table-footer">
       <h5>Total:</h5>
-      <span>${{ this.totalPrice }}</span>
+      <span>${{ this.totalPrice ? this.totalPrice : 0 }}</span>
     </div>
     <b-pagination
       v-model="currentPage"
@@ -114,18 +115,12 @@ export default {
     "currentPage",
     "onChangePage",
     "totalPrice",
+    "onSelectedRow",
+    "onSelectedRowHead",
+    "processing",
   ],
   data() {
     return {};
-  },
-  computed: {
-    customItems() {
-      const newitems = this.items.map((x) => ({
-        ...x,
-        isActive: false,
-      }));
-      return newitems;
-    },
   },
   methods: {
     onRowSelected(items) {
@@ -135,22 +130,25 @@ export default {
     handleChangeCheckboxHead(e) {
       if (!e.target.checked) {
         this.$refs.tableRef.clearSelected();
-        this.customItems.forEach((cell) => {
+        this.items.forEach((cell) => {
           cell.isActive = false;
         });
         return;
       }
       this.$refs.tableRef.selectAllRows();
-      this.customItems.forEach((cell) => {
+      this.items.forEach((cell) => {
         cell.isActive = true;
       });
+      this.onSelectedRowHead(this.items);
     },
     handleChangeCheckboxCell(data) {
-      this.items.forEach((cell) => {
-        if (data.item.id === cell.id) {
-          cell.isActive === !cell.isActive;
+      const newItems = this.items.map((product) => {
+        if (product.id === data.item.id) {
+          product.isActive = !product.isActive;
         }
+        return product;
       });
+      this.onSelectedRow(newItems);
     },
     handleDeleteRow(id) {
       this.onDelete(id);
@@ -164,10 +162,8 @@ export default {
     handleClickPage(pageNunber) {
       this.onChangePage(pageNunber);
     },
-    handleFoot(data) {
-      console.log(data);
-    },
   },
+  created() {},
 };
 </script>
 

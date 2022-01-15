@@ -1,5 +1,6 @@
 const state = {
   isProgress: false,
+  processing: false,
   isProgressUpdate: false,
   isAuthenticated: false,
   isRegisterSuccess: false,
