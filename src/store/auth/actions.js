@@ -73,6 +73,32 @@ const actions = {
     };
     setLocalStorage("user", newData);
   },
+  setQuantity({ commit }, data) {
+    const { type, id, currentQuantity } = data;
+    const cartUserLocalStr = getLocalStorage("user").cart;
+    cartUserLocalStr.forEach((item) => {
+      if (currentQuantity < 1) return;
+      switch (type) {
+        case "increase":
+          if (item.id === id) {
+            item.quantity = currentQuantity + 1;
+          }
+          break;
+
+        default:
+          if (item.id === id) {
+            item.quantity = currentQuantity - 1;
+          }
+          break;
+      }
+    });
+    const newData = {
+      ...getLocalStorage("user"),
+      cart: cartUserLocalStr,
+    };
+    setLocalStorage("user", newData);
+    commit("setQuantity", cartUserLocalStr);
+  },
 };
 
 export default actions;

@@ -12,6 +12,12 @@
             :items="getCartStore"
             :fields="fields"
             :onDelete="handleDeleteRow"
+            :onDecrease="handleDecrease"
+            :onIncrease="handleIncrease"
+            :perPage="perPage"
+            :currentPage="currentPage"
+            :onChangePage="handlePageChange"
+            :totalPrice="this.totalPrice"
           />
           <DialogModal
             id="delete-product"
@@ -28,11 +34,11 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import DialogModal from "../../components/Modal";
-import useLocalStorage from "../../utils/useLocalStorage";
-import NavTop from "../../components/Navigation/NavTop.vue";
-import NavMiddle from "../../components/Navigation/NavMiddle.vue";
-import Table from "../../components/Table";
+import useLocalStorage from "../../../utils/useLocalStorage";
+import DialogModal from "../../../components/Modal";
+import NavTop from "../../../components/Navigation/NavTop.vue";
+import NavMiddle from "../../../components/Navigation/NavMiddle.vue";
+import Table from "../../../components/Table";
 
 export default {
   components: {
@@ -70,11 +76,16 @@ export default {
           label: "Discount price",
           sortable: true,
         },
-        "delete",
+        {
+          key: "delete",
+          label: "",
+        },
       ],
       customTextDialog: "",
       isShow: false,
       idDelete: "",
+      perPage: 4,
+      currentPage: 1,
     };
   },
   computed: {
@@ -82,9 +93,19 @@ export default {
     getCartStore() {
       return this.cart;
     },
+    totalPrice() {
+      const result = this.getCartStore.reduce((acc, cur) => {
+        const price =
+          cur.price_discount === 0
+            ? cur.price * cur.quantity
+            : cur.price_discount * cur.quantity;
+        return acc + price;
+      }, 0);
+      return result;
+    },
   },
   methods: {
-    ...mapActions("auth", ["setCart"]),
+    ...mapActions("auth", ["setCart", "setQuantity"]),
     handleDeleteRow(id) {
       this.isShow = true;
       this.idDelete = id;
@@ -98,6 +119,25 @@ export default {
     },
     handleCloseDialogModal() {
       this.isShow = false;
+    },
+    handleDecrease(id, currentQuantity) {
+      const data = {
+        type: "decrease",
+        id,
+        currentQuantity,
+      };
+      this.setQuantity(data);
+    },
+    handleIncrease(id, currentQuantity) {
+      const data = {
+        type: "increase",
+        id,
+        currentQuantity,
+      };
+      this.setQuantity(data);
+    },
+    handlePageChange(pageNumber) {
+      this.currentPage = pageNumber;
     },
   },
   created() {

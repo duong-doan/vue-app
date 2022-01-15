@@ -41,6 +41,9 @@ const mutations = {
   setCart(state, data) {
     state.cart = data;
   },
+  setQuantity(state, data) {
+    state.cart = data;
+  },
 };
 
 export default mutations;

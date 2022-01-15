@@ -1,4 +1,4 @@
-import Cart from "./index.vue";
+import Cart from "./containers/index.vue";
 
 const routes = [
   {
