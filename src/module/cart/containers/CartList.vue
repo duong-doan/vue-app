@@ -21,6 +21,7 @@
             :onSelectedRow="handleSelectedRow"
             :onSelectedRowHead="handleSelectedRowHead"
             :processing="this.processing"
+            :onClickBuy="handleClickBuy"
           />
           <DialogModal
             id="delete-product"
@@ -42,6 +43,13 @@ import DialogModal from "../../../components/Modal";
 import NavTop from "../../../components/Navigation/NavTop.vue";
 import NavMiddle from "../../../components/Navigation/NavMiddle.vue";
 import Table from "../../../components/Table";
+import { toastMessage } from "../../../utils/notification";
+import {
+  CONFIG_TOAST,
+  EN_LANG,
+  POSITION_TOAST,
+  STATUS_TOAST,
+} from "../../../utils/constants";
 
 const { getLocalStorage } = useLocalStorage();
 
@@ -107,6 +115,8 @@ export default {
               ? cur.price * cur.quantity
               : cur.price_discount * cur.quantity;
           return acc + price;
+        } else {
+          return 0;
         }
       }, 0);
       return result;
@@ -128,33 +138,50 @@ export default {
     handleCloseDialogModal() {
       this.isShow = false;
     },
-    handleDecrease(id, currentQuantity) {
-      const data = {
+    async handleDecrease(id, currentQuantity) {
+      const dataReq = {
         type: "decrease",
         id,
         currentQuantity,
       };
-      this.setQuantity(data);
+      await this.setQuantity(dataReq);
+      const cartLocalStr = await getLocalStorage("user").cart;
+      this.selectedRowProduct = this.filterData(cartLocalStr);
     },
-    handleIncrease(id, currentQuantity) {
-      const data = {
+    async handleIncrease(id, currentQuantity) {
+      const dataReq = {
         type: "increase",
         id,
         currentQuantity,
       };
-      this.setQuantity(data);
+      await this.setQuantity(dataReq);
+      const cartLocalStr = await getLocalStorage("user").cart;
+      this.selectedRowProduct = this.filterData(cartLocalStr);
     },
     handlePageChange(pageNumber) {
       this.currentPage = pageNumber;
     },
     handleSelectedRow(data) {
-      const filterData = data.filter((product) => product.isActive);
-      this.selectedRowProduct = filterData;
+      this.selectedRowProduct = this.filterData(data);
       this.setCart(data);
     },
     handleSelectedRowHead(data) {
-      console.log(data);
       this.selectedRowProduct = data;
+    },
+    filterData(data) {
+      return data.filter((product) => product.isActive);
+    },
+    handleClickBuy() {
+      if (this.totalPrice !== 0) {
+        this.$router.push("cart/payment");
+      } else {
+        toastMessage(STATUS_TOAST.INFORMATION, EN_LANG.auth.cart_empty, {
+          ...CONFIG_TOAST,
+          duration: 5000,
+          position: POSITION_TOAST.TOP_RIGHT,
+          keepOnHover: true,
+        });
+      }
     },
   },
   created() {
@@ -163,11 +190,6 @@ export default {
       return product;
     });
     this.setCart(refreshCart);
-  },
-  watch: {
-    totalPrice(value) {
-      console.log(value);
-    },
   },
 };
 </script>

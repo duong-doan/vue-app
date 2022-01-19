@@ -10,7 +10,9 @@ import VueAgile from "vue-agile";
 import store from "./store/index";
 import Toasted from "vue-toasted";
 import { TabsPlugin } from "bootstrap-vue";
+import VSwitch from "v-switch-case";
 
+Vue.use(VSwitch);
 Vue.use(BootstrapVue);
 AOS.init({
   once: true,

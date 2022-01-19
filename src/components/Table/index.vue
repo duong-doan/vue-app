@@ -89,17 +89,22 @@
     </div>
     <div class="custom-b-table-footer">
       <h5>Total:</h5>
-      <span>${{ this.totalPrice ? this.totalPrice : 0 }}</span>
+      <div>
+        <span>${{ this.totalPrice }}</span>
+        <button @click="handleClickBuy">BUY NOW</button>
+      </div>
     </div>
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="items.length"
-      :per-page="perPage"
-      aria-controls="my-table"
-      size="lg"
-      @change="handleClickPage"
-    >
-    </b-pagination>
+    <template v-if="this.items.length > perPage">
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="items.length"
+        :per-page="perPage"
+        aria-controls="my-table"
+        size="lg"
+        @change="handleClickPage"
+      >
+      </b-pagination>
+    </template>
   </div>
 </template>
 
@@ -118,6 +123,7 @@ export default {
     "onSelectedRow",
     "onSelectedRowHead",
     "processing",
+    "onClickBuy",
   ],
   data() {
     return {};
@@ -161,6 +167,9 @@ export default {
     },
     handleClickPage(pageNunber) {
       this.onChangePage(pageNunber);
+    },
+    handleClickBuy() {
+      this.onClickBuy();
     },
   },
   created() {},
@@ -268,8 +277,26 @@ export default {
       margin-left: 20px;
       font-size: inherit;
     }
-    span {
-      margin-right: 20px;
+
+    div {
+      span {
+        margin-right: 20px;
+      }
+
+      button {
+        padding: 4px 16px;
+        margin-right: 8px;
+        border: none;
+        background: $hover__color--primary;
+        color: $white;
+        border-radius: 4px;
+        transition: all 0.2s;
+
+        &:hover {
+          color: $text__color--dark;
+          background: $white;
+        }
+      }
     }
   }
   .pagination {

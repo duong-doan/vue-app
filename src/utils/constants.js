@@ -121,44 +121,44 @@ export const CONFIG_TOAST = {
   fitToScreen: false,
 };
 
-export const USER_LOCAL_STR = "user"
+export const USER_LOCAL_STR = "user";
 
 export const MODULES = {
   AUTH: "auth",
-  PRODUCT: "products"
-}
+  PRODUCT: "products",
+};
 
 export const POSITION_TOAST = {
   TOP_RIGHT: "top-right",
   TOP_LEFT: "top-left",
   TOP_CENTER: "top-center",
-}
+};
 
 export const STATUS_TOAST = {
   SUCCESS: "success",
   ERROR: "error",
-  INFORMATION : "info"
-}
+  INFORMATION: "info",
+};
 
 export const MESSAGE_TOAST = {
-  go_to_login: "Go to login"
-}
+  go_to_login: "Go to login",
+};
 
 export const EN_LANG = {
   product: {
     add_cart_success: "Add to cart success!!",
     product_is_exist: "The product is already in the cart now!!",
-    
   },
   auth: {
     login_first: "Please login first !!",
-    update_success: "You have update complete"
-  }
-}
+    update_success: "You have update complete",
+    cart_empty: "You have not selected any products",
+  },
+};
 
 export const ROUTES = {
   HOME: "/",
   LOGIN: "/user/login",
   REGISTER: "/user/register",
-  CART: "/cart"
-}
+  CART: "/cart",
+};

@@ -1,7 +1,7 @@
 <template>
   <div class="product-payment__info">
     <div class="product-payment__content">
-      <div class="product-payment__content__info">
+      <form class="product-payment__content__info">
         <h3>Contact information</h3>
         <input type="text" placeholder="Email..." />
 
@@ -15,15 +15,15 @@
           <input type="text" placeholder="Phone" />
           <input type="text" placeholder="City" />
         </div>
-        <div class="wrapped__checkbox">
-          <input type="checkbox" checked />
-          <span>Save this information for next time</span>
-        </div>
-      </div>
+      </form>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {};
+  },
+};
 </script>

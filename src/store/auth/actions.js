@@ -96,16 +96,15 @@ const actions = {
           break;
       }
     });
-    console.log("after", cartUserLocalStr);
     const newData = {
       ...getLocalStorage("user"),
       cart: cartUserLocalStr,
     };
     const res = await authApi.updateCartUserRequest(newData.id, newData);
     if (res) {
-      setLocalStorage("user", newData);
-      commit("setQuantity", cartUserLocalStr);
-      commit("processingSuccess");
+      await setLocalStorage("user", newData);
+      await commit("setQuantity", cartUserLocalStr);
+      await commit("processingSuccess");
     }
   },
 };

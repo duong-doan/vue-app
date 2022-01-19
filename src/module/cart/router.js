@@ -1,11 +1,18 @@
-import Cart from "./containers/index.vue";
+import CartList from "./containers/CartList.vue";
+import Payment from "./containers/Payment.vue";
 
 const routes = [
   {
     path: "/cart",
     name: "cart",
     exact: true,
-    component: Cart,
+    component: CartList,
+  },
+  {
+    path: "/cart/payment",
+    name: "payment",
+    exact: true,
+    component: Payment,
   },
 ];
 
