@@ -41,7 +41,10 @@
                 </ul>
 
                 <div class="image">
-                  <img src="../../assets/images/products/product-05.png" alt="">
+                  <img
+                    src="../../../../assets/images/products/product-05.png"
+                    alt=""
+                  />
                 </div>
               </div>
             </div>
@@ -55,7 +58,10 @@
             <div class="dropdown-menu dropdown-menu-woman">
               <div class="dropdown-menu__wrapped">
                 <div class="image">
-                  <img src="../../assets/images/products/product-05.png" alt="">
+                  <img
+                    src="../../../../assets/images/products/product-05.png"
+                    alt=""
+                  />
                 </div>
 
                 <ul>
@@ -81,8 +87,6 @@
                   <li>Rolex</li>
                   <li>Hublot</li>
                 </ul>
-
-                
               </div>
             </div>
           </li>
@@ -96,8 +100,6 @@
               Contact
             </a>
           </li>
-
-          
         </ul>
       </div>
     </div>
@@ -106,8 +108,6 @@
 
 <script>
 export default {
-  props: ["hidden"]
+  props: ["hidden"],
 };
 </script>
-
-<style></style>

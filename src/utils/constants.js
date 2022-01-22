@@ -126,6 +126,7 @@ export const USER_LOCAL_STR = "user";
 export const MODULES = {
   AUTH: "auth",
   PRODUCT: "products",
+  CART: "cart",
 };
 
 export const POSITION_TOAST = {

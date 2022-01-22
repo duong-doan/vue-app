@@ -42,7 +42,7 @@
                       </li>
                     </ul>
                     <div v-else class="dropdown-cart__content__empty">
-                      <img src="../../assets/images/empty.jpg" alt="" />
+                      <img src="../../../../assets/images/empty.jpg" alt="" />
                     </div>
                   </div>
                 </div>
@@ -62,9 +62,9 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import logo from "../../assets/images/logo--m.png";
-import { ROUTES } from "../../utils/constants";
-import useLocalStorage from "../../utils/useLocalStorage";
+import logo from "../../../../assets/images/logo--m.png";
+import { ROUTES } from "../../../../utils/constants";
+import useLocalStorage from "../../../../utils/useLocalStorage";
 
 const { getLocalStorage } = useLocalStorage();
 
@@ -76,7 +76,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("auth", ["cart"]),
+    ...mapGetters("cart", ["cart"]),
     getUserLogin() {
       return getLocalStorage("user");
     },
@@ -92,7 +92,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("auth", ["setCart"]),
+    ...mapActions("cart", ["setCart"]),
     handleClickCart() {
       this.$router.push(ROUTES.CART);
     },

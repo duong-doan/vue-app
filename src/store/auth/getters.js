@@ -4,9 +4,7 @@ const getters = {
   errorsAuth: (state) => state.errorsAuth,
   isRegisterSuccess: (state) => state.isRegisterSuccess,
   userLogin: (state) => state.userLogin,
-  cart: (state) => state.cart,
   isProgressUpdate: (state) => state.isProgressUpdate,
-  processing: (state) => state.processing,
 };
 
 export default getters;

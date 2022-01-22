@@ -3,7 +3,7 @@ import mutations from "./mutations";
 import actions from "./actions";
 import state from "./state";
 
-const storeAuth = {
+const storeCart = {
   namespaced: true,
   state,
   getters,
@@ -11,4 +11,4 @@ const storeAuth = {
   mutations,
 };
 
-export default storeAuth;
+export default storeCart;

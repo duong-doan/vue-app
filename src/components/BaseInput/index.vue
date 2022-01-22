@@ -15,17 +15,28 @@
 
 <script>
 export default {
-  props: ["id", "required", "name", "value", "onChange", "onBlur", "onKeydown", "type", "placeholder", "disabled"],
+  props: [
+    "id",
+    "required",
+    "name",
+    "value",
+    "onChange",
+    "onBlur",
+    "onKeydown",
+    "type",
+    "placeholder",
+    "disabled",
+  ],
   methods: {
     handleChange(e) {
       this.onChange(this.id, e);
     },
     handleBlur(e) {
-      this.onBlur(e)
+      this.onBlur(e);
     },
     handleKeydown(e) {
-      this.onKeydown(e)
-    }
+      this.onKeydown(e);
+    },
   },
 };
 </script>

@@ -77,9 +77,9 @@
 </template>
 
 <script>
-import useLocalStorage from "../../utils/useLocalStorage";
-import Modal from "../../components/Modal";
+import Modal from "../../../../components/Modal";
 import { mapActions, mapGetters } from "vuex";
+import useLocalStorage from "../../../../utils/useLocalStorage";
 
 const { getLocalStorage } = useLocalStorage();
 
@@ -134,7 +134,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../assets/sass/abstracts/_variables.scss";
+@import "../../../../assets/sass/abstracts/_variables.scss";
 .disabled-scroll {
   height: 100%;
   overflow: hidden;

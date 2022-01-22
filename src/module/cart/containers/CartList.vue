@@ -40,8 +40,8 @@
 import { mapActions, mapGetters } from "vuex";
 import useLocalStorage from "../../../utils/useLocalStorage";
 import DialogModal from "../../../components/Modal";
-import NavTop from "../../../components/Navigation/NavTop.vue";
-import NavMiddle from "../../../components/Navigation/NavMiddle.vue";
+import NavTop from "../../../pages/home/HeaderComponent/Navigation/NavTop.vue";
+import NavMiddle from "../../../pages/home/HeaderComponent/Navigation/NavMiddle.vue";
 import Table from "../../../components/Table";
 import { toastMessage } from "../../../utils/notification";
 import {
@@ -50,6 +50,8 @@ import {
   POSITION_TOAST,
   STATUS_TOAST,
 } from "../../../utils/constants";
+import { STATE_CART } from "../store/constants";
+const { CART } = STATE_CART;
 
 const { getLocalStorage } = useLocalStorage();
 
@@ -103,7 +105,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("auth", ["cart", "processing"]),
+    ...mapGetters(CART, ["cart", "processing"]),
     getCartStore() {
       return this.cart;
     },
@@ -123,7 +125,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("auth", ["setCart", "setQuantity"]),
+    ...mapActions("cart", ["setCart", "setQuantity"]),
     handleDeleteRow(id) {
       this.isShow = true;
       this.idDelete = id;

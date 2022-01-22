@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Navigation from "../../../components/Navigation/index.vue";
+import Navigation from "./Navigation";
 
 export default {
   components: {

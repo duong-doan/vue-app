@@ -1,5 +1,7 @@
 <template>
   <div class="product-payment">
+    <nav-top />
+    <nav-middle />
     <div class="container">
       <div class="product-payment__wrapped">
         <div class="row">
@@ -36,6 +38,8 @@ import InfoPayment from "../components/InfoPayment";
 import ShipPayment from "../components/ShipPayment";
 import FinalPayment from "../components/FinalPayment";
 import TotalPayment from "../components/TotalPayment";
+import NavTop from "../../../pages/home/HeaderComponent/Navigation/NavTop.vue";
+import NavMiddle from "../../../pages/home/HeaderComponent/Navigation/NavMiddle.vue";
 import { tabsPayment } from "../store/constants";
 
 export default {
@@ -44,6 +48,8 @@ export default {
     ShipPayment,
     FinalPayment,
     TotalPayment,
+    NavTop,
+    NavMiddle,
   },
   data() {
     return {

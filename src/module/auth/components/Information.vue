@@ -264,12 +264,6 @@ export default {
     },
     handleBlur() {
       this.isEdit = false;
-      // const {name, phone, date} = this.valueInput
-      // if(name || phone || date) {
-      //   this.activeBtn = true
-      // } else {
-      //   this.activeBtn = false
-      // }
     },
     handleChange(id, e) {
       this.valueInput = {

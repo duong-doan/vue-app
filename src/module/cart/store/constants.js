@@ -15,3 +15,8 @@ export const tabsPayment = [
     status: "pending",
   },
 ];
+
+export const STATE_CART = {
+  CART: "cart",
+  PROCESSING: "processing",
+};

@@ -76,7 +76,7 @@ import useLocalStorage from "../../../utils/useLocalStorage";
 // Store
 import { AUTH_STATE } from "../../auth/store/constants";
 
-const { AUTH, PRODUCT } = MODULES;
+const { AUTH, PRODUCT, CART } = MODULES;
 const { IS_AUTHENTICATED } = AUTH_STATE;
 const { TOP_CENTER, TOP_RIGHT } = POSITION_TOAST;
 const { INFORMATION, SUCCESS, ERROR } = STATUS_TOAST;
@@ -92,7 +92,8 @@ export default {
   props: ["productDetail"],
   computed: {
     ...mapGetters(PRODUCT, ["quantity_default"]),
-    ...mapGetters(AUTH, ["cart", "user"]),
+    ...mapGetters(CART, ["cart"]),
+    ...mapGetters(AUTH, ["user"]),
     quantity() {
       return this.quantity_default;
     },
@@ -110,7 +111,7 @@ export default {
       "increaseQuantityProduct",
       "decreaseQuantityProduct",
     ]),
-    ...mapActions(AUTH, ["addCartUserRequest"]),
+    ...mapActions(CART, ["addCartUserRequest"]),
     handleSubmit(e) {
       // toast props: type, message, options, customMsg, handleClickToast
       e.preventDefault();
@@ -141,7 +142,6 @@ export default {
         }
         // add cart to server
         const cartUserItem = this.cartDefault;
-        console.log("cartUserItem", cartUserItem);
         this.addCartUserRequest(cartUserItem);
       } else {
         const handleClickToast = () => {
