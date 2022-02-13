@@ -1,11 +1,12 @@
 import axios from "../utils/axios";
 
-export const addNewUserToDB = async ({ email, password }) => {
+export const addNewUserToDB = async ({ email, password, phone_number }) => {
   try {
     const res = await axios.post("/auth", {
       email,
       password,
-      cart: []
+      phone_number,
+      cart: [],
     });
     return res;
   } catch (e) {
@@ -24,12 +25,12 @@ export const getUsersFromDB = async () => {
 
 export const getUserLoginFromDB = async (id) => {
   try {
-    const res = await axios.get(`/auth/${id}`)
-    return res.data
+    const res = await axios.get(`/auth/${id}`);
+    return res.data;
   } catch (e) {
-    throw new Error(e)
+    throw new Error(e);
   }
-}
+};
 
 export const updateUserRequestDB = async (id, data) => {
   try {
@@ -42,9 +43,9 @@ export const updateUserRequestDB = async (id, data) => {
 
 export const updateCartUserRequest = async (id, data) => {
   try {
-    const res = await axios.put(`/auth/${id}`, data)
-    return res.data
+    const res = await axios.put(`/auth/${id}`, data);
+    return res.data;
   } catch (e) {
-    throw new Error(e)
+    throw new Error(e);
   }
-}
+};

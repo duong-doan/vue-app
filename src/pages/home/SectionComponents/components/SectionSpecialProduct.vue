@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import SpecialProduct from "../../../../components/SpecialProduct/index.vue";
+import SpecialProduct from "@/components/SpecialProduct/index.vue";
 export default {
   components: {
     SpecialProduct,

@@ -129,9 +129,9 @@ export default {
     return {};
   },
   methods: {
-    onRowSelected(items) {
+    onRowSelected() {
+      // argument: items
       // select a row and return a array contains a row selected
-      console.log(items);
     },
     handleChangeCheckboxHead(e) {
       if (!e.target.checked) {
@@ -267,7 +267,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: $gray-500;
+    background: $gray-200;
     padding: 10px 0;
     font-size: 2rem;
     position: absolute;

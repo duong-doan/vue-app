@@ -3,16 +3,16 @@
     <ul>
       <li>
         <p>Contact</p>
-        <span>abc@mail.com</span>
+        <span>{{ email }}</span>
       </li>
       <li :class="isFinalPayment ? 'add-border' : ''">
         <p>Ship to</p>
-        <span>asdasdasd, Vietnam</span>
+        <span>{{ address }}</span>
       </li>
       <template v-if="isFinalPayment">
         <li>
           <p>Method</p>
-          <span>International Shipping · $20.00</span>
+          <span>Shipping fee · $20.00</span>
         </li>
       </template>
     </ul>
@@ -20,6 +20,6 @@
 </template>
 <script>
 export default {
-  props: ["isFinalPayment"],
+  props: ["isFinalPayment", "email", "address"],
 };
 </script>

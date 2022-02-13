@@ -15,6 +15,15 @@ const mutations = {
   processingSuccess(state) {
     state.processing = false;
   },
+  setStep(state, data) {
+    state.step = data;
+  },
+  setSelectedProduct(state, data) {
+    state.selectedProduct = data;
+  },
+  setOrders(state, data) {
+    state.orders = data;
+  },
 };
 
 export default mutations;

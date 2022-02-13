@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Banner from "../../../components/Banner/index.vue";
+import Banner from "@/components/Banner/index.vue";
 export default {
   components: {
     Banner,

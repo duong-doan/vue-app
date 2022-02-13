@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import Blog from "../../../../components/Blog/index.vue";
-import { DATA_BLOG } from "../../../../utils/constants";
+import Blog from "@/components/Blog/index.vue";
+import { DATA_BLOG } from "@/utils/constants";
 
 export default {
   components: {

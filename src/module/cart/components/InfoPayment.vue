@@ -12,6 +12,7 @@
             :onBlur="handleBlur"
             :onKeydown="handleKeydown"
             :onChange="handleChange"
+            disabled
           />
         </form-group>
         <form-group classname="custom-form-group" label="Name:">
@@ -23,6 +24,7 @@
             :onBlur="handleBlur"
             :onKeydown="handleKeydown"
             :onChange="handleChange"
+            disabled
           />
         </form-group>
         <form-group classname="custom-form-group" label="Phone:">
@@ -34,6 +36,7 @@
             :onBlur="handleBlur"
             :onKeydown="handleKeydown"
             :onChange="handleChange"
+            disabled
           />
         </form-group>
 
@@ -48,10 +51,18 @@
               :onBlur="handleBlur"
               :onKeydown="handleKeydown"
               :onChange="handleChange"
+              required
             />
           </form-group>
         </div>
-        <button type="submit">submit</button>
+        <base-button
+          type="submit"
+          classname="b-button-custom"
+          :processing="processing"
+          :onClick="handleClick"
+        >
+          Next
+        </base-button>
       </form>
     </div>
   </div>
@@ -59,16 +70,20 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { MODULES } from "../../../utils/constants";
-import useLocalStorage from "../../../utils/useLocalStorage";
-import BaseInput from "../../../components/BaseInput";
-import FormGroup from "../../../components/FormGroup";
+import useLocalStorage from "@/utils/useLocalStorage";
+import BaseInput from "@/components/BaseInput";
+import FormGroup from "@/components/FormGroup";
+import BaseButton from "@/components/BaseButton";
+import Validate from "@/utils/validate";
+import { MODULES, VALIDATION_RULES } from "@/utils/constants";
+import { STEP_SHIPPING } from "../store/constants";
 
-const { AUTH } = MODULES;
+const { AUTH, CART } = MODULES;
 export default {
   components: {
     BaseInput,
     FormGroup,
+    BaseButton,
   },
   data() {
     return {
@@ -85,16 +100,21 @@ export default {
         phone: "",
       },
       userInfo: {},
+      isAuthenticated: false,
     };
   },
   computed: {
     ...mapGetters(AUTH, ["user", "isProgressUpdate"]),
+    processing() {
+      return this.isProgressUpdate;
+    },
     getUserLocal() {
       return this.user;
     },
   },
   methods: {
     ...mapActions(AUTH, ["updateUserRequest"]),
+    ...mapActions(CART, ["setStep"]),
     handleBlur() {},
     handleKeydown() {},
     handleChange(id, e) {
@@ -103,48 +123,58 @@ export default {
         [id]: e.target.value,
       };
     },
+    checkValidAddress(value) {
+      const { REQUIRED, ADDRESS, MIN } = VALIDATION_RULES;
+      const validation = {
+        name: "address",
+        rule: `${REQUIRED}|${MIN}:10|${ADDRESS}`,
+        messages: {
+          [REQUIRED]: "This field is required",
+          [MIN]: "Enter more than 10 characters",
+        },
+      };
+      return Validate.checkValidate(value, validation);
+    },
     async handleSubmit(e) {
       e.preventDefault();
-      const emailValueChanged =
-        this.defaultValue.email !== this.inputValue.email;
-      const nameValueChanged = this.defaultValue.name !== this.inputValue.name;
-      const phoneValueChanged =
-        this.defaultValue.phone !== this.inputValue.phone;
-      const addressValueChanged =
-        this.defaultValue.address !== this.inputValue.address;
-      const hasChanged =
-        emailValueChanged ||
-        nameValueChanged ||
-        phoneValueChanged ||
-        addressValueChanged;
-      if (hasChanged) {
+      const fieldNames = ["email", "phone", "name", "address"];
+      const hasChanged = fieldNames.some(
+        (field) => this.defaultValue[field] !== this.inputValue[field]
+      );
+      const hasValue = fieldNames.some((field) => this.inputValue[field]);
+      if (hasChanged || hasValue) {
         const data = {
           ...this.userInfo,
           ...this.inputValue,
         };
         await this.updateUserRequest(data);
-        console.log(data);
+        await this.setStep(STEP_SHIPPING);
       }
     },
+    handleClick() {},
   },
   created() {
     const { getLocalStorage } = useLocalStorage();
     const userLocalStr = getLocalStorage("user");
+    const isAuthenticatedLocalStr = getLocalStorage("isAuthenticated");
     this.inputValue = {
       email: userLocalStr.email,
       name: userLocalStr.name,
-      address: "",
+      address: userLocalStr.address,
       phone: userLocalStr.phone,
     };
     this.defaultValue = {
       email: userLocalStr.email,
       name: userLocalStr.name,
-      address: "",
+      address: userLocalStr.address,
       phone: userLocalStr.phone,
     };
     this.userInfo = {
       ...userLocalStr,
     };
+    if (!isAuthenticatedLocalStr) {
+      this.$router.push("/");
+    }
   },
 };
 </script>

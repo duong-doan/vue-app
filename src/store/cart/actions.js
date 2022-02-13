@@ -56,6 +56,15 @@ const actions = {
       await commit("processingSuccess");
     }
   },
+  setStep({ commit }, data) {
+    commit("setStep", data);
+  },
+  setSelectedProduct({ commit }, data) {
+    commit("setSelectedProduct", data);
+  },
+  setOrders({ commit }, data) {
+    commit("setOrders", data);
+  },
 };
 
 export default actions;

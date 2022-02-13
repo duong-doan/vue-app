@@ -7,7 +7,6 @@
         </div>
       </div>
       <div class="container">
-        <h1>User info</h1>
         <div>
           <b-card no-body>
             <b-tabs
@@ -70,12 +69,13 @@
                               class="profile__input"
                             >
                               <base-input
+                                type="number"
                                 id="phone"
                                 name="phone"
                                 :value="
                                   valueInput.phone
                                     ? valueInput.phone
-                                    : user.phone
+                                    : user.phone_number
                                 "
                                 :onChange="handleChange"
                                 :onBlur="handleBlur"
@@ -142,7 +142,9 @@
                 </b-card-text>
               </b-tab>
               <b-tab title="Orders">
-                <b-card-text>Tab contents 2</b-card-text>
+                <b-card-text>
+                  <orders :orders="orders" />
+                </b-card-text>
               </b-tab>
             </b-tabs>
           </b-card>
@@ -156,12 +158,13 @@
 import { mapActions, mapGetters } from "vuex";
 import { BTabs } from "bootstrap-vue";
 // Components
-import Breadcrumb from "../../../components/Breadscrum";
-import FormGroup from "../../../components/FormGroup";
-import BaseInput from "../../../components/BaseInput";
+import Breadcrumb from "@/components/Breadscrum";
+import FormGroup from "@/components/FormGroup";
+import BaseInput from "@/components/BaseInput";
+import Orders from "@/components/Orders";
 // Utils
-import useLocalStorage from "../../../utils/useLocalStorage";
-import { toastMessage } from "../../../utils/notification";
+import useLocalStorage from "@/utils/useLocalStorage";
+import { toastMessage } from "@/utils/notification";
 import {
   CONFIG_TOAST,
   MODULES,
@@ -169,7 +172,7 @@ import {
   STATUS_TOAST,
   POSITION_TOAST,
   EN_LANG,
-} from "../../../utils/constants";
+} from "@/utils/constants";
 // Store
 import { AUTH_STATE, UPDATE_USER_REQUEST } from "../store/constants";
 
@@ -186,6 +189,7 @@ export default {
     FormGroup,
     BaseInput,
     BTabs,
+    Orders,
   },
   data() {
     return {
@@ -198,6 +202,7 @@ export default {
         date: "",
       },
       activeBtn: false,
+      orders: [],
     };
   },
   computed: {
@@ -242,6 +247,7 @@ export default {
         this.$refs.span.style = "color: black;";
         this.$refs.img.src = URL.createObjectURL(this.$refs.input.files[0]);
         this.imgUrl = URL.createObjectURL(this.$refs.input.files[0]);
+        this.activeBtn = true;
       } else {
         this.$refs.span.textContent = "This file is error";
         this.$refs.span.style = "color: red;";
@@ -296,7 +302,9 @@ export default {
   },
   created() {
     const userLocal = getLocalStorage("user");
+    const orders = getLocalStorage("user").orders;
     this.user = userLocal;
+    this.orders = orders;
   },
   watch: {
     valueInput(value) {
@@ -313,7 +321,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../../assets/sass/abstracts/_variables.scss";
+@import "@/assets/sass/abstracts/_variables.scss";
 .nav-link.active {
   color: brown !important;
   background: transparent !important;

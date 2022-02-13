@@ -1,9 +1,12 @@
 import { VALIDATION_RULES } from "./constants";
-const { 
+const {
   EMAIL,
   PASSWORD,
-  MIN, MAX, REQUIRED,
-  CONFIRM 
+  MIN,
+  MAX,
+  REQUIRED,
+  CONFIRM,
+  PHONE_NUMBER,
 } = VALIDATION_RULES;
 
 const isObject = (value) => {
@@ -22,7 +25,7 @@ const Validate = {
       };
     };
 
-    for (let i = 0; i < rules.length; i++ ) {
+    for (let i = 0; i < rules.length; i++) {
       const splitRule = rules[i].split(":");
       const rule = {
         name: splitRule[0],
@@ -78,10 +81,20 @@ const Validate = {
 
       // confirm
       if (rule.name === CONFIRM) {
-        const {value: compareValue} = rule
+        const { value: compareValue } = rule;
         error = this.confirm(value, compareValue);
         if (error) {
           return returnData({ rule: rule.name, errorMes: error });
+        }
+      }
+
+      if (rule.name === PHONE_NUMBER) {
+        if (value === "") {
+          return returnData({ rule: rule.name, errorMsg: error });
+        }
+        error = this.phoneNumber(value);
+        if (error) {
+          return returnData({ rule: rule.name, errorMsg: error });
         }
       }
     }
@@ -119,7 +132,7 @@ const Validate = {
     if (regex.test(value)) {
       return "";
     }
-    return "Password not correct";
+    return "Password includes at least one special character and number";
   },
   email(value) {
     const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -132,7 +145,28 @@ const Validate = {
     if (value !== compareValue) {
       return "Confirm password not the same password";
     }
-    return ""
+    return "";
+  },
+  phoneNumber(value) {
+    /*
+      0X-XXXX-XXXX
+      0XXX-XX-XXXX
+      (0X)XXXX-XXXX
+      (0XXX)XX-XXXX
+      070-XXXX-XXXX
+      080-XXXX-XXXX
+      090-XXXX-XXXX
+      050-XXXX-XXXX
+      0120-XXX-XXX
+      0XX-XXX-XXXX
+      0XX-XXXX-XXXX
+    */
+    const regex = /^(0|\+81)([0-9]{1})[-]([0-9]{4})[-][0-9]{4}$|^(0|\+81)([0-9]{3})[-]?([0-9]{2})[-][0-9]{4}$|^[(](0|\+81)([0-9]{1})[)]([0-9]{4})[-][0-9]{4}$|^[(](0|\+81)([0-9]{3})[)]([0-9]{2})[-][0-9]{4}$|^(050|070|080|090|\+8150|\+8170|\+8180|\+8190)[-]([0-9]{4})[-][0-9]{4}$|^(0120|\+81120)[-]([0-9]{3})[-][0-9]{3}$|^(\+)?[0-9]{10,17}$|^(0|\+81)([0-9]{2})[-]([0-9]{3})[-][0-9]{4}$|^(0|\+81)([0-9]{2})[-]([0-9]{4})[-][0-9]{4}$/im;
+    const isValid = regex.test(value);
+    if (!isValid) {
+      return "Enter your phone number";
+    }
+    return "";
   },
 };
 

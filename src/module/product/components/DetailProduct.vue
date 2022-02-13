@@ -61,7 +61,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 // Utils
-import { toastMessage } from "../../../utils/notification";
+import { toastMessage } from "@/utils/notification";
 import {
   CONFIG_TOAST,
   USER_LOCAL_STR,
@@ -71,8 +71,8 @@ import {
   EN_LANG,
   ROUTES,
   MESSAGE_TOAST,
-} from "../../../utils/constants";
-import useLocalStorage from "../../../utils/useLocalStorage";
+} from "@/utils/constants";
+import useLocalStorage from "@/utils/useLocalStorage";
 // Store
 import { AUTH_STATE } from "../../auth/store/constants";
 

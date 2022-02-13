@@ -13,15 +13,17 @@ const actions = {
   setIsAuthenticated({ commit }, value) {
     commit("setIsAuthenticated", value);
   },
-  async addNewUserRequest({ commit }, { email, password }) {
+  async addNewUserRequest({ commit }, { email, password, phone_number }) {
     const dataUsers = await authApi.getUsersFromDB();
     const isSame = checkEmailExists(dataUsers, email);
     if (!isSame) {
-      await authApi.addNewUserToDB({ email, password }).then((res) => {
-        if (res.data) {
-          commit("addNewUserSuccess");
-        }
-      });
+      await authApi
+        .addNewUserToDB({ email, password, phone_number })
+        .then((res) => {
+          if (res.data) {
+            commit("addNewUserSuccess");
+          }
+        });
     } else {
       commit("addNewUserFail", EMAIL_EXISTS);
     }
@@ -40,6 +42,7 @@ const actions = {
     }
   },
   async updateUserRequest({ commit }, data) {
+    commit("progress");
     commit("updateUserRequest");
     const { id } = data;
     const res = await authApi.updateUserRequestDB(id, data);

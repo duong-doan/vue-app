@@ -1,6 +1,7 @@
 <template>
   <div class="product-detail">
     <div class="product-detail__wrapped">
+      <NavMiddle :hiddenSearch="true" />
       <div class="product-detail__breadcrumb">
         <div class="container">
           <breadcrumb :breadcrumb="breadcrumb" />
@@ -20,9 +21,10 @@
 import DetailProduct from "../components/DetailProduct.vue";
 import CommentProduct from "../components/CommentProduct.vue";
 import RelatedProduct from "../components/RelatedProduct.vue";
-import Breadcrumb from '../../../components/Breadscrum'
-import { mapActions, mapGetters } from 'vuex';
-import useLocalStorage from '../../../utils/useLocalStorage'
+import NavMiddle from "@/pages/home/HeaderComponent/Navigation/NavMiddle.vue";
+import Breadcrumb from "@/components/Breadscrum";
+import { mapActions, mapGetters } from "vuex";
+import useLocalStorage from "@/utils/useLocalStorage";
 
 export default {
   props: [],
@@ -30,46 +32,47 @@ export default {
     DetailProduct,
     CommentProduct,
     RelatedProduct,
-    Breadcrumb
+    Breadcrumb,
+    NavMiddle,
   },
   computed: {
-    ...mapGetters('products', {
-      product_detail: 'product_detail',
-      isProgress: 'isProgress'
+    ...mapGetters("products", {
+      product_detail: "product_detail",
+      isProgress: "isProgress",
     }),
     breadcrumb() {
       return [
         {
           id: 1,
-          text: 'Home',
-          to: '/'
+          text: "Home",
+          to: "/",
         },
         {
           id: 2,
           text: `${this.product_detail.name}`,
-        }
-      ]
+        },
+      ];
     },
     getRelatedProducts() {
-      const { getLocalStorage } = useLocalStorage()
-      return getLocalStorage("related_products")
+      const { getLocalStorage } = useLocalStorage();
+      return getLocalStorage("related_products");
     },
     productId() {
-      return this.$route.params.id
-    }
+      return this.$route.params.id;
+    },
   },
   methods: {
-    ...mapActions('products', ['progress', 'getProductDetailRequest']),
+    ...mapActions("products", ["progress", "getProductDetailRequest"]),
   },
   created() {
-    this.progress()
-    this.getProductDetailRequest(this.productId)
+    this.progress();
+    this.getProductDetailRequest(this.productId);
   },
   watch: {
-    productId (id) {
-      this.progress()
-      this.getProductDetailRequest(id)
-    } 
-  }
+    productId(id) {
+      this.progress();
+      this.getProductDetailRequest(id);
+    },
+  },
 };
 </script>

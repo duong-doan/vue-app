@@ -14,8 +14,8 @@
 
 <script>
 import { VueAgile } from "vue-agile";
-import { DATA_SLIDER_PRODUCT } from "../../../../utils/constants";
-import SliderProductItem from "../../../../components/SliderProductItem/index.vue";
+import { DATA_SLIDER_PRODUCT } from "@/utils/constants";
+import SliderProductItem from "@/components/SliderProductItem/index.vue";
 
 export default {
   components: {

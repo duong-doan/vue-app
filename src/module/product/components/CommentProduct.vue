@@ -78,10 +78,10 @@
 </template>
 
 <script>
-import { TITLE_TAB_INFO_USER_PRODUCT_DETAIL } from "../../../utils/constants";
-import FormGroup from "../../../components/FormGroup";
-import BaseInput from "../../../components/BaseInput";
-import BaseInputCheckbox from "../../../components/BaseInputCheckbox";
+import { TITLE_TAB_INFO_USER_PRODUCT_DETAIL } from "@/utils/constants";
+import FormGroup from "@/components/FormGroup";
+import BaseInput from "@/components/BaseInput";
+import BaseInputCheckbox from "@/components/BaseInputCheckbox";
 import StarRating from "vue-star-rating";
 
 export default {
@@ -110,7 +110,6 @@ export default {
     },
     handleSunmit(e) {
       e.preventDefault();
-      console.log(this.rating);
     },
     setRating(rating) {
       this.rating = rating;

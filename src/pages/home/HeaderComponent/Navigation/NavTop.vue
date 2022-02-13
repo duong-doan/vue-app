@@ -42,7 +42,7 @@
               <div class="user__info__img">
                 <img :src="getUserLogin.avatar" alt="avatar" />
               </div>
-              <h3>{{ getUserLogin.name }}</h3>
+              <h3 class="user__info__name">{{ getUserLogin.name }}</h3>
               <div class="dropdown__info__wrapped">
                 <div class="dropdown__info">
                   <ul>
@@ -77,9 +77,10 @@
 </template>
 
 <script>
-import Modal from "../../../../components/Modal";
+import Modal from "@/components/Modal";
 import { mapActions, mapGetters } from "vuex";
-import useLocalStorage from "../../../../utils/useLocalStorage";
+import useLocalStorage from "@/utils/useLocalStorage";
+import { ROUTES } from "@/utils/constants";
 
 const { getLocalStorage } = useLocalStorage();
 
@@ -118,6 +119,7 @@ export default {
       setLocalStorage("isAuthenticated", false);
       this.setIsAuthenticated(true);
       this.$bvModal.hide("modal");
+      this.$router.push(ROUTES.HOME);
       window.location.reload();
     },
     handleClose() {
@@ -134,7 +136,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../../../assets/sass/abstracts/_variables.scss";
+@import "@/assets/sass/abstracts/_variables.scss";
 .disabled-scroll {
   height: 100%;
   overflow: hidden;
@@ -145,6 +147,13 @@ export default {
   align-items: center;
   position: relative;
   padding: 5px 0;
+
+  &__name {
+    width: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
   &:hover {
     .dropdown__info__wrapped {

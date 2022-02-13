@@ -8,6 +8,11 @@ html {
   font-size: 62.5%; //1rem = 10px
   scroll-behavior: smooth;
   transform-style: preserve-3d;
+  height: 100%;
+}
+
+body {
+  height: 100%;
 }
 
 ul {

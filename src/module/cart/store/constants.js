@@ -20,3 +20,6 @@ export const STATE_CART = {
   CART: "cart",
   PROCESSING: "processing",
 };
+export const STEP_INFO = 1;
+export const STEP_SHIPPING = 2;
+export const STEP_PAYMENT = 3;

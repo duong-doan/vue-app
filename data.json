@@ -6,7 +6,8 @@
     "price": 300,
     "priceDiscount": 250,
     "id": "1",
-    "comments": []
+    "comments": [],
+    "brand": "tissot"
   },
   {
     "createdAt": "2021-09-12T01:15:54.049Z",
@@ -15,7 +16,8 @@
     "price": 289,
     "priceDiscount": 233,
     "id": "2",
-    "comments": []
+    "comments": [],
+    "brand": "tissot"
   },
   {
     "createdAt": "2021-09-12T15:01:06.125Z",
@@ -24,7 +26,8 @@
     "price": 415,
     "priceDiscount": 380,
     "id": "3",
-    "comments": []
+    "comments": [],
+    "brand": "tissot"
   },
   {
     "createdAt": "2021-09-12T07:21:43.287Z",
@@ -33,7 +36,8 @@
     "price": 229,
     "priceDiscount": 200,
     "id": "4",
-    "comments": []
+    "comments": [],
+    "brand": "seiko"
   },
   {
     "createdAt": "2021-09-12T12:19:47.757Z",
@@ -51,7 +55,8 @@
     "price": 499,
     "priceDiscount": 400.0,
     "id": "6",
-    "comments": []
+    "comments": [],
+    "brand": "frederique"
   },
   {
     "createdAt": "2021-09-11T15:46:32.507Z",
@@ -60,7 +65,8 @@
     "price": 199,
     "priceDiscount": 100.0,
     "id": "7",
-    "comments": []
+    "comments": [],
+    "brand": "citizen"
   },
   {
     "createdAt": "2021-09-12T00:37:52.115Z",
@@ -69,7 +75,8 @@
     "price": 3800,
     "priceDiscount": 3000,
     "id": "8",
-    "comments": []
+    "comments": [],
+    "brand": "omega"
   },
   {
     "createdAt": "2021-09-12T08:12:30.709Z",
@@ -78,7 +85,8 @@
     "price": 1749,
     "priceDiscount": 1000,
     "id": "9",
-    "comments": []
+    "comments": [],
+    "brand": "lucy"
   },
   {
     "createdAt": "2021-09-12T07:20:19.985Z",
@@ -87,7 +95,8 @@
     "price": 1950,
     "priceDiscount": 70,
     "id": "10",
-    "comments": []
+    "comments": [],
+    "brand": "oris"
   },
   {
     "createdAt": "2021-09-12T06:48:35.533Z",
@@ -96,7 +105,8 @@
     "price": 697,
     "priceDiscount": 0,
     "id": "11",
-    "comments": []
+    "comments": [],
+    "brand": "longines"
   },
   {
     "createdAt": "2021-09-12T09:27:42.644Z",
@@ -105,7 +115,8 @@
     "price": 400,
     "priceDiscount": 200,
     "id": "12",
-    "comments": []
+    "comments": [],
+    "brand": "certina"
   },
   {
     "createdAt": "2021-09-12T11:41:59.767Z",
@@ -114,7 +125,8 @@
     "price": 2717,
     "priceDiscount": 2317,
     "id": "13",
-    "comments": []
+    "comments": [],
+    "brand": "longines"
   },
   {
     "createdAt": "2021-09-11T18:59:43.460Z",
@@ -123,7 +135,8 @@
     "price": 562,
     "priceDiscount": 533,
     "id": "14",
-    "comments": []
+    "comments": [],
+    "brand": "hamilton"
   },
   {
     "createdAt": "2021-09-12T04:06:35.621Z",
@@ -132,7 +145,8 @@
     "price": 7259,
     "priceDiscount": 4999,
     "id": "15",
-    "comments": []
+    "comments": [],
+    "brand": "omega"
   },
   {
     "createdAt": "2021-09-12T07:09:12.766Z",
@@ -141,7 +155,8 @@
     "price": 289,
     "priceDiscount": 0,
     "id": "16",
-    "comments": []
+    "comments": [],
+    "brand": "citizen"
   },
   {
     "createdAt": "2021-09-12T08:55:31.662Z",
@@ -150,7 +165,8 @@
     "price": 74,
     "priceDiscount": 70,
     "id": "17",
-    "comments": []
+    "comments": [],
+    "brand": "elini"
   },
   {
     "createdAt": "2021-09-11T20:51:17.948Z",
@@ -159,7 +175,8 @@
     "price": 499,
     "priceDiscount": 399,
     "id": "18",
-    "comments": []
+    "comments": [],
+    "brand": "versace"
   },
   {
     "createdAt": "2021-09-12T07:32:40.504Z",
@@ -168,7 +185,8 @@
     "price": 1196,
     "priceDiscount": 996,
     "id": "19",
-    "comments": []
+    "comments": [],
+    "brand": "ball"
   },
   {
     "createdAt": "2021-09-12T01:57:32.910Z",
@@ -177,6 +195,7 @@
     "price": 363,
     "priceDiscount": 263,
     "id": "20",
-    "comments": []
+    "comments": [],
+    "brand": "citizen"
   }
 ]

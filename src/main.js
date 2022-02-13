@@ -11,6 +11,7 @@ import store from "./store/index";
 import Toasted from "vue-toasted";
 import { TabsPlugin } from "bootstrap-vue";
 import VSwitch from "v-switch-case";
+import "mdb-vue-ui-kit/css/mdb.min.css";
 
 Vue.use(VSwitch);
 Vue.use(BootstrapVue);

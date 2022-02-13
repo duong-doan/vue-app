@@ -48,14 +48,14 @@
 </template>
 
 <script>
-import BaseInput from "../../../components/BaseInput";
-import FormGroup from "../../../components/FormGroup";
-import Validate from "../../../utils/validate";
-import { toastMessage } from "../../../utils/notification"
-import { VALIDATION_RULES } from "../../../utils/constants";
-import { CONFIG_TOAST } from '../../../utils/constants'
+import BaseInput from "@/components/BaseInput";
+import FormGroup from "@/components/FormGroup";
+import Validate from "@/utils/validate";
+import { toastMessage } from "@/utils/notification";
+import { VALIDATION_RULES } from "@/utils/constants";
+import { CONFIG_TOAST } from "@/utils/constants";
 import { dataInputLogin } from "../store/constants";
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
@@ -77,55 +77,51 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('auth', ['isAuthenticated', 'errorsAuth', 'userLogin', 'isProgress']),
+    ...mapGetters("auth", [
+      "isAuthenticated",
+      "errorsAuth",
+      "userLogin",
+      "isProgress",
+    ]),
     isAuthenticatedState() {
-      return this.isAuthenticated
+      return this.isAuthenticated;
     },
     isProgressState() {
-      return this.isProgress
+      return this.isProgress;
     },
     getErrorsState() {
-      return this.errorsAuth
+      return this.errorsAuth;
     },
     getUserLoginState() {
-      return this.userLogin
-    }
+      return this.userLogin;
+    },
   },
   methods: {
-    ...mapActions('auth', ['getUserRequest', 'loginUserRequest', 'progress']),
+    ...mapActions("auth", ["getUserRequest", "loginUserRequest", "progress"]),
     async handleSubmit(e) {
       e.preventDefault();
-      this.progress()
-      if(this.validField()) {
-        const {email, password} = this.userInfo
-        await this.loginUserRequest({email, password})
-        const handleClickToastSuccess = () => {
-          this.$router.push('/')
-        }
+      this.progress();
+      if (this.validField()) {
+        const { email, password } = this.userInfo;
+        await this.loginUserRequest({ email, password });
         const handleClickToastFail = () => {
           this.userInfo = {
             email: "",
             password: "",
-          }
-        }
+          };
+        };
 
         // toast props: type, message, options, customMsg, handleClickToast
-        if(this.isAuthenticatedState) {
-          await toastMessage(
-            "success",
-            `Welcome ${this.userLogin.name}`,
-            {...CONFIG_TOAST, duration: 5000},
-            "Go to homepage",
-            handleClickToastSuccess
-          )
+        if (this.isAuthenticatedState) {
+          await this.$router.push("/");
         } else {
           await toastMessage(
             "error",
             this.getErrorsState?.login,
-            {...CONFIG_TOAST, duration: 2000},
+            { ...CONFIG_TOAST, duration: 2000 },
             "Enter again",
             handleClickToastFail
-          )
+          );
         }
       }
     },
@@ -134,12 +130,12 @@ export default {
         ...this.userInfo,
         [id]: e.target.value,
       };
-      if(this.errors[id]) {
-        const errorList = {...this.errors, [id]: ""}
+      if (this.errors[id]) {
+        const errorList = { ...this.errors, [id]: "" };
         this.errors = {
           ...this.errors,
           ...errorList,
-        }
+        };
       }
     },
     checkValidEmail(value) {
@@ -149,7 +145,7 @@ export default {
         rule: `${REQUIRED}|${EMAIL}`,
         messages: {
           [REQUIRED]: "",
-        }
+        },
       };
       return Validate.checkValidate(value, validation);
     },
@@ -161,23 +157,23 @@ export default {
         messages: {
           [REQUIRED]: "",
           [MIN]: "",
-          [MAX]: ""
-        }
+          [MAX]: "",
+        },
       };
       return Validate.checkValidate(value, validation);
     },
     validField() {
-      let errorList = {}
-      const { email, password } = this.userInfo
-      errorList.email = this.checkValidEmail(email)?.errorMes
-      errorList.password = this.checkValidPassword(password)?.errorMes
+      let errorList = {};
+      const { email, password } = this.userInfo;
+      errorList.email = this.checkValidEmail(email)?.errorMes;
+      errorList.password = this.checkValidPassword(password)?.errorMes;
       this.errors = {
-        ...errorList
-      }
-      return !Object.keys(errorList).some(key => errorList[key])
+        ...errorList,
+      };
+      return !Object.keys(errorList).some((key) => errorList[key]);
     },
     handleBlur() {},
-    handleKeydown() {}
+    handleKeydown() {},
   },
   watch: {
     userInfo(value) {
@@ -186,18 +182,16 @@ export default {
       } else {
         this.isEditInput = false;
       }
-    }
+    },
   },
   destroyed() {
-    this.$toasted.clear()
-  }
+    this.$toasted.clear();
+  },
 };
 </script>
 
 <style lang="scss">
-@import "../../../assets/sass/abstracts/_variables.scss";
-
-
+@import "@/assets/sass/abstracts/_variables.scss";
 
 .login-box__wrapper {
   position: relative;

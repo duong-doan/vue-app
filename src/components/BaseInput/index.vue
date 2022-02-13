@@ -10,6 +10,7 @@
     @change="handleChange"
     @blur="handleBlur"
     @keydown="handleKeydown"
+    required
   />
 </template>
 

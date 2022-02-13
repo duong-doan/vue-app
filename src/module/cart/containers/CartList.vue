@@ -5,8 +5,8 @@
       <NavMiddle />
     </div>
 
-    <div class="container">
-      <div class="cart-page__wrapped">
+    <div class="container position-relative">
+      <div v-if="getCartStore.length > 0" class="cart-page__wrapped">
         <div class="cart-page__list">
           <Table
             :items="getCartStore"
@@ -32,28 +32,30 @@
           />
         </div>
       </div>
+      <img :src="iconEmpty" class="empty-cart" v-else />
     </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import useLocalStorage from "../../../utils/useLocalStorage";
-import DialogModal from "../../../components/Modal";
-import NavTop from "../../../pages/home/HeaderComponent/Navigation/NavTop.vue";
-import NavMiddle from "../../../pages/home/HeaderComponent/Navigation/NavMiddle.vue";
-import Table from "../../../components/Table";
-import { toastMessage } from "../../../utils/notification";
+import useLocalStorage from "@/utils/useLocalStorage";
+import DialogModal from "@/components/Modal";
+import NavTop from "@/pages/home/HeaderComponent/Navigation/NavTop.vue";
+import NavMiddle from "@/pages/home/HeaderComponent/Navigation/NavMiddle.vue";
+import Table from "@/components/Table";
+import { toastMessage } from "@/utils/notification";
+import IconEmpty from "@/assets/images/empty.jpg";
 import {
   CONFIG_TOAST,
   EN_LANG,
   POSITION_TOAST,
   STATUS_TOAST,
-} from "../../../utils/constants";
+} from "@/utils/constants";
 import { STATE_CART } from "../store/constants";
 const { CART } = STATE_CART;
 
-const { getLocalStorage } = useLocalStorage();
+const { getLocalStorage, setLocalStorage } = useLocalStorage();
 
 export default {
   components: {
@@ -102,6 +104,8 @@ export default {
       perPage: 4,
       currentPage: 1,
       selectedRowProduct: [],
+      user: {},
+      iconEmpty: IconEmpty,
     };
   },
   computed: {
@@ -121,11 +125,12 @@ export default {
           return 0;
         }
       }, 0);
+      setLocalStorage("totalPrice", result);
       return result;
     },
   },
   methods: {
-    ...mapActions("cart", ["setCart", "setQuantity"]),
+    ...mapActions("cart", ["setCart", "setQuantity", "setSelectedProduct"]),
     handleDeleteRow(id) {
       this.isShow = true;
       this.idDelete = id;
@@ -147,7 +152,7 @@ export default {
         currentQuantity,
       };
       await this.setQuantity(dataReq);
-      const cartLocalStr = await getLocalStorage("user").cart;
+      const cartLocalStr = await getLocalStorage("user")?.cart;
       this.selectedRowProduct = this.filterData(cartLocalStr);
     },
     async handleIncrease(id, currentQuantity) {
@@ -157,7 +162,7 @@ export default {
         currentQuantity,
       };
       await this.setQuantity(dataReq);
-      const cartLocalStr = await getLocalStorage("user").cart;
+      const cartLocalStr = await getLocalStorage("user")?.cart;
       this.selectedRowProduct = this.filterData(cartLocalStr);
     },
     handlePageChange(pageNumber) {
@@ -175,6 +180,7 @@ export default {
     },
     handleClickBuy() {
       if (this.totalPrice !== 0) {
+        this.setSelectedProduct(this.selectedRowProduct);
         this.$router.push("cart/payment");
       } else {
         toastMessage(STATUS_TOAST.INFORMATION, EN_LANG.auth.cart_empty, {
@@ -192,6 +198,18 @@ export default {
       return product;
     });
     this.setCart(refreshCart);
+    this.user = getLocalStorage("user");
+  },
+  destroyed() {
+    this.$toasted.clear();
   },
 };
 </script>
+
+<style lang="scss">
+.empty-cart {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+</style>

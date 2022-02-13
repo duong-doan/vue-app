@@ -38,9 +38,10 @@ import InfoPayment from "../components/InfoPayment";
 import ShipPayment from "../components/ShipPayment";
 import FinalPayment from "../components/FinalPayment";
 import TotalPayment from "../components/TotalPayment";
-import NavTop from "../../../pages/home/HeaderComponent/Navigation/NavTop.vue";
-import NavMiddle from "../../../pages/home/HeaderComponent/Navigation/NavMiddle.vue";
+import NavTop from "@/pages/home/HeaderComponent/Navigation/NavTop.vue";
+import NavMiddle from "@/pages/home/HeaderComponent/Navigation/NavMiddle.vue";
 import { tabsPayment } from "../store/constants";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
@@ -51,26 +52,26 @@ export default {
     NavTop,
     NavMiddle,
   },
-  data() {
-    return {
-      stepTab: 1,
-    };
-  },
   computed: {
+    ...mapGetters("cart", ["step"]),
+    stepTab() {
+      return this.step;
+    },
     renderTabs() {
       return tabsPayment;
     },
   },
   methods: {
+    ...mapActions("cart", ["setStep"]),
     handleClickTab(step) {
-      this.stepTab = step;
+      this.setStep(step);
     },
   },
 };
 </script>
 
 <style lang="scss">
-@import "../../../assets/sass/abstracts/_variables.scss";
+@import "@/assets/sass/abstracts/_variables.scss";
 
 .title {
   margin-top: 10rem;

@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import HeroItem from "../../../../components/Hero/index.vue";
-import { DATA_SECTION_HERO_TOP } from "../../../../utils/constants";
+import HeroItem from "@/components/Hero/index.vue";
+import { DATA_SECTION_HERO_TOP } from "@/utils/constants";
 
 export default {
   components: { HeroItem },
