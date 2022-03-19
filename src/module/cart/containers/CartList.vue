@@ -114,7 +114,8 @@ export default {
     },
     totalPrice() {
       const { setLocalStorage } = useLocalStorage();
-      const result = this.getCartStore.reduce((acc, cur) => {
+      const filterSelectedRow = this.getCartStore.filter(item => item.isActive)
+      const result = filterSelectedRow.reduce((acc, cur) => {
         if (cur.isActive) {
           const price =
             cur.price_discount === 0
@@ -167,6 +168,7 @@ export default {
       this.currentPage = pageNumber;
     },
     handleSelectedRow(data) {
+      console.log(data)
       this.selectedRowProduct = this.filterData(data);
       this.setCart(data);
     },

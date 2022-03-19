@@ -9,11 +9,11 @@
         :current-page="currentPage"
       >
         <template #head(id)>
-          <!-- <input
+          <input
             ref="inputTotal"
             type="checkbox"
             @change="handleChangeCheckboxHead"
-          /> -->
+          />
         </template>
         <template #cell(id)="data">
           <input

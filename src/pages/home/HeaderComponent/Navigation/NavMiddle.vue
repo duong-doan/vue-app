@@ -28,7 +28,7 @@
                 class="header__nav-middle__cart__body"
                 @click="handleClickCart"
               >
-                {{ this.cart.length }}
+                {{ this.cart && this.cart.length }}
                 <div class="dropdown-cart__wrapped">
                   <div class="dropdown-cart__content">
                     <ul v-if="this.cart.length !== 0">
@@ -104,7 +104,7 @@ export default {
   created() {
     const { getLocalStorage } = useLocalStorage();
     const cart = getLocalStorage("user").cart;
-    this.setCart(cart)
+    this.setCart(cart ? cart : [])
     this.isAuthenticated = getLocalStorage("isAuthenticated");
     this.user = getLocalStorage("user");
   },
