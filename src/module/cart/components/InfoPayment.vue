@@ -104,16 +104,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(AUTH, ["user", "isProgressUpdate"]),
+    ...mapGetters(AUTH, ["user", "isProgressUpdate", "userLogin"]),
     processing() {
       return this.isProgressUpdate;
     },
-    getUserLocal() {
-      return this.user;
-    },
   },
   methods: {
-    ...mapActions(AUTH, ["updateUserRequest"]),
+    ...mapActions(AUTH, ["updateUserRequest", "setInfoUser"]),
     ...mapActions(CART, ["setStep"]),
     handleBlur() {},
     handleKeydown() {},
@@ -144,7 +141,7 @@ export default {
       const hasValue = fieldNames.some((field) => this.inputValue[field]);
       if (hasChanged || hasValue) {
         const data = {
-          ...this.userInfo,
+          ...this.userLogin,
           ...this.inputValue,
         };
         await this.updateUserRequest(data);
@@ -156,6 +153,7 @@ export default {
   created() {
     const { getLocalStorage } = useLocalStorage();
     const userLocalStr = getLocalStorage("user");
+    this.setInfoUser(userLocalStr)
     const isAuthenticatedLocalStr = getLocalStorage("isAuthenticated");
     this.inputValue = {
       email: userLocalStr.email,
@@ -164,13 +162,10 @@ export default {
       phone: userLocalStr.phone,
     };
     this.defaultValue = {
-      email: userLocalStr.email,
-      name: userLocalStr.name,
-      address: userLocalStr.address,
-      phone: userLocalStr.phone,
-    };
-    this.userInfo = {
-      ...userLocalStr,
+      email: this.userLogin.email,
+      name: this.userLogin.name,
+      address: this.userLogin.address,
+      phone: this.userLogin.phone,
     };
     if (!isAuthenticatedLocalStr) {
       this.$router.push("/");

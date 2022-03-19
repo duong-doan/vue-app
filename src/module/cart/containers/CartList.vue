@@ -55,7 +55,6 @@ import {
 import { STATE_CART } from "../store/constants";
 const { CART } = STATE_CART;
 
-const { getLocalStorage, setLocalStorage } = useLocalStorage();
 
 export default {
   components: {
@@ -114,7 +113,8 @@ export default {
       return this.cart;
     },
     totalPrice() {
-      const result = this.selectedRowProduct.reduce((acc, cur) => {
+      const { setLocalStorage } = useLocalStorage();
+      const result = this.getCartStore.reduce((acc, cur) => {
         if (cur.isActive) {
           const price =
             cur.price_discount === 0
@@ -152,8 +152,7 @@ export default {
         currentQuantity,
       };
       await this.setQuantity(dataReq);
-      const cartLocalStr = await getLocalStorage("user")?.cart;
-      this.selectedRowProduct = this.filterData(cartLocalStr);
+      this.selectedRowProduct = this.filterData(this.getCartStore);
     },
     async handleIncrease(id, currentQuantity) {
       const dataReq = {
@@ -162,8 +161,7 @@ export default {
         currentQuantity,
       };
       await this.setQuantity(dataReq);
-      const cartLocalStr = await getLocalStorage("user")?.cart;
-      this.selectedRowProduct = this.filterData(cartLocalStr);
+      this.selectedRowProduct = this.filterData(this.getCartStore);
     },
     handlePageChange(pageNumber) {
       this.currentPage = pageNumber;
@@ -193,6 +191,7 @@ export default {
     },
   },
   created() {
+    const { getLocalStorage } = useLocalStorage();
     const refreshCart = getLocalStorage("user").cart.map((product) => {
       product.isActive = false;
       return product;

@@ -2,8 +2,8 @@
   <div class="product-payment__final">
     <CheckoutInfo
       :isFinalPayment="true"
-      :email="user.email"
-      :address="user.address"
+      :email="this.userLogin.email"
+      :address="this.userLogin.address"
     />
     <base-button
       :onClick="handleCLickPayment"
@@ -24,7 +24,6 @@ import { STEP_INFO } from "../store/constants";
 export default {
   data() {
     return {
-      user: {},
       totalPrice: 0,
     };
   },
@@ -34,10 +33,10 @@ export default {
   },
   computed: {
     ...mapGetters("cart", ["selectedProduct", "orders"]),
-    ...mapGetters("auth", ["isProgressUpdate"]),
+    ...mapGetters("auth", ["isProgressUpdate", "userLogin"]),
   },
   methods: {
-    ...mapActions("auth", ["updateUserRequest"]),
+    ...mapActions("auth", ["updateUserRequest", "setInfoUser"]),
     ...mapActions("cart", ["setOrders", "setStep"]),
     async handleCLickPayment() {
       const order = {
@@ -48,7 +47,7 @@ export default {
       };
       this.orders.push(order);
       const data = {
-        ...this.user,
+        ...this.userLogin,
         orders: this.orders,
         cart: [],
       };
@@ -60,7 +59,8 @@ export default {
   },
   created() {
     const { getLocalStorage } = useLocalStorage();
-    this.user = getLocalStorage("user");
+    const userLocal = getLocalStorage("user");
+    this.setInfoUser(userLocal)
     this.totalPrice = getLocalStorage("totalPrice");
   },
 };

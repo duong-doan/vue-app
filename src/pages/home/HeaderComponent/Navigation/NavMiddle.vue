@@ -28,13 +28,13 @@
                 class="header__nav-middle__cart__body"
                 @click="handleClickCart"
               >
-                {{ cart_default.length }}
+                {{ this.cart.length }}
                 <div class="dropdown-cart__wrapped">
                   <div class="dropdown-cart__content">
-                    <ul v-if="cart_default.length !== 0">
+                    <ul v-if="this.cart.length !== 0">
                       <li
                         class="dropdown-cart__item"
-                        v-for="product in cart_default"
+                        v-for="product in this.cart"
                         :key="product.id"
                       >
                         <div class="dropdown-cart__item__img">
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import logo from "@/assets/images/logo--m.png";
 import empty from "@/assets/images/empty.jpg";
 import { ROUTES } from "@/utils/constants";
@@ -81,11 +81,13 @@ export default {
     return {
       logo,
       empty,
-      cart_default: [],
       isAuthenticated: false,
       user: {},
       valueInput: "",
     };
+  },
+  computed: {
+    ...mapGetters('cart', ["cart"])
   },
   methods: {
     ...mapActions("cart", ["setCart"]),
@@ -102,7 +104,7 @@ export default {
   created() {
     const { getLocalStorage } = useLocalStorage();
     const cart = getLocalStorage("user").cart;
-    this.cart_default = cart;
+    this.setCart(cart)
     this.isAuthenticated = getLocalStorage("isAuthenticated");
     this.user = getLocalStorage("user");
   },

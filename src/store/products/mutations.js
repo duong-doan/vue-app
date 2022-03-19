@@ -32,6 +32,9 @@ const mutations = {
   decreaseQuantity(state) {
     state.quantity_default--;
   },
+  clearDataProduct(state) {
+    state.quantity_default = 1
+  }
 };
 
 export default mutations;

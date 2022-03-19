@@ -13,12 +13,12 @@ const actions = {
   setIsAuthenticated({ commit }, value) {
     commit("setIsAuthenticated", value);
   },
-  async addNewUserRequest({ commit }, { email, password, phone_number }) {
+  async addNewUserRequest({ commit }, { email, password, phone }) {
     const dataUsers = await authApi.getUsersFromDB();
     const isSame = checkEmailExists(dataUsers, email);
     if (!isSame) {
       await authApi
-        .addNewUserToDB({ email, password, phone_number })
+        .addNewUserToDB({ email, password, phone })
         .then((res) => {
           if (res.data) {
             commit("addNewUserSuccess");
@@ -48,12 +48,15 @@ const actions = {
     const res = await authApi.updateUserRequestDB(id, data);
     if (res) {
       setLocalStorage("user", res);
-      commit("updateUserRequestSuccess");
+      commit("updateUserRequestSuccess", res);
       return;
     } else {
       commit("updateUserRequestFailed");
     }
   },
+  setInfoUser({commit}, data) {
+    commit("setInfoUser", data)
+  }
 };
 
 export default actions;

@@ -28,12 +28,16 @@ const mutations = {
   updateUserRequest(state) {
     state.isProgressUpdate = true;
   },
-  updateUserRequestSuccess(state) {
+  updateUserRequestSuccess(state, data) {
     state.isProgressUpdate = false;
+    state.userLogin = data
   },
   updateUserRequestFailed(state) {
     state.isProgressUpdate = false;
   },
+  setInfoUser(state, data) {
+    state.userLogin = data
+  }
 };
 
 export default mutations;

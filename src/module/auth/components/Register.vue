@@ -70,13 +70,13 @@ export default {
         email: "",
         password: "",
         confirm_password: "",
-        phone_number: "",
+        phone: "",
       },
       errors: {
         email: "",
         password: "",
         confirm_password: "",
-        phone_number: "",
+        phone: "",
       },
       isEditInput: false,
     };
@@ -99,8 +99,8 @@ export default {
       e.preventDefault();
       if (this.validField()) {
         this.progress();
-        const { email, password, phone_number } = this.userInfo;
-        await this.addNewUserRequest({ email, password, phone_number });
+        const { email, password, phone } = this.userInfo;
+        await this.addNewUserRequest({ email, password, phone });
         const handleClickToastSuccess = () => {
           this.$router.push("/user/login");
         };
@@ -109,7 +109,7 @@ export default {
             email: "",
             password: "",
             confirm_password: "",
-            phone_number: "",
+            phone: "",
           };
         };
 
@@ -151,9 +151,9 @@ export default {
     },
     validField() {
       const errorList = {};
-      const { email, password, confirm_password, phone_number } = this.userInfo;
+      const { email, password, confirm_password, phone } = this.userInfo;
       errorList.email = this.checkValidEmail(email)?.errorMes;
-      errorList.phone_number = this.checkValidPhone(phone_number)?.errorMes;
+      errorList.phone = this.checkValidPhone(phone)?.errorMes;
       errorList.password = this.checkValidPassword(password)?.errorMes;
       errorList.confirm_password = this.checkValidConfirmPassword(
         confirm_password

@@ -57,12 +57,12 @@
                                   >change</span
                                 >
                                 <span>{{
-                                  valueInput.name ? valueInput.name : user.name
+                                  valueInput.name ? valueInput.name : this.userLogin.name
                                 }}</span>
                               </template>
                             </form-group>
                             <form-group label="Email" class="profile__input">
-                              <span>{{ user.email }}</span>
+                              <span>{{ this.userLogin.email }}</span>
                             </form-group>
                             <form-group
                               label="Phone number"
@@ -75,7 +75,7 @@
                                 :value="
                                   valueInput.phone
                                     ? valueInput.phone
-                                    : user.phone_number
+                                    : this.userLogin.phone
                                 "
                                 :onChange="handleChange"
                                 :onBlur="handleBlur"
@@ -90,7 +90,7 @@
                                 id="date"
                                 type="date"
                                 name="date"
-                                :value="user.birthDay"
+                                :value="this.userLogin.birthDay"
                                 :onChange="handleChange"
                                 :onBlur="handleBlur"
                                 onKeydown=""
@@ -120,7 +120,7 @@
                           <form action="">
                             <img
                               ref="img"
-                              :src="`${user.avatar}`"
+                              :src="`${this.userLogin.avatar}`"
                               alt="image"
                             />
                             <div>
@@ -193,7 +193,6 @@ export default {
   },
   data() {
     return {
-      user: {},
       isEdit: false,
       imgUrl: "",
       valueInput: {
@@ -206,7 +205,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(AUTH, [IS_PROGRESS_UPDATE]),
+    ...mapGetters(AUTH, [IS_PROGRESS_UPDATE, "userLogin"]),
     breadcrumb() {
       return [
         {
@@ -216,13 +215,13 @@ export default {
         },
         {
           id: 2,
-          text: `${this.user.name}`,
+          text: `${this.userLogin.name}`,
         },
       ];
     },
   },
   methods: {
-    ...mapActions(AUTH, [UPDATE_USER_REQUEST]),
+    ...mapActions(AUTH, [UPDATE_USER_REQUEST, "setInfoUser"]),
     handleChooseFileImage() {
       // const file = inputEl.files[0]
       const fileType = this.$refs.input.files[0].type;
@@ -287,9 +286,9 @@ export default {
       const { name, phone, date } = this.valueInput;
       const customData = {
         ...this.user,
-        avatar: this.imgUrl ? this.imgUrl : this.user.avatar,
-        name: name ? name : this.user.name,
-        phone: phone ? phone : this.user.phone,
+        avatar: this.imgUrl ? this.imgUrl : this.userLogin.avatar,
+        name: name ? name : this.userLogin.name,
+        phone: phone ? phone : this.userLogin.phone,
         birthDay: date,
       };
       await this.updateUserRequest(customData);
@@ -303,7 +302,7 @@ export default {
   created() {
     const userLocal = getLocalStorage("user");
     const orders = getLocalStorage("user").orders;
-    this.user = userLocal;
+    this.setInfoUser(userLocal)
     this.orders = orders;
   },
   watch: {

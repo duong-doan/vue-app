@@ -26,7 +26,7 @@ export const dataInputRegister = [
     required: true,
   },
   {
-    id: "phone_number",
+    id: "phone",
     name: "Phone number",
     type: "text",
     required: true,

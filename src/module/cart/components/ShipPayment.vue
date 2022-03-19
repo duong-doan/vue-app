@@ -1,7 +1,10 @@
 <template>
   <div class="product-payment__ship">
     <div class="product-payment__ship__info">
-      <CheckoutInfo :email="email" :address="address" />
+      <CheckoutInfo
+        :email="this.userLogin.email"
+        :address="this.userLogin.address"
+      />
 
       <h3>Shipping method</h3>
 
@@ -23,23 +26,21 @@
 <script>
 import CheckoutInfo from "@/components/CheckoutInfo/index.vue";
 import BaseButton from "@/components/BaseButton";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import { STEP_INFO, STEP_PAYMENT } from "../store/constants";
 import useLocalStorage from "@/utils/useLocalStorage";
 
 export default {
-  data() {
-    return {
-      email: "",
-      address: "",
-    };
-  },
   components: {
     CheckoutInfo,
     BaseButton,
   },
+  computed: {
+    ...mapGetters("auth", ["userLogin"])
+  },
   methods: {
     ...mapActions("cart", ["setStep"]),
+    ...mapActions("auth", ["setInfoUser"]),
     handleBackStep() {
       this.setStep(STEP_INFO);
     },
@@ -49,8 +50,8 @@ export default {
   },
   created() {
     const { getLocalStorage } = useLocalStorage();
-    this.email = getLocalStorage("user").email;
-    this.address = getLocalStorage("user").address;
+    const userLocal = getLocalStorage("user")
+    this.setInfoUser(userLocal)
   },
 };
 </script>

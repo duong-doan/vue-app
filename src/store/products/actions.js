@@ -37,6 +37,9 @@ const actions = {
     decreaseQuantityProduct({commit}) {
         commit('decreaseQuantity')
     },
+    clearDataProduct({commit}) {
+        commit("clearDataProduct")
+    }
 }
 
 export default actions

@@ -1,11 +1,11 @@
 import axios from "../utils/axios";
 
-export const addNewUserToDB = async ({ email, password, phone_number }) => {
+export const addNewUserToDB = async ({ email, password, phone }) => {
   try {
     const res = await axios.post("/auth", {
       email,
       password,
-      phone_number,
+      phone,
       cart: [],
     });
     return res;

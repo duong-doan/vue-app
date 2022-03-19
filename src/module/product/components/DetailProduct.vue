@@ -110,6 +110,7 @@ export default {
     ...mapActions(PRODUCT, [
       "increaseQuantityProduct",
       "decreaseQuantityProduct",
+      "clearDataProduct"
     ]),
     ...mapActions(CART, ["addCartUserRequest"]),
     handleSubmit(e) {
@@ -167,6 +168,7 @@ export default {
   },
   destroyed() {
     this.$toasted.clear();
+    this.clearDataProduct()
   },
 };
 </script>
