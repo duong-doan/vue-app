@@ -1,4 +1,4 @@
-# vue2-watch-shop
+# vue2-watch-shop (https://doan-watch.netlify.app/)
 
 ## Project data
 
