@@ -1,0 +1,10 @@
+[[redirects]]
+  from = "/tiktokSoZLDW0Zk80QLYwhmztBwehxqNgleju.txt"
+  to = "/tiktokSoZLDW0Zk80QLYwhmztBwehxqNgleju.txt"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
